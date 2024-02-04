@@ -20,7 +20,6 @@ const Production = () => {
     autoplaySpeed: 5000,
     arrows: false,
     afterChange: (index) => {
-      console.log(currentIndex);
       setCurrentIndex(index);
     },
   };

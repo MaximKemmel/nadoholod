@@ -10,6 +10,7 @@ import Equipment from "./content/equipment/Equipment";
 import Production from "./content/production/Production";
 import Service from "./content/service/Service";
 import WorkStages from "./content/workStages/WorkStages";
+import Face from "./content/face/Face";
 
 const Home = () => {
   useEffect(() => {
@@ -18,6 +19,7 @@ const Home = () => {
 
   return (
     <div>
+      <Face />
       <Catalog />
       <About />
       <Advantages />
