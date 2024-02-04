@@ -1,0 +1,88 @@
+$background_color: #0B6886
+$text_color: #FFFFFF
+$description_color: #EFEFEE
+$count_color: #CFCFC7
+$link_color: #01AAC1
+
+.container
+    width: 1400px
+    display: flex
+    float: right
+    background-color: $background_color
+    margin: 150px 0
+    margin-top: 60px
+    align-items: center
+    border-radius: 4px 0 0 4px
+    gap: 35px
+
+    .content
+        display: flex
+        width: 550px
+        flex-direction: column
+        gap: 10px
+        margin-left: 75px
+        flex-shrink: 0
+
+        .head
+            font-size: 34px
+            font-family: 'Russo One'
+            color: $text_color
+
+        .description
+            font-size: 18px
+            color: $description_color
+            line-height: 24px
+            opacity: 0.8
+
+    .form
+        display: flex
+        flex-direction: column
+        gap: 20px
+        flex-grow: 1
+
+        .head
+            font-size: 28px
+            font-family: 'Russo One'
+            color: $text_color
+
+        form
+            display: flex
+            flex-direction: column
+            gap: 20px
+
+            button
+                width: 100%
+
+            input,
+            textarea
+                width: calc(100% - 30px)
+
+            input
+                height: 16px
+
+            textarea
+                height: 54px
+                min-height: 54px
+                max-height: 125px
+
+            .count
+                display: flex
+                float: right
+                color: $count_color
+                font-size: 14px
+                margin-top: 3px
+
+            .agreement
+                font-size: 12px
+                color: $text_color
+                text-align: justify
+                line-height: 18px
+
+                span
+                    color: $link_color
+                    cursor: pointer
+
+    img
+        height: 546px
+        width: auto
+        flex-shrink: 0

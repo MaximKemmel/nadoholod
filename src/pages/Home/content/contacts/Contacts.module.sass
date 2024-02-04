@@ -1,0 +1,29 @@
+$text_color: #043848
+
+.content
+    display: flex
+    justify-content: space-between
+    color: $text_color
+
+    .contacts
+        display: flex
+        flex-direction: column
+        gap: 25px
+        width: calc(25% - 40px)
+
+        .contact
+            display: flex
+            flex-direction: column
+            gap: 10px
+
+            .label
+                font-family: 'Russo One'
+                font-size: 20px
+
+            .value
+                font-size: 16px
+
+    .map_container
+        height: 380px
+        width: 75%
+        overflow: hidden

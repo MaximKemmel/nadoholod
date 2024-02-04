@@ -1,0 +1,127 @@
+$background_color: #24282E
+$text_color: #FFFFFF
+$link_color: #CFCFC7
+$social_color: #01AAC1
+
+footer
+    background-color: $background_color
+    color: $text_color
+    width: 100%
+    display: flex
+    justify-content: center
+
+    .container
+        width: 1320px
+        display: flex
+        justify-content: space-between
+        padding: 100px 0
+        gap: 100px
+
+        .company
+            display: flex
+            flex-direction: column
+            width: 170px
+            gap: 20px
+
+            img
+                width: 100%
+                height: auto
+
+            .description
+                display: flex
+                flex-direction: column
+                gap: 10px
+
+                .name
+                    font-size: 28px
+                    font-family: 'Russo One'
+
+                .about
+                    font-size: 12px
+
+        .navigation
+            display: flex
+            flex-grow: 1
+            justify-content: space-between
+
+            .column
+                display: flex
+                flex-direction: column
+                gap: 20px
+
+                .head
+                    font-size: 20px
+                    font-family: 'Russo One'
+
+                .links
+                    display: flex
+                    flex-direction: column
+                    gap: 20px
+                    color: $link_color
+                    overflow: hidden
+
+                    .link
+                        font-size: 14px
+                        cursor: pointer
+                        display: flex
+                        align-items: center
+                        transition: all .2s ease-out
+                        margin-left: -16px
+                        margin-right: 16px
+                        width: max-content
+
+                        svg
+                            width: 16px
+                            height: auto
+
+        .contacts
+            display: flex
+            flex-direction: column
+            gap: 20px
+
+            .head
+                font-size: 20px
+                font-family: 'Russo One'
+
+            .contacts_list
+                display: flex
+                flex-direction: column
+                gap: 20px
+                color: $link_color
+
+                .phone
+                    font-size: 17px
+
+                .address
+                    font-size: 14px
+                    word-wrap: break-word
+
+                .socials_list
+                    display: flex
+                    gap: 20px
+
+                    .link
+                        height: 40px
+                        width: 40px
+                        border-radius: 50px
+                        background-color: $social_color
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                        cursor: pointer
+
+                        svg
+                            width: 20px
+                            height: auto
+
+@media (min-width: 1024px)
+    footer
+        .container
+            .navigation
+                .column
+                    .links
+                        .link
+                            &:hover
+                                margin-left: 0px
+                                margin-right: 0px
+                                color: $text_color

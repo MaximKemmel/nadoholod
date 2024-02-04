@@ -1,0 +1,60 @@
+$text_color: #043848
+$action_color: #EFEFEE
+$active_color: #01AAC1
+
+.container_content
+    width: 1320px
+    padding: 90px 0
+    display: flex
+    gap: 35px
+
+    .content
+        display: flex
+        flex-direction: column
+        gap: 35px
+        width: 500px
+
+        .production_items
+            margin-top: 10px
+            display: flex
+            flex-direction: column
+            gap: 25px
+
+            .production_item
+                display: flex
+                flex-direction: column
+                gap: 10px
+                color: $text_color
+
+                .label
+                    font-family: 'Russo One'
+                    font-size: 20px
+
+                .value
+                    font-size: 16px
+
+    .slider
+        width: calc(100% - 550px)
+        align-items: center
+
+        img
+            width: 100%
+            height: auto
+
+        .slider_actions
+            display: flex
+            margin-top: 15px
+            width: 100%
+            justify-content: center
+            gap: 15px
+
+            .action
+                background-color: $action_color
+                width: 10px
+                height: 10px
+                border-radius: 10px
+                transition: all .2s ease-out
+                cursor: pointer
+
+                &.active
+                    background-color: $active_color

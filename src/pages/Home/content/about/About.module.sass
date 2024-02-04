@@ -1,0 +1,122 @@
+$text_color: #043848
+$active_color: #0B6886
+$background_color: #FFFFFF
+
+.content
+    display: flex
+    flex-direction: column
+    gap: 55px
+    position: relative
+
+    .cards
+        position: absolute
+        z-index: 5
+        top: 0
+        left: 0
+        width: 360px
+        height: auto
+
+    .head
+        display: flex
+        flex-direction: column
+        gap: 25px
+
+    .about
+        font-size: 16px
+        font-weight: 700
+        color: $text_color
+        line-height: 22px
+
+    .evolution
+        display: flex
+        flex-direction: column
+        gap: 10px
+        width: 100%
+
+        .title
+            font-size: 28px
+            font-family: "Russo One"
+            color: $text_color
+
+        .stages
+            display: flex
+            flex-direction: column
+            width: 100%
+
+            .stage
+                display: flex
+                flex-direction: column
+                width: 310px
+
+                .num
+                    width: max-content
+                    font-size: 100px
+                    font-family: "Russo One"
+                    background-size: 100%
+                    -webkit-background-clip: text
+                    -moz-background-clip: text
+                    -webkit-text-fill-color: transparent
+                    -moz-text-fill-color: transparent
+                    background-image: linear-gradient(77.6deg, rgba(0, 94, 180, 0.3) -1.43%, rgba(7, 195, 255, 0.3) 106.88%)
+
+    .competition
+        position: absolute
+        z-index: 5
+        bottom: 0
+        right: 0
+        display: flex
+        align-items: center
+
+        .description
+            text-align: center
+            width: 300px
+            color: $active_color
+            font-size: 20px
+            font-family: "Russo One"
+            margin-right: -75px
+
+        img
+            width: 415px
+            height: auto
+
+    .half
+        margin-left: 50%
+
+    .tripple
+        margin-left: 33.5%
+
+    .double
+        margin-left: 16.5%
+
+.relative
+    position: relative
+
+.application_container
+    position: absolute
+    bottom: 0
+    right: 0
+    z-index: 10
+    transform: rotate(-90deg) translateX(50%) translateY(225px)
+    height: 150px
+    width: 615px
+
+    .application_button
+        background-color: $active_color
+        cursor: pointer
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        height: 150px
+        width: 615px
+        gap: 5px
+
+        svg
+            width: 30px
+            height: auto
+            transform: rotate(90deg)
+
+        .button_text
+            color: $background_color
+            font-size: 40px
+            font-family: "Russo One"

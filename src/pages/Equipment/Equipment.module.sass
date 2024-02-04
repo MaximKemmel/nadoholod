@@ -1,0 +1,197 @@
+$text_color: #043848
+$gray_color: #CFCFC7
+$introduction_color: #0B6886
+
+.wrapper
+    display: flex
+    justify-content: center
+    width: 100vw
+    color: $text_color
+
+    .container
+        display: flex
+        flex-direction: column
+        gap: 150px
+        width: 1320px
+
+        .breadcumbs
+            display: flex
+            align-items: center
+            padding: 60px 0
+            font-size: 14px
+            gap: 5px
+
+            .element
+                opacity: 0.5
+
+            svg
+                width: 15px
+                height: auto
+
+                *
+                    stroke: $gray_color
+
+        .about
+            margin-top: -150px
+            display: flex
+            justify-content: space-between
+
+            .content
+                display: flex
+                flex-direction: column
+                width: calc(50% - 30px)
+                gap: 40px
+
+                .description
+                    font-size: 18px
+                    line-height: 25px
+
+                button
+                    width: 192px
+                    display: flex
+                    gap: 8px
+                    font-size: 20px
+
+                    svg
+                        width: 24px
+                        height: 24px
+
+            .image
+                width: 50%
+
+                img
+                    width: 100%
+                    heigh: auto
+
+        .features
+            display: flex
+            flex-direction: column
+            gap: 40px
+
+            .content
+                display: flex
+                justify-content: space-between
+
+                .features_list
+                    width: calc(40% - 30px)
+                    display: flex
+                    flex-direction: column
+                    gap: 40px
+
+                    .feature
+                        display: flex
+                        flex-direction: column
+
+                        .num
+                            width: max-content
+                            font-size: 100px
+                            font-family: "Russo One"
+                            background-size: 100%
+                            -webkit-background-clip: text
+                            -moz-background-clip: text
+                            -webkit-text-fill-color: transparent
+                            -moz-text-fill-color: transparent
+                            background-image: linear-gradient(77.6deg, rgba(0, 94, 180, 0.3) -1.43%, rgba(7, 195, 255, 0.3) 106.88%)
+
+                        .description
+                            font-size: 16px
+                            line-height: 22px
+
+                .image
+                    width: 60%
+
+                    img
+                        width: 100%
+                        height: auto
+
+        .introductions
+            display: flex
+            flex-direction: column
+            gap: 40px
+
+            .introductions_list
+                display: flex
+                flex-wrap: wrap
+                row-gap: 40px
+                justify-content: space-between
+
+                .introduction
+                    width: calc(50% - 20px)
+                    display: flex
+                    gap: 20px
+                    align-items: center
+
+                    .icon
+                        width: 80px
+                        display: flex
+                        justify-content: center
+                        align-items: center
+                        flex-shrink: 0
+
+                        img
+                            height: 46px
+                            width: auto
+
+                    .description
+                        color: $introduction_color
+                        font-weight: 700
+                        font-size: 14px
+                        flex-grow: 1
+
+        .prices
+            margin-bottom: 75px
+            display: flex
+            flex-direction: column
+            gap: 40px
+
+            .parameters
+                width: calc(40% - 30px)
+                font-size: 20px
+                font-weight: 500
+
+            .content
+                display: flex
+                justify-content: space-between
+
+                .prices_content
+                    display: flex
+                    flex-direction: column
+                    gap: 40px
+                    width: calc(40% - 30px)
+
+                    .prices_list
+                        display: flex
+                        flex-direction: column
+                        gap: 15px
+                        width: 80%
+
+                        .price
+                            display: flex
+                            align-items: center
+                            justify-content: space-between
+                            font-size: 14px
+
+                            .value
+                                width: 85px
+
+                    .sum
+                        width: 80%
+                        display: flex
+                        align-items: center
+                        font-size: 22px
+                        justify-content: space-between
+
+                        .position,
+                        .value
+                            font-weight: 700
+
+                    .description
+                        font-size: 16px
+                        line-height: 22px
+
+            .image
+                width: calc(60% - 30px)
+
+                img
+                    width: 100%
+                    height: auto

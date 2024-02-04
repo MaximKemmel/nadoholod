@@ -1,0 +1,57 @@
+$text_color: #043848
+$active_color: #01AAC1
+$background_color: #FFFFFF
+
+.content
+    display: flex
+
+    .catalog_list
+        display: flex
+        flex-wrap: wrap
+        gap: 32px
+
+        .item
+            display: flex
+            flex-direction: column
+            gap: 20px
+
+            .image
+                cursor: pointer
+                position: relative
+                overflow: hidden
+
+                img
+                    border-radius: 4px
+                    height: 313px
+                    width: auto
+
+                .mask
+                    position: absolute
+                    z-index: 5
+                    top: 0
+                    left: 0
+                    height: 100%
+                    width: 100%
+                    background-color: $background_color
+                    opacity: 0
+                    transition: all .2s ease-out
+
+            .link
+                font-size: 18px
+                color: $text_color
+                cursor: pointer
+                transition: all .2s ease-out
+                width: max-content
+
+@media (min-width: 1024px)
+    .content
+        .catalog_list
+            .item
+                .image
+                    &:hover
+                        .mask
+                            opacity: 0.5
+
+                .link
+                    &:hover
+                        color: $active_color

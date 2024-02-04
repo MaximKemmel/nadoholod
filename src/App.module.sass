@@ -1,0 +1,89 @@
+$background_color: #FFFFFF
+$action_color: #01AAC1
+$gray_color: #7EA4B3
+$text_color: #043848
+
+*
+    padding: 0px
+    margin: 0px
+    font-family: 'Inter', sans-serif
+    line-height: 1.3em
+    font-weight: 400
+
+html,
+body
+    width: 100%
+    overflow-y: auto
+    overflow-x: hidden
+    margin: 0
+    padding: 0
+    background-color: $background_color
+
+button
+    border-radius: 4px
+    overflow: hidden
+    background-color: $action_color
+    color: $background_color
+    display: flex
+    justify-content: center
+    align-items: center
+    cursor: pointer
+    font-size: 16px
+    border: none
+    transition: all .2s ease-out
+    height: 56px
+
+    &.small
+        height: 40px
+
+input,
+textarea
+    border-radius: 4px
+    background-color: $background_color
+    flex-shrink: 0
+    outline: none
+    border: 1px solid $gray_color
+    font-size: 16px
+    color: $text_color
+    transition: all .1s ease-out
+    padding: 15px
+
+    &::placeholder
+        font-weight: 300
+        color: $gray_color
+
+input
+    height: 24px
+
+textarea
+    height: 108px
+    resize: vertical
+
+h5
+    font-family: 'Russo One'
+    font-size: 28px
+    color: $text_color
+
+h4
+    font-family: 'Russo One'
+    font-size: 34px
+    color: $text_color
+
+h3
+    font-family: 'Russo One'
+    font-size: 46px
+    color: $text_color
+
+h2
+    font-family: 'Russo One'
+    font-size: 48px
+    line-height: 58px
+    color: $text_color
+
+p
+    margin-top: 10px
+
+@media (min-width: 1024px)
+    button
+        &:hover
+            background-color: $gray_color

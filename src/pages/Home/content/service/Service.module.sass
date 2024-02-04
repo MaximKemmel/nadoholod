@@ -1,0 +1,56 @@
+$text_color: #043848
+$light_text_color: #0B6886
+
+.service_list
+    display: flex
+    align-items: center
+    justify-content: space-between
+    width: 100%
+    color: $text_color
+
+    .service_item
+        display: flex
+        flex-direction: column
+        width: calc(33% - 15px)
+        cursor: pointer
+        transition: all 0.2s ease-out
+        padding: 20px 0
+
+        img
+            width: 100%
+            height: auto
+
+        .description
+            display: flex
+            flex-direction: column
+            padding: 20px
+            gap: 15px
+            align-items: center
+            border-radius: 0 0 4px 4px
+            border: 1px solid $light_text_color
+            border-top: none
+
+            .name
+                font-size: 32px
+                font-family: "Russo One"
+                text-align: center
+                display: flex
+
+            .more_info
+                color: $light_text_color
+                font-size: 17px
+
+            .price
+                color: $light_text_color
+                font-size: 22px
+                font-weight: 700
+
+            button
+                width: 100%
+
+@media (min-width: 1024px)
+    .service_list
+        .service_item
+            &:hover
+                width: calc(33% + 15px)
+                padding: 0

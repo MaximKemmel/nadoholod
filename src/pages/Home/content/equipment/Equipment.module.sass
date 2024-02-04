@@ -1,0 +1,94 @@
+$text_color: #043848
+$background_color: #FFFFFF
+
+.content
+    display: flex
+    flex-direction: column
+    gap: 60px
+
+    .equipments
+        display: flex
+        flex-direction: column
+        gap: 40px
+
+        .title
+            font-size: 34px
+            font-family: 'Russo One'
+            color: $text_color
+
+        .equipments_list
+            display: flex
+            flex-wrap: wrap
+            gap: 33px
+
+            .equipment
+                display: flex
+                position: relative
+                width: calc((1320px - 99px) / 4)
+                cursor: pointer
+                overflow: hidden
+                transition: all .2s ease-out
+
+                img
+                    width: 100%
+                    height: auto
+
+                .about
+                    position: absolute
+                    z-index: 5
+                    height: max-content
+                    max-height: 30%
+                    padding: 10% 10%
+                    display: flex
+                    flex-direction: column
+                    align-items: center
+                    justify-content: space-between
+                    text-align: center
+                    bottom: 0
+                    transition: all .2s ease-out
+
+                    .head
+                        font-size: 22px
+                        font-family: "Russo One"
+                        color: $background_color
+                        height: 80px
+
+                    .button_block
+                        overflow: hidden
+                        height: auto
+                        flex-grow: 1
+                        max-height: 0px
+                        transition: all .2s ease-out
+                        display: flex
+                        flex-direction: column
+                        align-items: center
+                        justify-content: end
+
+                        button
+                            height: 0px
+                            width: 160px
+                            font-size: 14px
+                            overflow: hidden
+                            transition: all .2s ease-out
+                            display: flex
+                            gap: 8px
+
+                            svg
+                                width: 16px
+                                height: 16px
+
+@media (min-width: 1024px)
+    .content
+        .equipments
+            .equipments_list
+                .equipment
+                    &:hover
+                        .about
+                            height: calc(100% - 20%)
+                            max-height: calc(100% - 20%)
+
+                            .button_block
+                                max-height: 500px
+
+                                button
+                                    height: 40px
