@@ -1,4 +1,5 @@
 $background_color: #FFFFFF
+$text_color: #043848
 
 .wrapper
     .slider_container
@@ -15,7 +16,7 @@ $background_color: #FFFFFF
 
         .container
             display: flex
-            gap: 30px
+            gap: 40px
             height: 100%
             width: 100%
 
@@ -23,11 +24,11 @@ $background_color: #FFFFFF
                 display: flex
                 flex-direction: column
                 align-items: end
-                width: calc(50% - 15px)
+                width: 50%
                 padding-top: 90px
 
                 .head
-                    width: 610px
+                    width: calc(50vw - (100vw - 1320px) / 2)
                     display: flex
                     flex-direction: column
                     gap: 40px
@@ -39,6 +40,7 @@ $background_color: #FFFFFF
                         display: flex
                         gap: 30px
                         align-items: center
+                        width: max-content
 
                         .production_item
                             display: flex
@@ -73,24 +75,81 @@ $background_color: #FFFFFF
                         display: flex
                         background-color: $background_color
                         padding: 70px 0
-                        flex-direction: column
-                        gap: 40px
-                        width: 100%
+                        width: calc((100vw - 1320px) / 2 + 520px)
+                        justify-content: end
+                        transition: all 0.4s ease-out
 
-                        .about
-                            margin-top: -25px
+                        .text
+                            display: flex
+                            width: 520px
+                            flex-direction: column
+                            gap: 40px
+                            color: $text_color
+
+                            .name
+                                font-family: "Roboto"
+                                font-weight: 700
+                                font-size: 30px
+                                opacity: 0
+                                transition: all 0.4s ease-out
+
+                                &.active
+                                    opacity: 1
+
+                            .about
+                                margin-top: -25px
+                                padding-right: 50px
+                                font-size: 14px
+                                opacity: 0
+                                transition: all 0.4s ease-out
+
+                                &.active
+                                    opacity: 1
+
+                                p
+                                    margin-top: 5px
+
+                            .bottom
+                                display: flex
+                                align-items: center
+                                gap: 30px
+
+                                .price
+                                    font-size: 22px
+                                    font-weight: 700
+                                    opacity: 0
+                                    transition: all 0.4s ease-out
+
+                                    &.active
+                                        opacity: 1
+
+                                button
+                                    width: 256px
 
             .slider
-                width: 610px
+                width: 570px
                 height: 100vh
                 display: flex
-                justify-content: center
+                overflow: hidden
 
-                img
+                .carousel
                     width: 100%
-                    height: auto
-                    opacity: 0.5
-                    transition: all 0.2s ease-out
+                    height: max-content
+                    display: flex
+                    flex-direction: column
+                    justify-content: center
+                    overflow: hidden
+                    gap: 100px
+                    transform: translateY(-100px)
 
-                    &.active
-                        opacity: 1
+                    img
+                        width: 550px
+                        height: auto
+                        opacity: 0.5
+                        transition: all 0.2s ease-out
+
+                        &.active
+                            opacity: 1
+
+                    .empty
+                        height: 500px
