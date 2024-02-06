@@ -96,28 +96,31 @@ $background_color: #FFFFFF
     bottom: 0
     right: 0
     z-index: 10
-    transform: rotate(-90deg) translateX(50%) translateY(225px)
-    height: 150px
-    width: 615px
+    height: 615px
+    width: 150px
 
     .application_button
         background-color: $active_color
         cursor: pointer
         display: flex
-        flex-direction: column
-        align-items: center
-        justify-content: center
-        height: 150px
-        width: 615px
-        gap: 5px
-        border-radius: 4px
+        position: relative
+        height: 100%
+        width: 100%
+        border-radius: 4px 0 0 4px
 
         svg
+            margin-left: 35px
             width: 30px
             height: auto
-            transform: rotate(90deg)
 
         .button_text
             color: $background_color
             font-size: 40px
             font-family: "Russo One"
+            position: absolute
+            z-index: 15
+            transform: rotate(-90deg)
+            height: 615px
+            width: 615px
+            left: 80px
+            bottom: 38px

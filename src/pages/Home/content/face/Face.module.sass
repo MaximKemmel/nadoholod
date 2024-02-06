@@ -1,7 +1,90 @@
 $background_color: #FFFFFF
 $text_color: #043848
+$dark_color: #0A0C0D
 
 .wrapper
+    .face_container
+        height: 100vh
+        width: 100vw
+        background-color: $dark_color
+        display: flex
+
+        .container
+            position: relative
+            display: flex
+            flex-direction: column
+            gap: 40px
+            width: calc(100vw - (100vw - 1320px))
+            justify-content: end
+            padding-bottom: 5vh
+            padding-left: calc((100vw - 1320px) / 2)
+
+            .title
+                font-size: 60px
+                line-height: 72px
+                font-family: "Russo One"
+                width: 980px
+                color: $background_color
+                z-index: 50
+
+            button
+                margin-top: 20px
+                width: 256px
+                font-size: 20px
+                font-weight: 500
+                overflow: hidden
+                transition: all .2s ease-out
+                display: flex
+                gap: 8px
+
+                svg
+                    width: 25px
+                    height: 25px
+
+            .separator
+                width: 675px
+                margin-left: calc((1320px - 100vw) / 2)
+                display: flex
+                align-items: center
+
+                .line
+                    height: 1px
+                    width: 658px
+                    background-color: $background_color
+
+                .circle
+                    height: 17px
+                    width: 17px
+                    border-radius: 25px
+                    background-color: $background_color
+
+            .about
+                display: flex
+                flex-direction: column
+                gap: 40px
+                color: $background_color
+                margin-top: -30px
+
+                h5
+                    color: $background_color
+
+                .about_list
+                    display: flex
+                    flex-direction: column
+                    gap: 20px
+
+                    .about_item
+                        font-size: 22px
+                        font-family: "Russo One"
+
+            img
+                position: absolute
+                z-index: 10
+                bottom: 0
+                right: -50px
+                height: 620px
+                width: auto
+
     .slider_container
         height: 100vh
         width: 100vw

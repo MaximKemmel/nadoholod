@@ -7,6 +7,9 @@ import { productionCategoriesList } from "../../../../data/productionCategoriesL
 
 import { IProductionCategory } from "../../../../types/production/productionCategory";
 
+import FaceImage from "../../../../assets/images/face_image.png";
+import { ButtonArrow as ArrowIcon } from "../../../../assets/svg/ButtonArrow";
+
 const Face = () => {
   const [currentProductionCategory, setCurrentProductionCategory] = useState(productionCategoriesList[0]);
   const [isTransition, setIsTransition] = useState(false);
@@ -16,7 +19,7 @@ const Face = () => {
     var carousel = document.getElementById("carousel");
     var items = document.getElementsByClassName("carousel_item");
     carousel?.scrollTo({
-      top: (items[0] as HTMLElement).offsetTop - 400,
+      top: (items[0] as HTMLElement).offsetTop - 350,
       behavior: "smooth",
     });
   }, []);
@@ -32,7 +35,7 @@ const Face = () => {
     }
     sum = items[productionCategory.id].clientHeight;
     carousel?.scrollTo({
-      top: (items[productionCategory.id] as HTMLElement).offsetTop - 500,
+      top: (items[productionCategory.id] as HTMLElement).offsetTop - 450,
       behavior: "smooth",
     });
     var indicator = document.getElementById("indicator");
@@ -44,6 +47,28 @@ const Face = () => {
 
   return (
     <div className={styles.wrapper}>
+      <div className={styles.face_container}>
+        <div className={styles.container}>
+          <div className={styles.title}>Продажа и производство холодильного оборудования любой сложности</div>
+          <button type="button">
+            Продукция
+            <ArrowIcon />
+          </button>
+          <div className={styles.separator}>
+            <div className={styles.line} />
+            <div className={styles.circle} />
+          </div>
+          <div className={styles.about}>
+            <h5>Изготовили и установили</h5>
+            <div className={styles.about_list}>
+              <div className={styles.about_item}>2000 холодильных камер</div>
+              <div className={styles.about_item}>500 чиллеров</div>
+              <div className={styles.about_item}>1800 генераторов ледяной воды</div>
+            </div>
+          </div>
+          <img src={FaceImage} alt="" />
+        </div>
+      </div>
       <div className={styles.slider_container}>
         <div className={styles.container}>
           <div className={styles.content}>

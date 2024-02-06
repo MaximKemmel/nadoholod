@@ -1,0 +1,208 @@
+$text_color: #FFFFFF
+$input_text_color: #043848
+$action_color: #0B6886
+$action_hover_color: #01AAC1
+$border_color: #748491
+$submenu_border_color: #CFCFC7
+$sumbenu_action_hover_color: #01879A
+$last_submenu_background_color: #0B6886
+$last_submenu_hover_color: #0A4C62
+
+.wrapper
+    position: absolute
+    z-index: 100
+    width: 100vw
+    display: flex
+    justify-content: center
+    background: linear-gradient(180deg, #118292 0%, rgba(63, 63, 63, 0) 100%)
+    color: $text_color
+
+    .container
+        width: 1320px
+        display: flex
+        flex-direction: column
+        gap: 15px
+
+        .head
+            display: flex
+            align-items: center
+            justify-content: space-between
+
+            .logo_container
+                display: flex
+                align-items: center
+                gap: 50px
+
+                img
+                    height: 140px
+                    width: auto
+
+                .company_content
+                    display: flex
+                    flex-direction: column
+                    gap: 5px
+
+                    .name
+                        font-family: "Russo One"
+                        font-size: 20px
+
+                    .description
+                        font-size: 16px
+                        width: 340px
+                        line-height: 21.5px
+
+            .actions_container
+                display: flex
+                align-items: center
+                gap: 75px
+
+                .input_container
+                    width: 340px
+                    position: relative
+
+                    svg
+                        width: 24px
+                        height: 24px
+                        position: absolute
+                        z-index: 10
+                        top: 50%
+                        left: 15px
+                        transform: translateY(-50%)
+                        transition: all .2s ease-out
+
+                    input
+                        border: 1px solid $text_color
+                        background-color: transparent
+                        color: $text_color
+                        width: calc(100% - 65px)
+                        padding-left: 50px
+                        transition: all .2s ease-out
+
+                        &:focus
+                            background-color: $text_color
+                            color: $input_text_color
+
+                            + svg
+                                *
+                                    stroke: $input_text_color
+
+                .call_container
+                    display: flex
+                    flex-direction: column
+                    align-items: center
+
+                    .phone_number
+                        font-size: 18px
+                        line-height: 32px
+
+                    button
+                        width: 225px
+                        font-size: 20px
+                        font-weight: 500
+
+                    .empty
+                        height: 32px
+
+        nav
+            width: 100%
+
+            ul
+                display: flex
+                flex-direction: column
+                width: 100%
+                list-style: none
+                white-space: nowrap
+
+            .main_menu
+                flex-direction: row
+
+                li
+                    width: calc(12.5% - 2px)
+                    height: 67px
+                    text-align: center
+                    background-color: $action_color
+                    cursor: pointer
+                    display: flex
+                    gap: 10px
+                    align-items: center
+                    justify-content: center
+                    position: relative
+                    transition: all .2s ease-out
+                    font-size: 18px
+                    font-weight: 700
+                    border: 1px solid $border_color
+                    border-bottom: none
+
+                    svg
+                        width: 20px
+                        height: 20px
+                        transform: rotate(90deg)
+
+                    .sub_menu
+                        height: 0
+                        max-height: 0px
+                        width: 375px
+                        position: absolute
+                        z-index: 50
+                        top: 67px
+                        left: 0
+                        background-color: $action_hover_color
+                        transition: all .2s ease-out
+
+                        li
+                            background-color: $action_hover_color
+                            padding: 0 20px
+                            width: calc(100% - 40px)
+                            height: 57px
+                            font-size: 16px
+                            border: none
+                            border-bottom: 1px solid $submenu_border_color
+                            justify-content: start
+                            overflow: hidden
+
+                            svg
+                                width: 16px
+                                height: 16px
+                                transform: rotate(0)
+
+                            .last_sub_menu
+                                height: 0
+                                max-height: 0px
+                                width: 300px
+                                position: absolute
+                                z-index: 50
+                                top: 0
+                                left: 370px
+                                background-color: $last_submenu_background_color
+                                transition: all .2s ease-out
+                                overflow: hidden
+
+                                li
+                                    background-color: $last_submenu_background_color
+                                    padding: 0 20px
+                                    width: calc(100% - 40px)
+
+@media (min-width: 1024px)
+    .wrapper
+        .container
+            nav
+                .main_menu
+                    li
+                        &:hover
+                            background-color: $action_hover_color
+
+                            .sub_menu
+                                height: max-content
+                                max-height: 500px
+
+                                li
+                                    &:hover
+                                        background-color: $sumbenu_action_hover_color
+
+                                    .last_sub_menu
+                                        height: max-content
+                                        max-height: 500px
+
+                                        li
+                                            &:hover
+                                                background-color: $last_submenu_hover_color
