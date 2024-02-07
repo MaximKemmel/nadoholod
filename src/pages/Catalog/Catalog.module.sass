@@ -1,0 +1,86 @@
+$text_color: #043848
+$main_text_color: #FFFFFF
+$gray_color: #CFCFC7
+$active_color: #01AAC1
+
+.wrapper
+    display: flex
+    justify-content: center
+    width: 100vw
+    color: $text_color
+
+    .container
+        display: flex
+        flex-direction: column
+        gap: 150px
+        width: 1320px
+
+        .breadcumbs
+            display: flex
+            align-items: center
+            padding: 60px 0
+            font-size: 14px
+            gap: 5px
+
+            .element
+                opacity: 0.5
+
+            svg
+                width: 15px
+                height: auto
+
+                *
+                    stroke: $gray_color
+
+        .content
+            margin-top: -150px
+            display: flex
+            flex-direction: column
+            gap: 40px
+
+            .subcategories_list
+                display: flex
+                gap: 30px
+
+                .subcategory
+                    display: flex
+                    flex-direction: column
+                    cursor: pointer
+                    border-radius: 4px
+                    padding: 20px
+                    gap: 20px
+                    transition: all .2s ease-out
+                    justify-content: space-between
+
+                    .name
+                        font-family: "Russo One"
+                        font-size: 20px
+                        line-height: 24px
+                        transition: all .2s ease-out
+
+                    img
+                        width: 376px
+                        height: auto
+
+        .recommended_products
+            display: flex
+            flex-direction: column
+            gap: 35px
+
+            .recommended_products_list
+                display: flex
+                flex-wrap: wrap
+                width: 100%
+                gap: 33px
+
+@media (min-width: 1024px)
+    .wrapper
+        .container
+            .content
+                .subcategories_list
+                    .subcategory
+                        &:hover
+                            background-color: $active_color
+
+                            .name
+                                color: $main_text_color

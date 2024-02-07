@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 import parse from "html-react-parser";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./Face.module.sass";
 
@@ -13,6 +14,7 @@ import { ButtonArrow as ArrowIcon } from "../../../../assets/svg/ButtonArrow";
 const Face = () => {
   const [currentProductionCategory, setCurrentProductionCategory] = useState(productionCategoriesList[0]);
   const [isTransition, setIsTransition] = useState(false);
+  const navigate = useNavigate();
 
   useLayoutEffect(() => {
     setCurrentProductionCategory(productionCategoriesList[0]);
@@ -96,7 +98,9 @@ const Face = () => {
                     <div
                       className={`${styles.price} ${!isTransition ? styles.active : ""}`}
                     >{`от ${currentProductionCategory.min_price.toLocaleString()}₽`}</div>
-                    <button type="button">Перейти в каталог</button>
+                    <button type="button" onClick={() => navigate(`/catalog/${currentProductionCategory.id}`)}>
+                      Перейти в каталог
+                    </button>
                   </div>
                 </div>
               </div>

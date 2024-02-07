@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import { useTypedSelector } from "../../hooks/useTypedSeletor";
 
 import styles from "./Header.module.sass";
@@ -14,6 +16,7 @@ import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 
 const Header = () => {
   const isHomePage = useTypedSelector((state) => state.mainReducer.isHomePage);
+  const navigate = useNavigate();
 
   return (
     <div className={`${styles.wrapper} ${isHomePage ? styles.home : ""}`}>
@@ -42,7 +45,7 @@ const Header = () => {
         </div>
         <nav>
           <ul className={styles.main_menu}>
-            <li>Главная</li>
+            <li onClick={() => navigate("/")}>Главная</li>
             <li>
               Продукция <ArrowIcon />
               <ul className={styles.sub_menu}>

@@ -9,6 +9,18 @@ export const productionCategoriesList = [
     description:
       "<p>камеры объёмом от 6 до 20м³</p><p>камеры объёмом от 50 до 100м³ и высотой более 2м</p><p>камеры большого объёма — свыше 100м³</p>",
     min_price: 67667,
+    subcategories: [
+      {
+        id: 10,
+        prefix: "cold_storage_chamber_sub",
+        name: "Камеры хранения готовой продукции",
+      } as IProductionCategory,
+      {
+        id: 11,
+        prefix: "refrigeration_equipment",
+        name: "Холодильное оборудование",
+      } as IProductionCategory,
+    ] as IProductionCategory[],
   } as IProductionCategory,
   {
     id: 1,
@@ -18,6 +30,7 @@ export const productionCategoriesList = [
     description:
       "ГЛВ — установка, позволяющая получать воду до Т=0,5 С в замкнутой системе, используя преждевременно накопленный лёд.",
     min_price: 1555148,
+    subcategories: [] as IProductionCategory[],
   } as IProductionCategory,
   {
     id: 2,
@@ -27,6 +40,7 @@ export const productionCategoriesList = [
     description:
       "Благодаря особой конструкции чиллеров их можно эксплуатировать в круглогодичном режиме, при этом процесс полностью автоматизирован.",
     min_price: 67667,
+    subcategories: [] as IProductionCategory[],
   } as IProductionCategory,
   {
     id: 3,
@@ -36,6 +50,7 @@ export const productionCategoriesList = [
     description:
       "Оборудование для вяления и сушки рыбы представляет собой специальные сушильные камеры с постоянной циркуляцией воздуха. В зависимости от режимов сушки и вяления, внутри камеры поддерживается определённый температурный режим.",
     min_price: 67667,
+    subcategories: [] as IProductionCategory[],
   } as IProductionCategory,
   {
     id: 4,
@@ -45,5 +60,6 @@ export const productionCategoriesList = [
     description:
       "Целесообразно монтировать централизованное холодоснабжение при объёме обслуживаемых площадей от 400м².<br/>Это многокомпрессорные агрегаты, компрессоры в которых подключены параллельно и функционируют в одном температурном режиме.",
     min_price: 67667,
+    subcategories: [] as IProductionCategory[],
   } as IProductionCategory,
 ] as IProductionCategory[];

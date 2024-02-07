@@ -5,4 +5,5 @@ export interface IProductionCategory {
   full_name: string;
   description: string;
   min_price: number;
+  subcategories: IProductionCategory[];
 }
