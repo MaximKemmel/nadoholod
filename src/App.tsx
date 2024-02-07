@@ -6,6 +6,7 @@ import { useActions } from "./hooks/useActions";
 import Home from "./pages/Home/Home";
 import Equipments from "./pages/Equipment/Equipment";
 import Catalog from "./pages/Catalog/Catalog";
+import Product from "./pages/Product/Product";
 import Header from "./components/Header/Header";
 import ContactUs from "./components/ContactUs/ContactUs";
 import Footer from "./components/Footer/Footer";
@@ -28,6 +29,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/equipment/:id" element={<Equipments />} />
         <Route path="/catalog/:id" element={<Catalog />} />
+        <Route path="/product" element={<Product />} />
         <Route path="*" element={<Home />} />
       </Routes>
       <ContactUs />

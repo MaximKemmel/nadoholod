@@ -1,0 +1,185 @@
+$text_color: #043848
+$main_text_color: #FFFFFF
+$gray_color: #CFCFC7
+$active_color: #01AAC1
+
+.wrapper
+    display: flex
+    justify-content: center
+    width: 100vw
+    color: $text_color
+
+    .container
+        display: flex
+        flex-direction: column
+        gap: 150px
+        width: 1320px
+
+        .breadcumbs
+            display: flex
+            align-items: center
+            padding: 60px 0
+            font-size: 14px
+            gap: 5px
+
+            .element
+                opacity: 0.5
+
+            svg
+                width: 15px
+                height: auto
+
+                *
+                    stroke: $gray_color
+
+        .content
+            margin-top: -150px
+            display: flex
+            flex-direction: column
+            gap: 60px
+
+            .main_container
+                display: flex
+                gap: 30px
+
+                .photos_container
+                    display: flex
+                    align-items: center
+                    gap: 30px
+
+                    .photos_list
+                        display: flex
+                        flex-direction: column
+                        gap: 10px
+
+                        img
+                            border-radius: 8px
+                            width: 80px
+                            height: auto
+                            cursor: pointer
+                            transition: all .2s ease-out
+
+                    .main_photo
+                        height: 470px
+                        width: auto
+                        border-radius: 8px
+
+                .info_container
+                    display: flex
+                    flex-direction: column
+                    border-radius: 8px
+                    border: 1px solid $text_color
+                    padding: 40px
+                    gap: 20px
+                    height: max-content
+                    flex-grow: 1
+
+                    img
+                        height: auto
+
+                    .description
+                        font-size: 16px
+                        line-height: 21.6px
+
+                    .price_container
+                        display: flex
+                        align-items: center
+                        gap: 20px
+
+                        .price
+                            font-size: 22px
+                            font-weight: 700
+
+                        button
+                            width: 220px
+                            height: 56px
+                            font-weight: 500
+                            font-size: 20px
+
+                        .warning
+                            font-size: 12px
+                            line-height: 16px
+
+                    .advantages_list
+                        display: flex
+                        align-items: center
+                        justify-content: space-between
+                        gap: 10px
+                        border-top: 1px solid $text_color
+                        padding-top: 20px
+                        margin-right: -40px
+                        width: 100%
+                        padding-right: 40px
+
+                        .advantage
+                            max-width: 33%
+                            width: max-content
+                            display: flex
+                            gap: 10px
+                            align-items: center
+                            font-size: 14px
+                            line-height: 21px
+
+                            img
+                                height: 46px
+                                width: auto
+
+            .tabs_container
+                display: flex
+                flex-direction: column
+                width: 100%
+
+                .tabs_list
+                    display: flex
+                    align-items: center
+                    width: 100%
+                    border-bottom: 1px solid $text_color
+
+                    .tab
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                        font-size: 17px
+                        border-radius: 4px 4px 0 0
+                        padding: 10px 20px
+                        width: max-content
+                        color: $text_color
+                        cursor: pointer
+                        transition: all .2s ease-out
+
+                        &.active
+                            background-color: $active_color
+                            color: $main_text_color
+                            margin-bottom: -2px
+
+                .tab_view
+                    padding: 40px
+                    font-size: 14px
+                    line-height: 21px
+                    width: 600px
+
+                    p
+                        margin-top: 20px
+
+            .recommended_products
+                display: flex
+                flex-direction: column
+                gap: 35px
+                margin-bottom: 50px
+
+                .recommended_products_list
+                    display: flex
+                    flex-wrap: wrap
+                    width: 100%
+                    gap: 33px
+
+@media (min-width: 1024px)
+    .wrapper
+        .container
+            .content
+                .main_container
+                    .photos_container
+                        .photos_list
+                            img
+                                &:hover
+                                    opacity: 0.5
