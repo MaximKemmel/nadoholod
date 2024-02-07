@@ -36,7 +36,7 @@ const Delivery = () => {
             <button type="button">Оставить заявку</button>
           </div>
           <div className={styles.map_container}>
-            <div className={styles.title}>Нам доверяют. Мы производим.</div>
+            <h5>Нам доверяют. Мы производим.</h5>
             <img src={MapImage} alt="" />
           </div>
         </div>

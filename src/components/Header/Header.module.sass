@@ -1,4 +1,5 @@
 $text_color: #FFFFFF
+$secondary_text_color: #0B6886
 $input_text_color: #043848
 $action_color: #0B6886
 $action_hover_color: #01AAC1
@@ -9,13 +10,42 @@ $last_submenu_background_color: #0B6886
 $last_submenu_hover_color: #0A4C62
 
 .wrapper
-    position: absolute
+    position: relative
     z-index: 100
     width: 100vw
     display: flex
     justify-content: center
-    background: linear-gradient(180deg, #118292 0%, rgba(63, 63, 63, 0) 100%)
     color: $text_color
+
+    &.home
+        position: absolute
+        background: linear-gradient(180deg, #118292 0%, rgba(63, 63, 63, 0) 100%)
+
+        .container
+            .head
+                .logo_container
+                    .company_content
+                        color: $text_color
+
+                .actions_container
+                    .input_container
+                        input
+                            border: 1px solid $text_color
+
+                            &:focus
+                                background-color: $text_color
+                                color: $input_text_color
+
+                                + svg
+                                    *
+                                        stroke: $input_text_color
+
+                        svg
+                            *
+                                stroke: $text_color
+
+                    .call_container
+                        color: $text_color
 
     .container
         width: 1320px
@@ -41,6 +71,7 @@ $last_submenu_hover_color: #0A4C62
                     display: flex
                     flex-direction: column
                     gap: 5px
+                    color: $secondary_text_color
 
                     .name
                         font-family: "Russo One"
@@ -71,25 +102,22 @@ $last_submenu_hover_color: #0A4C62
                         transition: all .2s ease-out
 
                     input
-                        border: 1px solid $text_color
+                        border: 1px solid $secondary_text_color
                         background-color: transparent
-                        color: $text_color
+                        color: $input_text_color
                         width: calc(100% - 65px)
                         padding-left: 50px
                         transition: all .2s ease-out
 
-                        &:focus
-                            background-color: $text_color
-                            color: $input_text_color
-
-                            + svg
-                                *
-                                    stroke: $input_text_color
+                    svg
+                        *
+                            stroke: $secondary_text_color
 
                 .call_container
                     display: flex
                     flex-direction: column
                     align-items: center
+                    color: $secondary_text_color
 
                     .phone_number
                         font-size: 18px
@@ -148,6 +176,7 @@ $last_submenu_hover_color: #0A4C62
                         left: 0
                         background-color: $action_hover_color
                         transition: all .2s ease-out
+                        overflow: hidden
 
                         li
                             background-color: $action_hover_color
@@ -156,9 +185,10 @@ $last_submenu_hover_color: #0A4C62
                             height: 57px
                             font-size: 16px
                             border: none
-                            border-bottom: 1px solid $submenu_border_color
                             justify-content: start
-                            overflow: hidden
+
+                            &.bordered
+                                border-top: 1px solid $submenu_border_color
 
                             svg
                                 width: 16px
@@ -166,9 +196,9 @@ $last_submenu_hover_color: #0A4C62
                                 transform: rotate(0)
 
                             .last_sub_menu
-                                height: 0
-                                max-height: 0px
-                                width: 300px
+                                height: max-content
+                                max-height: 500px
+                                width: 0px
                                 position: absolute
                                 z-index: 50
                                 top: 0
@@ -181,6 +211,10 @@ $last_submenu_hover_color: #0A4C62
                                     background-color: $last_submenu_background_color
                                     padding: 0 20px
                                     width: calc(100% - 40px)
+                                    border: none
+
+                                    &.bordered
+                                        border-top: 1px solid $submenu_border_color
 
 @media (min-width: 1024px)
     .wrapper
@@ -194,15 +228,15 @@ $last_submenu_hover_color: #0A4C62
                             .sub_menu
                                 height: max-content
                                 max-height: 500px
+                                overflow: visible
 
                                 li
                                     &:hover
                                         background-color: $sumbenu_action_hover_color
 
-                                    .last_sub_menu
-                                        height: max-content
-                                        max-height: 500px
+                                        .last_sub_menu
+                                            width: 300px
 
-                                        li
-                                            &:hover
-                                                background-color: $last_submenu_hover_color
+                                            li
+                                                &:hover
+                                                    background-color: $last_submenu_hover_color

@@ -1,4 +1,7 @@
-import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+
+import { useActions } from "./hooks/useActions";
 
 import Home from "./pages/Home/Home";
 import Equipments from "./pages/Equipment/Equipment";
@@ -9,6 +12,14 @@ import Footer from "./components/Footer/Footer";
 import "./App.module.sass";
 
 function App() {
+  const { setIsHomePage } = useActions();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setIsHomePage(pathname === "/");
+  }, [pathname]);
+
   return (
     <>
       <Header />

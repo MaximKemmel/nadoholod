@@ -34,15 +34,15 @@ const Production = () => {
           </div>
           <div className={styles.production_items}>
             <div className={styles.production_item}>
-              <div className={styles.label}>7 лет</div>
+              <h5>7 лет</h5>
               <div className={styles.value}>На рынке производства холодильного оборудования</div>
             </div>
             <div className={styles.production_item}>
-              <div className={styles.label}>500 поставок</div>
+              <h5>500 поставок</h5>
               <div className={styles.value}>По всей России</div>
             </div>
             <div className={styles.production_item}>
-              <div className={styles.label}>600 м²</div>
+              <h5>600 м²</h5>
               <div className={styles.value}>собственного производства</div>
             </div>
           </div>

@@ -17,7 +17,7 @@ const Equipment = () => {
       <div className={pageStyles.container_content}>
         <div className={styles.content}>
           <div className={styles.equipments}>
-            <div className={styles.title}>Холодильное оборудование для производства продукции</div>
+            <h4>Холодильное оборудование для производства продукции</h4>
             <div className={styles.equipments_list}>
               {equipmentsList
                 .filter((equipment: IEquipment) => equipment.type === 0)
@@ -38,7 +38,7 @@ const Equipment = () => {
             </div>
           </div>
           <div className={styles.equipments}>
-            <div className={styles.title}>Холодильное оборудование для хранения продукции</div>
+            <h4>Холодильное оборудование для хранения продукции</h4>
             <div className={styles.equipments_list}>
               {equipmentsList
                 .filter((equipment: IEquipment) => equipment.type === 1)

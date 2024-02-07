@@ -2,6 +2,7 @@ $background_color: #24282E
 $text_color: #FFFFFF
 $link_color: #CFCFC7
 $social_color: #01AAC1
+$gray_color: #7EA4B3
 
 footer
     background-color: $background_color
@@ -109,6 +110,7 @@ footer
                         align-items: center
                         justify-content: center
                         cursor: pointer
+                        transition: all .2s ease-out
 
                         svg
                             width: 20px
@@ -125,3 +127,10 @@ footer
                                 margin-left: 0px
                                 margin-right: 0px
                                 color: $text_color
+
+            .contacts
+                .contacts_list
+                    .socials_list
+                        .link
+                            &:hover
+                                background-color: $gray_color
