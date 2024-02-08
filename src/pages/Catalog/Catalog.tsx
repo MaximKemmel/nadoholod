@@ -17,6 +17,16 @@ const Catalog = () => {
   const { id } = useParams();
   const [productionCategory, setProductionCategory] = useState({ id: -1 } as IProductionCategory);
   const navigate = useNavigate();
+  const products = [
+    ...Array(40).fill({
+      id: -1,
+      name: "Холодильная камера 2.9",
+      manufacturer: "polair",
+      price: Math.floor(Math.random() * (1200000 - 10000 + 1)) + 10000,
+      category_id: 1,
+      card_description: "Температура от +10°С до — 25°С<br/>Толщина сэндвич-панели 100мм",
+    } as IProduct),
+  ];
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -64,7 +74,19 @@ const Catalog = () => {
                   </div>
                 ))}
               </div>
-            ) : null}
+            ) : (
+              <div className={styles.products_wrapper}>
+                <div className={styles.filters}></div>
+                <div className={styles.products_list}>
+                  {products.map((product: IProduct) => (
+                    <ProductCard
+                      product={{ ...product, price: Math.floor(Math.random() * (3000000 - 10000 + 1)) + 10000 }}
+                    />
+                  ))}
+                </div>
+                {products.length > 16 ? <div className={styles.pagination}></div> : null}
+              </div>
+            )}
           </div>
           <div className={styles.recommended_products}>
             <h4>Возможно вас заинтересует</h4>
