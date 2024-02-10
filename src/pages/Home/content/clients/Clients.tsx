@@ -1,3 +1,5 @@
+import { useTypedSelector } from "../../../../hooks/useTypedSeletor";
+
 import pageStyles from "../../Home.module.sass";
 import styles from "./Clients.module.sass";
 
@@ -12,6 +14,8 @@ import AltanLogo from "../../../../assets/images/altan.png";
 import SherlockLogo from "../../../../assets/images/sherlock.png";
 
 const Clients = () => {
+  const windowSize = useTypedSelector((state) => state.mainReducer.windowSize);
+
   return (
     <div className={pageStyles.container}>
       <div className={pageStyles.container_content}>
@@ -44,7 +48,7 @@ const Clients = () => {
           <div className={styles.client}>
             <img src={SherlockLogo} alt="" height={68} />
           </div>
-          <div className={styles.client} />
+          {windowSize.innerWidth > 750 ? <div className={styles.client} /> : null}
         </div>
       </div>
     </div>

@@ -16,6 +16,8 @@ const Service = () => {
     className: "center",
     centerMode: true,
     infinite: true,
+    autoplay: true,
+    autoplaySpeed: 5000,
     centerPadding: "50px",
     slidesToShow: 1,
     speed: 500,

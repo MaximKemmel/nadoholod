@@ -22,9 +22,9 @@ const Home = () => {
       {/*<Face />
       <Catalog />
       <About />
-      <Advantages />
+      <Advantages />*/}
       <Equipment />
-      <Clients />*/}
+      <Clients />
       <Production />
       <Service />
       <WorkStages />
