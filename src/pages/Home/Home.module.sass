@@ -17,6 +17,9 @@ $text_color: #043848
             width: 560px
             font-size: 16px
 
+            &.services
+                width: 400px
+
 @media (max-width: 1380px)
     .container
         .container_content
@@ -38,6 +41,13 @@ $text_color: #043848
         .container_content
             .about
                 width: 100%
+
+@media (max-width: 400px)
+    .container
+        .container_content
+            .about
+                &.services
+                    width: 100%
 
 @media (max-width: 360px)
     .container
