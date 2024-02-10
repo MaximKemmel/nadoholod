@@ -13,13 +13,12 @@ const Production = () => {
   const settings = {
     className: "center",
     infinite: true,
-    centerPadding: "50px",
     slidesToShow: 1,
     swipeToSlide: true,
     autoplay: true,
     autoplaySpeed: 5000,
     arrows: false,
-    afterChange: (index) => {
+    beforeChange: (index) => {
       setCurrentIndex(index);
     },
   };
@@ -29,7 +28,7 @@ const Production = () => {
       <div className={styles.container_content}>
         <div className={styles.content}>
           <h3>Производство</h3>
-          <div className={pageStyles.about}>
+          <div className={styles.about}>
             Изготавливаем холодильное оборудование для объектов малого, среднего и крупного бизнеса
           </div>
           <div className={styles.production_items}>
