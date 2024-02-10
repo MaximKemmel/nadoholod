@@ -27,8 +27,8 @@ const Home = () => {
       <Clients />
       <Production />
       <Service />
-      <WorkStages />
-      <Delivery />*/}
+      <WorkStages />*/}
+      <Delivery />
       <Contacts />
     </div>
   );

@@ -40,3 +40,41 @@ $text_color: #043848
         img
             width: 100%
             height: auto
+
+@media (max-width: 1024px)
+    .content
+        flex-direction: column
+        gap: 20px
+
+        .delivery
+            width: 530px
+            gap: 20px
+            padding: 20px 0
+
+            .delivery_item
+                .label
+                    font-size: 18px
+
+                .value
+                    font-size: 14px
+
+            .delivery_phone
+                font-size: 22px
+
+        .map_container
+            width: 100%
+
+@media (max-width: 530px)
+    .content
+        .delivery
+            width: 100%
+
+@media (max-width: 360px)
+    .content
+        .delivery
+            button
+                align-self: center
+
+        .map_container
+            align-items: center
+            text-align: center
