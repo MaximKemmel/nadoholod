@@ -16,3 +16,26 @@ $text_color: #043848
             color: $text_color
             width: 560px
             font-size: 16px
+
+@media (max-width: 1380px)
+    .container
+        .container_content
+            width: calc(100% - 120px)
+            padding: 60px
+            gap: 20px
+
+            .about
+                font-size: 14px
+
+@media (max-width: 768px)
+    .container
+        .container_content
+            width: calc(100% - 60px)
+            padding: 30px 20px
+
+@media (max-width: 360px)
+    .container
+        .container_content
+            width: calc(100% - 30px)
+            padding: 15px 10px
+            gap: 10px

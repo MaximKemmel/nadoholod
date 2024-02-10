@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Slider from "react-slider";
 
 import styles from "./Catalog.module.sass";
-import "../../slider.css";
 
 import ProductCard from "../../components/ProductCard/ProductCard";
 
@@ -17,6 +15,7 @@ import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 import MultiDropdown from "../../components/Dropdown/MultiDropdown";
 import { DropdownType } from "../../enums/dropdownType";
 import { IDropdownItem } from "../../types/main/dropdownItem";
+import Slider from "../../components/Slider/Slider";
 
 const Catalog = () => {
   const { id } = useParams();
@@ -200,14 +199,13 @@ const Catalog = () => {
                   />
                   <div className={styles.main_filter}>
                     <div className={styles.filter}>
-                      Объем, м³
-                      <Slider className="slider" min={2} max={50} marks={[2, 10, 15, 20, 25, 30, 35, 40, 45]} />
+                      <Slider min={2} max={50} label="Объем, м³" unit="м³" />
                     </div>
                     <div className={styles.filter}>
                       Цена, ₽
                       <div className={styles.inputs}>
-                        <input placeholder="от 50 000" />
-                        <input placeholder="до 500 000" />
+                        <input type="text" placeholder="от 50 000" />
+                        <input type="text" placeholder="до 500 000" />
                       </div>
                     </div>
                   </div>

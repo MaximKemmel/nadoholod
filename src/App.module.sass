@@ -2,6 +2,8 @@ $background_color: #FFFFFF
 $action_color: #01AAC1
 $gray_color: #7EA4B3
 $text_color: #043848
+$move_up_background_color: #F1F1F1
+$move_up_icon_color: #232731
 
 *
     padding: 0px
@@ -9,6 +11,7 @@ $text_color: #043848
     font-family: 'Inter', sans-serif
     line-height: 1.3em
     font-weight: 400
+    user-select: none
 
 html,
 body
@@ -36,7 +39,9 @@ button
     &.small
         height: 40px
 
-input,
+input[type='text'],
+input[type='name'],
+input[type='phone'],
 textarea
     border-radius: 4px
     background-color: $background_color
@@ -52,26 +57,18 @@ textarea
         font-weight: 300
         color: $gray_color
 
-input
+input[type='text'],
+input[type='name'],
+input[type='phone']
     height: 24px
 
 textarea
     height: 108px
     resize: vertical
 
-h5
+h1
     font-family: 'Russo One'
-    font-size: 28px
-    color: $text_color
-
-h4
-    font-family: 'Russo One'
-    font-size: 34px
-    color: $text_color
-
-h3
-    font-family: 'Russo One'
-    font-size: 46px
+    font-size: 50px
     color: $text_color
 
 h2
@@ -80,15 +77,72 @@ h2
     line-height: 58px
     color: $text_color
 
-h1
+h3
     font-family: 'Russo One'
-    font-size: 50px
+    font-size: 46px
+    color: $text_color
+
+h4
+    font-family: 'Russo One'
+    font-size: 34px
+    color: $text_color
+
+h5
+    font-family: 'Russo One'
+    font-size: 28px
     color: $text_color
 
 p
     margin-top: 10px
 
-@media (min-width: 1024px)
+.wrapper
+    .wrapper_section
+        .move_up
+            position: fixed
+            bottom: 30px
+            right: 0px
+            z-index: 100
+            display: flex
+            gap: 2px
+            cursor: pointer
+            opacity: 0
+            transition: all .2s ease-out
+            width: 50px
+            height: 50px
+            background-color: $move_up_background_color
+            border-radius: 50%
+            display: flex
+            justify-content: center
+            align-items: center
+
+            &.active
+                opacity: 1
+                bottom: 30px
+                right: 30px
+
+            svg
+                transform: rotate(-90deg)
+                width: 24px
+                height: 24px
+
+                *
+                    stroke: $move_up_icon_color
+
+@media (min-width: 768px)
     button
         &:hover
             background-color: $gray_color
+
+@media (max-width: 1024px)
+    h2
+        font-size: 38px
+
+    h3
+        font-size: 28px
+
+@media (max-width: 360px)
+    h2
+        font-size: 28px
+
+    h3
+        font-size: 22px

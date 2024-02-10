@@ -33,7 +33,7 @@ const Header = () => {
           </div>
           <div className={styles.actions_container}>
             <div className={styles.input_container}>
-              <input placeholder="Найти..." />
+              <input type="text" placeholder="Найти..." />
               <SearchIcon />
             </div>
             <div className={styles.call_container}>

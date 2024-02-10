@@ -27,3 +27,41 @@ $text_color: #043848
         height: 380px
         width: 75%
         overflow: hidden
+
+@media (max-width: 1380px)
+    .content
+        .contacts
+            width: 310px
+
+        .map_container
+            height: 300px
+            width: calc(100% - 320px)
+
+@media (max-width: 768px)
+    .content
+        .map_container
+            width: calc(100% - 300px)
+
+@media (max-width: 700px)
+    .content
+        flex-direction: column
+        gap: 20px
+
+        .contacts
+            width: 100%
+
+        .map_container
+            width: 100vw
+            align-self: center
+
+@media (max-width: 360px)
+    .content
+        .contacts
+            .contact
+                gap: 5px
+
+                .label
+                    font-size: 18px
+
+                .value
+                    font-size: 14px

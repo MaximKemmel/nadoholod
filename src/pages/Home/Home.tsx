@@ -19,7 +19,7 @@ const Home = () => {
 
   return (
     <div>
-      <Face />
+      {/*<Face />
       <Catalog />
       <About />
       <Advantages />
@@ -28,7 +28,7 @@ const Home = () => {
       <Production />
       <Service />
       <WorkStages />
-      <Delivery />
+      <Delivery />*/}
       <Contacts />
     </div>
   );

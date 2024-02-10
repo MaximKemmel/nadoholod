@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { YMaps, Map, ZoomControl, Placemark } from "@pbe/react-yandex-maps";
+
+import { useTypedSelector } from "../../../../hooks/useTypedSeletor";
 
 import pageStyles from "../../Home.module.sass";
 import styles from "./Contacts.module.sass";
@@ -9,7 +11,19 @@ import "../../../../mapStyles.css";
 import PlacemarkIcon from "../../../../assets/images/placemark.png";
 
 const Contacts = () => {
+  const windowSize = useTypedSelector((state) => state.mainReducer.windowSize);
   const mapObject = useRef() as any;
+  const [iconSize, setIconSize] = useState([67.78, 80]);
+
+  useEffect(() => {
+    if (windowSize.innerWidth > 1024) {
+      setIconSize([67.78, 80]);
+    } else if (windowSize.innerWidth < 1025 && windowSize.innerWidth > 360) {
+      setIconSize([46, 60]);
+    } else {
+      setIconSize([27, 34]);
+    }
+  }, [windowSize]);
 
   return (
     <div className={pageStyles.container}>
@@ -48,8 +62,8 @@ const Contacts = () => {
                   options={{
                     iconLayout: "default#image",
                     iconImageHref: PlacemarkIcon,
-                    iconImageSize: [67.78, 80],
-                    iconImageOffset: [-33, -40],
+                    iconImageSize: iconSize,
+                    iconImageOffset: [-iconSize[0] / 2, -iconSize[1] / 2],
                   }}
                 />
               </Map>
