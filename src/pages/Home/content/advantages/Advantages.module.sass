@@ -5,7 +5,7 @@ $text_color: #0B6886
     display: flex
     flex-wrap: wrap
     justify-content: center
-    gap: 10px
+    gap: 20px
     align-self: center
 
     .advantage
@@ -18,8 +18,8 @@ $text_color: #0B6886
         border-radius: 4px
 
         .icon
-            width: 80px
-            height: 80px
+            width: 75px
+            height: 60px
             display: flex
             justify-content: center
             align-items: center
@@ -35,3 +35,32 @@ $text_color: #0B6886
             font-size: 14px
             text-align: center
             flex-grow: 1
+
+@media (max-width: 1024px)
+    .advantages
+        width: 100%
+        justify-content: space-between
+
+        .advantage
+            width: calc((100% - 20px) / 2)
+            gap: 10px
+            box-shadow: none
+            padding: 0
+
+            .description
+                text-align: left
+
+@media (max-width: 600px)
+    .advantages
+        gap: 20px
+
+        .advantage
+            width: 100%
+
+            .icon
+                width: 46px
+                height: max-content
+
+                img
+                    width: 46px
+                    height: auto

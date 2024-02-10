@@ -43,7 +43,7 @@ $background_color: #FFFFFF
                 transition: all .2s ease-out
                 width: max-content
 
-@media (min-width: 1024px)
+@media (min-width: 768px)
     .content
         .catalog_list
             .item
@@ -55,3 +55,65 @@ $background_color: #FFFFFF
                 .link
                     &:hover
                         color: $active_color
+
+@media (max-width: 1380px)
+    .content
+        .catalog_list
+            gap: 0px
+            justify-content: space-between
+            width: 100%
+            row-gap: 40px
+
+            .item
+                width: calc((100% - 50px) / 3)
+
+                &.big
+                    width: calc(100% - 25px - (100% - 50px) / 3)
+
+                .image
+                    border-radius: 4px
+                    width: 100%
+                    height: 25vw
+                    background-position: center
+                    background-size: cover
+                    background-repeat: no-repeat
+
+                .link
+                    font-size: 16px
+                    font-weight: 600
+
+@media (max-width: 940px)
+    .content
+        .catalog_list
+            .item
+                width: calc((100% - 30px) / 2)
+
+                &.big
+                    width: 100%
+
+                .image
+                    height: 30vw
+
+@media (max-width: 768px)
+    .content
+        .catalog_list
+            .item
+                width: calc((100% - 20px) / 2)
+
+                &.big
+                    width: 100%
+
+                .image
+                    height: 30vw
+
+@media (max-width: 600px)
+    .content
+        .catalog_list
+            row-gap: 30px
+
+            .item
+                width: 100%
+                gap: 10px
+
+                .image
+                    height: 55vw

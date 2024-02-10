@@ -19,10 +19,10 @@ const Home = () => {
 
   return (
     <div>
-      {/*<Face />
+      {/*<Face />*/}
       <Catalog />
-      <About />
-      <Advantages />*/}
+      {/*<About />*/}
+      <Advantages />
       <Equipment />
       <Clients />
       <Production />

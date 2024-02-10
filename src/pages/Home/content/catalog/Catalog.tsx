@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
+import { useTypedSelector } from "../../../../hooks/useTypedSeletor";
+
 import pageStyles from "../../Home.module.sass";
 import styles from "./Catalog.module.sass";
 
@@ -9,6 +11,7 @@ import { IProductionCategory } from "../../../../types/production/productionCate
 
 const Catalog = () => {
   const navigate = useNavigate();
+  const windowSize = useTypedSelector((state) => state.mainReducer.windowSize);
 
   return (
     <div className={pageStyles.container}>
@@ -17,9 +20,17 @@ const Catalog = () => {
         <div className={styles.content}>
           <div className={styles.catalog_list}>
             {productionCategoriesList.map((productionCategory: IProductionCategory) => (
-              <div className={styles.item} onClick={() => navigate(`/catalog/${productionCategory.id}`)}>
-                <div className={styles.image}>
-                  <img src={`/uploads/production/${productionCategory.prefix}_main.png`} alt="" />
+              <div
+                className={`${styles.item} ${productionCategory.id === 0 ? styles.big : ""}`}
+                onClick={() => navigate(`/catalog/${productionCategory.id}`)}
+              >
+                <div
+                  className={styles.image}
+                  style={{ backgroundImage: `url(/uploads/production/${productionCategory.prefix}_main.png)` }}
+                >
+                  {windowSize.innerWidth > 1380 ? (
+                    <img src={`/uploads/production/${productionCategory.prefix}_main.png`} alt="" />
+                  ) : null}
                   <div className={styles.mask} />
                 </div>
                 <div className={styles.link}>{productionCategory.name}</div>
