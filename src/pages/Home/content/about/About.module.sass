@@ -124,3 +124,139 @@ $background_color: #FFFFFF
             width: 615px
             left: 65px
             bottom: 38px
+
+@media (max-width: 1100px)
+    .application_container
+        display: none
+
+@media (max-width: 1024px)
+    .content
+        gap: 40px
+
+        .cards
+            width: 325px
+
+        .about
+            font-size: 14px
+
+        .evolution
+            gap: 0
+
+            .title
+                font-size: 20px
+
+            .stages
+                .stage
+                    .num
+                        margin-bottom: -10px
+
+            .half
+                margin-left: 350px
+
+        .competition
+            .description
+                font-size: 16px
+                margin-right: -50px
+                width: 225px
+
+            img
+                width: 220px
+
+        .tripple
+            margin-left: 25.5%
+
+        .double
+            margin-left: 12.5%
+
+@media (max-width: 885px)
+    .content
+        gap: 20px
+
+        .cards
+            width: 235px
+
+        .evolution
+            .half
+                margin-left: 250px
+
+        .competition
+            left: 0
+            right: auto
+            flex-direction: column
+            gap: 10px
+
+            .description
+                margin: 0
+
+            img
+                width: 220px
+
+        .half
+            margin-left: 250px
+
+        .tripple
+            margin-left: calc(250px + 7%)
+
+        .double
+            margin-left: calc(250px + 14%)
+
+        .first
+            margin-left: calc(250px + 21%)
+
+@media (max-width: 700px)
+    .content
+        .tripple
+            margin-left: calc(250px + 2%)
+
+        .double
+            margin-left: calc(250px + 4%)
+
+        .first
+            margin-left: calc(250px + 8%)
+
+@media (max-width: 600px)
+    .content
+        gap: 20px
+        margin-bottom: 40px
+
+        .about
+            font-weight: 400
+
+        .cards
+            position: relative
+            width: 240px
+            align-self: center
+            display: flex
+            margin-top: 20px
+
+        .evolution
+            .stages
+                gap: 10px
+
+                .stage
+                    width: 100%
+
+                    .num
+                        font-size: 70px
+
+                    .about
+                        font-weight: 700
+
+            .half
+                margin-left: 0
+
+        .competition
+            position: relative
+            margin-top: 20px
+
+            .description
+                font-size: 14px
+
+            img
+                width: 170px
+
+        .half,
+        .double,
+        .tripple,
+        .first
+            margin-left: 0
