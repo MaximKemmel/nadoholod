@@ -56,7 +56,7 @@ function App() {
   return (
     <section className={`${styles.wrapper}`} onScroll={handleScroll}>
       <div className={styles.wrapper_section}>
-        {/*<Header />*/}
+        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/equipment/:id" element={<Equipments />} />

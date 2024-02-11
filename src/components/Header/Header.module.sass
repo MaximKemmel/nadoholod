@@ -22,28 +22,27 @@ $last_submenu_hover_color: #0A4C62
         background: linear-gradient(180deg, #118292 0%, rgba(63, 63, 63, 0) 100%)
 
         .container
+            .input_container
+                input
+                    border: 1px solid $text_color
+
+                    &:focus
+                        background-color: $text_color
+                        color: $input_text_color
+
+                        + svg
+                            *
+                                stroke: $input_text_color
+
+                svg
+                    *
+                        stroke: $text_color
             .head
                 .logo_container
                     .company_content
                         color: $text_color
 
                 .actions_container
-                    .input_container
-                        input
-                            border: 1px solid $text_color
-
-                            &:focus
-                                background-color: $text_color
-                                color: $input_text_color
-
-                                + svg
-                                    *
-                                        stroke: $input_text_color
-
-                        svg
-                            *
-                                stroke: $text_color
-
                     .call_container
                         color: $text_color
 
@@ -52,6 +51,34 @@ $last_submenu_hover_color: #0A4C62
         display: flex
         flex-direction: column
         gap: 15px
+
+        .mobile_head
+            display: none
+
+        .input_container
+            width: 340px
+            position: relative
+
+            svg
+                width: 24px
+                height: 24px
+                position: absolute
+                z-index: 10
+                top: 50%
+                left: 15px
+                transform: translateY(-50%)
+                transition: all .2s ease-out
+
+                *
+                    stroke: $secondary_text_color
+
+            input
+                border: 1px solid $secondary_text_color
+                background-color: transparent
+                color: $input_text_color
+                width: calc(100% - 65px)
+                padding-left: 50px
+                transition: all .2s ease-out
 
         .head
             display: flex
@@ -86,32 +113,7 @@ $last_submenu_hover_color: #0A4C62
                 display: flex
                 align-items: center
                 gap: 75px
-
-                .input_container
-                    width: 340px
-                    position: relative
-
-                    svg
-                        width: 24px
-                        height: 24px
-                        position: absolute
-                        z-index: 10
-                        top: 50%
-                        left: 15px
-                        transform: translateY(-50%)
-                        transition: all .2s ease-out
-
-                    input
-                        border: 1px solid $secondary_text_color
-                        background-color: transparent
-                        color: $input_text_color
-                        width: calc(100% - 65px)
-                        padding-left: 50px
-                        transition: all .2s ease-out
-
-                    svg
-                        *
-                            stroke: $secondary_text_color
+                flex-direction: row-reverse
 
                 .call_container
                     display: flex
@@ -216,7 +218,7 @@ $last_submenu_hover_color: #0A4C62
                                     &.bordered
                                         border-top: 1px solid $submenu_border_color
 
-@media (min-width: 1024px)
+@media (min-width: 768px)
     .wrapper
         .container
             nav
@@ -240,3 +242,174 @@ $last_submenu_hover_color: #0A4C62
                                             li
                                                 &:hover
                                                     background-color: $last_submenu_hover_color
+
+@media (max-width: 1380px)
+    .wrapper
+        &.home
+            background: none
+
+        .container
+            width: calc(100vw - 120px)
+            padding: 10px 60px
+            display: flex
+            flex-direction: column
+            gap: 15px
+
+@media (max-width: 1325px)
+    .wrapper
+        .container
+            gap: 15px
+
+            .head
+                align-items: end
+
+                .logo_container
+                    gap: 20px
+
+                    img
+                        height: 77px
+
+                    .company_content
+                        gap: 10px
+
+                        .name
+                            font-size: 16px
+
+                        .description
+                            font-size: 14px
+                            width: 230px
+                            line-height: 20px
+
+                .actions_container
+                    align-items: end
+                    justify-content: space-between
+
+                    .call_container
+                        margin-bottom: 3px
+
+                        button
+                            width: 215px
+                            height: 50px
+                            font-size: 16px
+                            font-weight: 500
+
+                        .empty
+                            display: none
+
+            nav
+                .main_menu
+                    li
+                        height: 37px
+                        gap: 5px
+                        font-size: 14px
+                        font-weight: 500
+
+                        svg
+                            width: 15px
+                            height: 15px
+
+                        .sub_menu
+                            width: 340px
+                            top: 37px
+
+                            li
+                                padding: 0 15px
+                                width: calc(100% - 30px)
+                                height: 37px
+                                font-size: 14px
+
+                                svg
+                                    width: 13px
+                                    height: 13px
+
+                                .last_sub_menu
+                                    left: 335px
+
+                                    li
+                                        padding: 0 15px
+                                        width: calc(100% - 30px)
+
+@media (max-width: 1100px)
+    .wrapper
+        .container
+            .head
+                .actions_container
+                    gap: 0
+                    flex-grow: 1
+
+@media (max-width: 1024px)
+    .wrapper
+        .container
+            gap: 25px
+
+            .mobile_head
+                width: 100%
+                display: flex
+                align-items: center
+                justify-content: space-between
+
+                .menu_button
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                    width: 40px
+                    height: 40px
+                    cursor: pointer
+
+                    svg
+                        width: 30px
+                        height: 30px
+
+                .input_container
+                    width: calc(100% - 80px)
+
+                .search_button,
+                .logo
+                    display: none
+
+            .head
+                .actions_container
+                    .input_container
+                        display: none
+
+            nav
+                display: none
+
+@media (max-width: 768px)
+    .wrapper
+        .container
+            width: calc(100vw - 60px)
+            padding: 10px 30px
+
+@media (max-width: 625px)
+    .wrapper
+        .container
+            width: calc(100vw - 40px)
+            padding: 20px 20px
+
+            .head
+                display: none
+
+            .mobile_head
+                .input_container
+                    display: none
+
+                .logo
+                    display: flex
+                    height: 35px
+
+                    img
+                        height: 100%
+                        width: auto
+
+                .search_button
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                    width: 40px
+                    height: 40px
+                    cursor: pointer
+
+                    svg
+                        width: 30px
+                        height: 30px

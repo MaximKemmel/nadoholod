@@ -19,8 +19,7 @@ $dark_color: #0A0C0D
             flex-direction: column
             gap: 40px
             width: calc(100vw - (100vw - 1320px))
-            justify-content: end
-            padding-bottom: 7vh
+            padding-top: 250px
             padding-left: calc((100vw - 1320px) / 2)
 
             .title
@@ -244,7 +243,7 @@ $dark_color: #0A0C0D
             .container
                 width: calc(100% - 120px)
                 padding: 0 60px
-                padding-bottom: 10vh
+                padding-top: 250px
                 gap: 20px
 
                 .title
@@ -338,6 +337,18 @@ $dark_color: #0A0C0D
                         width: calc(100% - 70px)
                         height: 350px
 
+@media (max-width: 1325px)
+    .wrapper
+        .face_container
+            .container
+                padding-top: 200px
+
+@media (max-width: 1024px)
+    .wrapper
+        .face_container
+            .container
+                padding-top: 225px
+
 @media (max-width: 900px)
     .wrapper
         gap: 60px
@@ -346,10 +357,9 @@ $dark_color: #0A0C0D
             height: max-content
 
             .container
-                width: calc(100% - 40px)
-                padding: 0 20px
-                padding-top: 100px
-                justify-content: start
+                width: calc(100% - 120px)
+                padding: 0 60px
+                padding-top: 225px
                 gap: 15px
 
                 .title
@@ -408,6 +418,14 @@ $dark_color: #0A0C0D
                             width: auto
                             height: 300px
 
+@media (max-width: 768px)
+    .wrapper
+        .face_container
+            .container
+                width: calc(100% - 60px)
+                padding: 0 30px
+                padding-top: 225px
+
 @media (max-width: 625px)
     .wrapper
         gap: 10px
@@ -419,7 +437,7 @@ $dark_color: #0A0C0D
             height: max-content
 
             .container
-                padding-top: 60px
+                padding-top: 80px
 
                 .title
                     width: 100%
@@ -452,8 +470,8 @@ $dark_color: #0A0C0D
                     padding-top: 30px
 
                     .head
-                        width: calc(100vw - 40px)
-                        padding: 0 20px
+                        width: calc(100vw - 60px)
+                        padding: 0 30px
 
                         .production_list
                             gap: 10px

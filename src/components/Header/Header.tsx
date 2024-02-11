@@ -13,6 +13,7 @@ import LogoBlue from "../../assets/images/logo_blue.png";
 
 import { Search as SearchIcon } from "../../assets/svg/Search";
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
+import { Menu as MenuIcon } from "../../assets/svg/Menu";
 
 const Header = () => {
   const isHomePage = useTypedSelector((state) => state.mainReducer.isHomePage);
@@ -32,15 +33,30 @@ const Header = () => {
             </div>
           </div>
           <div className={styles.actions_container}>
-            <div className={styles.input_container}>
-              <input type="text" placeholder="Найти..." />
-              <SearchIcon />
-            </div>
             <div className={styles.call_container}>
               <div className={styles.phone_number}>+7 913 234-97-54</div>
               <button type="button">Заказать звонок</button>
               <div className={styles.empty} />
             </div>
+            <div className={styles.input_container}>
+              <input type="text" placeholder="Найти..." />
+              <SearchIcon />
+            </div>
+          </div>
+        </div>
+        <div className={styles.mobile_head}>
+          <div className={styles.menu_button}>
+            <MenuIcon />
+          </div>
+          <div className={styles.input_container}>
+            <input type="text" placeholder="Найти..." />
+            <SearchIcon />
+          </div>
+          <div className={styles.logo}>
+            <img src={isHomePage ? Logo : LogoBlue} alt="" />
+          </div>
+          <div className={styles.search_button}>
+            <SearchIcon />
           </div>
         </div>
         <nav>
