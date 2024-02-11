@@ -8,10 +8,11 @@ $dark_color: #0A0C0D
     flex-direction: column
 
     .face_container
-        height: 100vh
+        min-height: 100vh
         width: 100vw
         background-color: $dark_color
         display: flex
+        height: max-content
 
         .container
             position: relative
@@ -20,6 +21,7 @@ $dark_color: #0A0C0D
             gap: 40px
             width: calc(100vw - (100vw - 1320px))
             padding-top: 250px
+            padding-bottom: 25px
             padding-left: calc((100vw - 1320px) / 2)
 
             .title

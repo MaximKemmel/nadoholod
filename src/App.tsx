@@ -64,8 +64,8 @@ function App() {
           <Route path="/product/:id" element={<Product />} />
           <Route path="*" element={<Home />} />
         </Routes>
-        {/*<ContactUs />
-      <Footer />*/}
+        <ContactUs />
+        {/*<Footer />*/}
         <div
           className={`${styles.move_up} ${isMoveUpActive ? styles.active : ""}`}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
