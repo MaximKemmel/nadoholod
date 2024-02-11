@@ -137,6 +137,9 @@ p
     button
         height: 50px
 
+    h1
+        font-size: 42px
+
     h2
         font-size: 38px
 
@@ -145,6 +148,26 @@ p
 
     h4
         font-size: 32px
+
+@media (max-width: 768px)
+    .wrapper
+        .wrapper_section
+            .move_up
+                bottom: 20px
+                width: 40px
+                height: 40px
+
+                &.active
+                    opacity: 1
+                    bottom: 20px
+                    right: 20px
+
+                svg
+                    width: 18px
+                    height: 18px
+
+                    *
+                        stroke: $move_up_icon_color
 
 @media (max-width: 360px)
     h2

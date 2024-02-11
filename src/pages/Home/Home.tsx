@@ -19,7 +19,7 @@ const Home = () => {
 
   return (
     <div>
-      {/*<Face />*/}
+      <Face />
       <Catalog />
       <About />
       <Advantages />
