@@ -6,6 +6,7 @@ interface IMainState {
   isHomePage: boolean;
   windowSize: IWindowSize;
   windowTopPosition: number;
+  isNoScroll: boolean;
 }
 
 const initialState: IMainState = {
@@ -15,6 +16,7 @@ const initialState: IMainState = {
     innerHeight: 1080,
   } as IWindowSize,
   windowTopPosition: 0,
+  isNoScroll: false,
 };
 
 export const mainSlice = createSlice({
@@ -29,6 +31,9 @@ export const mainSlice = createSlice({
     },
     setWindowTopPosition(state, action: PayloadAction<number>) {
       state.windowTopPosition = action.payload;
+    },
+    setIsNoScroll(state, action: PayloadAction<boolean>) {
+      state.isNoScroll = action.payload;
     },
   },
 });

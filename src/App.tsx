@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import { useActions } from "./hooks/useActions";
+import { useTypedSelector } from "./hooks/useTypedSeletor";
 import { useDebounce } from "./hooks/useDebounce";
 
 import styles from "./App.module.sass";
@@ -19,6 +20,7 @@ import { ButtonArrow as ArrowIcon } from "./assets/svg/ButtonArrow";
 function App() {
   const { setIsHomePage, setWindowSize, setWindowTopPosition } = useActions();
   const [isMoveUpActive, setIsMoveUpActive] = useState(false);
+  const isNoScroll = useTypedSelector((state) => state.mainReducer.isNoScroll);
   const { pathname } = useLocation();
 
   useLayoutEffect(() => {
@@ -34,6 +36,18 @@ function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setIsHomePage(pathname === "/");
   }, [pathname]);
+
+  useEffect(() => {
+    if (isNoScroll) {
+      const html = document.getElementById("html");
+      html!.style.overflowY = "hidden";
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "auto";
+      const html = document.getElementById("html");
+      html!.style.overflowY = "auto";
+    }
+  }, [isNoScroll]);
 
   const handleScroll = async (_event) => {
     checkScrollValue(window.scrollY);
@@ -54,24 +68,22 @@ function App() {
   }, 5);
 
   return (
-    <section className={`${styles.wrapper}`} onScroll={handleScroll}>
-      <div className={styles.wrapper_section}>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/equipment/:id" element={<Equipments />} />
-          <Route path="/catalog/:id" element={<Catalog />} />
-          <Route path="/product/:id" element={<Product />} />
-          <Route path="*" element={<Home />} />
-        </Routes>
-        <ContactUs />
-        {/*<Footer />*/}
-        <div
-          className={`${styles.move_up} ${isMoveUpActive ? styles.active : ""}`}
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        >
-          <ArrowIcon />
-        </div>
+    <section className={`${styles.wrapper} ${isNoScroll ? styles.no_scroll : ""}`} onScroll={handleScroll}>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/equipment/:id" element={<Equipments />} />
+        <Route path="/catalog/:id" element={<Catalog />} />
+        <Route path="/product/:id" element={<Product />} />
+        <Route path="*" element={<Home />} />
+      </Routes>
+      <ContactUs />
+      <Footer />
+      <div
+        className={`${styles.move_up} ${isMoveUpActive ? styles.active : ""}`}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
+        <ArrowIcon />
       </div>
     </section>
   );

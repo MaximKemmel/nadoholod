@@ -16,17 +16,20 @@ footer
         display: flex
         justify-content: space-between
         padding: 100px 0
-        gap: 100px
+        gap: 20px
 
         .company
             display: flex
             flex-direction: column
-            width: 170px
+            width: 200px
             gap: 20px
 
-            img
-                width: 100%
-                height: auto
+            .logo
+                height: 100px
+
+                img
+                    width: auto
+                    height: 100%
 
             .description
                 display: flex
@@ -39,46 +42,55 @@ footer
 
                 .about
                     font-size: 12px
+                    line-height: 1.5
 
         .navigation
             display: flex
             flex-grow: 1
             justify-content: space-between
 
-            .column
+        .actions
+            display: flex
+            flex-grow: 1
+
+        .column
+            display: flex
+            flex-direction: column
+            gap: 20px
+
+            &.mobile
+                display: none
+
+            .head
+                font-size: 20px
+                font-family: 'Russo One'
+
+            .links
                 display: flex
                 flex-direction: column
                 gap: 20px
+                color: $link_color
+                overflow: hidden
 
-                .head
-                    font-size: 20px
-                    font-family: 'Russo One'
-
-                .links
+                .link
+                    font-size: 14px
+                    cursor: pointer
                     display: flex
-                    flex-direction: column
-                    gap: 20px
-                    color: $link_color
-                    overflow: hidden
+                    align-items: center
+                    transition: all .2s ease-out
+                    margin-left: -16px
+                    margin-right: 16px
+                    width: max-content
 
-                    .link
-                        font-size: 14px
-                        cursor: pointer
-                        display: flex
-                        align-items: center
-                        transition: all .2s ease-out
-                        margin-left: -16px
-                        margin-right: 16px
-                        width: max-content
-
-                        svg
-                            width: 16px
-                            height: auto
+                    svg
+                        width: 16px
+                        height: auto
 
         .contacts
             display: flex
             flex-direction: column
             gap: 20px
+            padding-left: 40px
 
             .head
                 font-size: 20px
@@ -116,17 +128,16 @@ footer
                             width: 20px
                             height: auto
 
-@media (min-width: 1024px)
+@media (min-width: 768px)
     footer
         .container
-            .navigation
-                .column
-                    .links
-                        .link
-                            &:hover
-                                margin-left: 0px
-                                margin-right: 0px
-                                color: $text_color
+            .column
+                .links
+                    .link
+                        &:hover
+                            margin-left: 0px
+                            margin-right: 0px
+                            color: $text_color
 
             .contacts
                 .contacts_list
@@ -134,3 +145,155 @@ footer
                         .link
                             &:hover
                                 background-color: $gray_color
+@media (max-width: 1380px)
+    footer
+        .container
+            width: calc(100% - 120px)
+            padding: 20px 60px
+
+@media (max-width: 1200px)
+    footer
+        .container
+            gap: 25px
+
+@media (max-width: 1070px)
+    footer
+        .container
+            gap: 10px
+            flex-wrap: wrap
+
+            .company
+                img
+                    height: 100px
+                    width: auto
+
+                .description
+                    .name
+                        font-size: 22px
+
+            .actions
+                flex-grow: 1
+                display: block
+
+            .navigation
+                flex-grow: 0
+                flex-wrap: wrap
+
+            .column
+                padding: 0 15px
+
+                .head
+                    font-size: 16px
+
+                .links
+                    gap: 10px
+
+                    .link
+                        font-size: 12px
+
+            .bottom
+                margin-top: 50px
+
+            .contacts
+                padding: 0
+
+                .head
+                    font-size: 16px
+
+                .contacts_list
+                    gap: 10px
+
+                    .socials_list
+                        margin-top: 10px
+
+                        .link
+                            height: 35px
+                            width: 35px
+
+                            svg
+                                width: 17px
+                                height: auto
+
+@media (max-width: 900px)
+    footer
+        .container
+            .navigation
+                justify-content: space-between
+
+            .column
+                padding: 0
+
+@media (max-width: 790px)
+    footer
+        .container
+            width: calc(100% - 60px)
+            padding: 20px 30px
+
+@media (max-width: 730px)
+    footer
+        .container
+            .navigation
+                flex-direction: row-reverse
+
+            .column
+                &.desktop
+                    display: none
+
+                &.mobile
+                    display: flex
+                    width: max-content
+
+            .contacts
+                width: max-content
+
+            .bottom
+                display: flex
+                justify-content: space-between
+                flex-wrap: wrap
+
+@media (max-width: 650px)
+    footer
+        .container
+            width: calc(100% - 40px)
+            padding: 20px
+
+            .company
+                width: 100%
+
+                img
+                    height: 77px
+
+                .description
+                    .name
+                        font-size: 20px
+
+                    .about
+                        font-size: 12px
+
+            .navigation
+                margin-top: 50px
+
+            .contacts
+                .contacts_list
+                    .phone
+                        font-size: 14px
+
+                    .address
+                        width: 162px
+
+@media (max-width: 390px)
+    footer
+        .container
+            .navigation
+                margin-top: 30px
+                row-gap: 30px
+                justify-content: start
+
+@media (max-width: 305px)
+    footer
+        .container
+            .bottom
+                margin-top: 30px
+                row-gap: 30px
+                flex-direction: column-reverse
+                justify-content: start

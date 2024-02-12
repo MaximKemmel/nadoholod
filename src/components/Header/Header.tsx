@@ -1,8 +1,13 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSeletor";
 
 import styles from "./Header.module.sass";
+
+import MessageModal from "../Modal/MessageModal";
+import OrderModal from "../Modal/OrderModal";
 
 import { productionCategoriesList } from "../../data/productionCategoriesList";
 
@@ -16,8 +21,15 @@ import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 import { Menu as MenuIcon } from "../../assets/svg/Menu";
 
 const Header = () => {
+  const { setIsNoScroll } = useActions();
   const isHomePage = useTypedSelector((state) => state.mainReducer.isHomePage);
   const navigate = useNavigate();
+  const [isMessageShow, setIsMessageShow] = useState(false);
+  const [isOrderShow, setIsOrderShow] = useState(false);
+
+  useEffect(() => {
+    setIsNoScroll(isMessageShow || isOrderShow);
+  }, [isMessageShow, isOrderShow]);
 
   return (
     <div className={`${styles.wrapper} ${isHomePage ? styles.home : ""}`}>
@@ -35,7 +47,9 @@ const Header = () => {
           <div className={styles.actions_container}>
             <div className={styles.call_container}>
               <div className={styles.phone_number}>+7 913 234-97-54</div>
-              <button type="button">Заказать звонок</button>
+              <button type="button" onClick={() => setIsOrderShow(true)}>
+                Заказать звонок
+              </button>
               <div className={styles.empty} />
             </div>
             <div className={styles.input_container}>
@@ -70,13 +84,13 @@ const Header = () => {
                     {productionCategory.full_name}
                     <ArrowIcon />
                     <ul className={styles.last_sub_menu}>
-                      <li>
+                      <li onClick={() => navigate(`/catalog/0`)}>
                         Элемент 1<ArrowIcon />
                       </li>
-                      <li className={styles.bordered}>
+                      <li className={styles.bordered} onClick={() => navigate(`/catalog/0`)}>
                         Элемент 2<ArrowIcon />
                       </li>
-                      <li className={styles.bordered}>
+                      <li className={styles.bordered} onClick={() => navigate(`/catalog/0`)}>
                         Элемент 3<ArrowIcon />
                       </li>
                     </ul>
@@ -93,6 +107,13 @@ const Header = () => {
           </ul>
         </nav>
       </div>
+      <MessageModal
+        isShow={isMessageShow}
+        setIsShow={setIsMessageShow}
+        title="Заявка успешно отправлена!"
+        message="Наш специалист свяжется с вами и уточнит детали заказа"
+      />
+      <OrderModal isShow={isOrderShow} setIsShow={setIsOrderShow} onSubmit={() => setIsMessageShow(true)} />
     </div>
   );
 };

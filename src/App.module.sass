@@ -4,6 +4,7 @@ $gray_color: #7EA4B3
 $text_color: #043848
 $move_up_background_color: #F1F1F1
 $move_up_icon_color: #232731
+$focus_border_color: #11323D
 
 *
     padding: 0px
@@ -21,6 +22,16 @@ body
     margin: 0
     padding: 0
     background-color: $background_color
+
+.wrapper
+    display: flex
+    flex-direction: column
+    scroll-behavior: smooth
+    height: 100%
+
+    &.no_scroll
+        height: auto
+        overflow: hidden
 
 button
     border-radius: 4px
@@ -56,6 +67,9 @@ textarea
     &::placeholder
         font-weight: 300
         color: $gray_color
+
+    &:focus
+        border: 1px solid $focus_border_color
 
 input[type='text'],
 input[type='name'],
@@ -96,37 +110,38 @@ p
     margin-top: 10px
 
 .wrapper
-    .wrapper_section
-        .move_up
-            position: fixed
+    position: relative
+
+    .move_up
+        position: fixed
+        bottom: 30px
+        right: 0px
+        z-index: 3
+        display: flex
+        gap: 2px
+        cursor: pointer
+        opacity: 0
+        transition: all .2s ease-out
+        width: 50px
+        height: 50px
+        background-color: $move_up_background_color
+        border-radius: 50%
+        display: flex
+        justify-content: center
+        align-items: center
+
+        &.active
+            opacity: 1
             bottom: 30px
-            right: 0px
-            z-index: 100
-            display: flex
-            gap: 2px
-            cursor: pointer
-            opacity: 0
-            transition: all .2s ease-out
-            width: 50px
-            height: 50px
-            background-color: $move_up_background_color
-            border-radius: 50%
-            display: flex
-            justify-content: center
-            align-items: center
+            right: 30px
 
-            &.active
-                opacity: 1
-                bottom: 30px
-                right: 30px
+        svg
+            transform: rotate(-90deg)
+            width: 24px
+            height: 24px
 
-            svg
-                transform: rotate(-90deg)
-                width: 24px
-                height: 24px
-
-                *
-                    stroke: $move_up_icon_color
+            *
+                stroke: $move_up_icon_color
 
 @media (min-width: 768px)
     button

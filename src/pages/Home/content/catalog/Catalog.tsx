@@ -22,11 +22,15 @@ const Catalog = () => {
             {productionCategoriesList.map((productionCategory: IProductionCategory) => (
               <div
                 className={`${styles.item} ${productionCategory.id === 0 ? styles.big : ""}`}
-                onClick={() => navigate(`/catalog/${productionCategory.id}`)}
+                onClick={() => navigate(`/catalog/0`)}
               >
                 <div
                   className={styles.image}
-                  style={{ backgroundImage: `url(/uploads/production/${productionCategory.prefix}_main.png)` }}
+                  style={{
+                    backgroundImage: `${
+                      windowSize.innerWidth < 1381 ? `url(/uploads/production/${productionCategory.prefix}_main.png)` : ""
+                    }`,
+                  }}
                 >
                   {windowSize.innerWidth > 1380 ? (
                     <img src={`/uploads/production/${productionCategory.prefix}_main.png`} alt="" />

@@ -32,7 +32,8 @@ const Face = () => {
     variableHeight: true,
     swipeToSlide: false,
     slidesToShow: 1,
-    speed: 500,
+    speed: 400,
+    cssEase: "ease-out",
     vertical: true,
     initialSlide: 0,
     verticalSwiping: false,
@@ -56,7 +57,8 @@ const Face = () => {
     variableWidth: true,
     swipeToSlide: false,
     slidesToShow: 1,
-    speed: 500,
+    speed: 400,
+    cssEase: "ease-out",
     initialSlide: 0,
     arrows: false,
   };
@@ -101,7 +103,7 @@ const Face = () => {
       <div className={styles.face_container}>
         <div className={styles.container}>
           <div className={styles.title}>Продажа и производство холодильного оборудования любой сложности</div>
-          <button type="button">
+          <button type="button" onClick={() => navigate(`/catalog/0`)}>
             Продукция
             <ArrowIcon />
           </button>
@@ -151,7 +153,7 @@ const Face = () => {
                     <div
                       className={`${styles.price} ${!isTransition ? styles.active : ""}`}
                     >{`от ${currentProductionCategory.min_price.toLocaleString()}₽`}</div>
-                    <button type="button" onClick={() => navigate(`/catalog/${currentProductionCategory.id}`)}>
+                    <button type="button" onClick={() => navigate(`/catalog/0`)}>
                       Перейти в каталог
                     </button>
                   </div>

@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 
+import { useActions } from "../../hooks/useActions";
+
 import styles from "./Product.module.sass";
+
+import ProductMessageModal from "../../components/Modal/ProductMessageModal";
+import ProductOrderModal from "../../components/Modal/ProductOrderModal";
 
 import ProductCard from "../../components/ProductCard/ProductCard";
 
@@ -13,14 +18,22 @@ import PolairImage from "../../assets/images/manufacturer/polair.png";
 import CarIcon from "../../assets/images/car.png";
 import TimeIcon from "../../assets/images/time.png";
 import ServiceIcon from "../../assets/images/service.png";
+import PdfIcon from "../../assets/images/pdf_icon.png";
 
 const Product = () => {
+  const { setIsNoScroll } = useActions();
   const [mainPhoto, setMainPhoto] = useState("/uploads/products/product.png");
   const [activeTab, setActiveTab] = useState(0);
+  const [isMessageShow, setIsMessageShow] = useState(false);
+  const [isOrderShow, setIsOrderShow] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  useEffect(() => {
+    setIsNoScroll(isMessageShow || isOrderShow);
+  }, [isMessageShow, isOrderShow]);
 
   return (
     <div className={styles.wrapper}>
@@ -64,7 +77,9 @@ const Product = () => {
               </div>
               <div className={styles.price_container}>
                 <div className={styles.price}>{`${Number(106070).toLocaleString()}₽`}</div>
-                <button type="button">Заказать товар</button>
+                <button type="button" onClick={() => setIsOrderShow(true)}>
+                  Заказать товар
+                </button>
                 <div className={styles.warning}>*Актуальную цену можно уточнить у менеджера</div>
               </div>
               <div className={styles.advantages_list}>
@@ -121,6 +136,26 @@ const Product = () => {
                 </p>
               </div>
             ) : null}
+            {activeTab === 1 ? (
+              <div className={styles.tab_view}>
+                <div className={styles.description_list}>
+                  <div className={styles.labels}>
+                    <div className={styles.label}>Длина</div>
+                    <div className={styles.label}>Ширина</div>
+                    <div className={styles.label}>Высота</div>
+                    <div className={styles.label}>Объем</div>
+                    <div className={styles.label}>Объём холодильной камеры (куб.м)</div>
+                  </div>
+                  <div className={styles.values}>
+                    <div className={styles.value}>1360 мм</div>
+                    <div className={styles.value}>1360 мм</div>
+                    <div className={styles.value}>2200 мм</div>
+                    <div className={styles.value}>2,9 м²</div>
+                    <div className={styles.value}>1,44</div>
+                  </div>
+                </div>
+              </div>
+            ) : null}
             {activeTab === 2 ? (
               <div className={styles.tab_view}>
                 <p>
@@ -138,6 +173,14 @@ const Product = () => {
                 </p>
               </div>
             ) : null}
+            {activeTab === 3 ? (
+              <div className={styles.tab_view}>
+                <div className={styles.link}>
+                  <img src={PdfIcon} alt="" />
+                  Холодильная камера 2.9 среднетемпературная
+                </div>
+              </div>
+            ) : null}
           </div>
           <div className={styles.recommended_products}>
             <h4>Похожие товары</h4>
@@ -149,6 +192,13 @@ const Product = () => {
           </div>
         </div>
       </div>
+      <ProductMessageModal
+        isShow={isMessageShow}
+        setIsShow={setIsMessageShow}
+        title="Спасибо за заявку!"
+        message="Наш специалист свяжется с вами и уточнит детали заказа"
+      />
+      <ProductOrderModal isShow={isOrderShow} setIsShow={setIsOrderShow} onSubmit={() => setIsMessageShow(true)} />
     </div>
   );
 };

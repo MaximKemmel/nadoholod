@@ -123,7 +123,7 @@ const Catalog = () => {
             {type === 0 ? (
               <div className={styles.subcategories_list}>
                 {productionCategory.subcategories.map((category: IProductionCategory) => (
-                  <div className={styles.subcategory} onClick={() => navigate(`/catalog/${category.id}`)}>
+                  <div className={styles.subcategory} onClick={() => navigate(`/catalog/10`)}>
                     <img src={`/uploads/production/${category.prefix}.png`} alt="" />
                     <div className={styles.name}>{category.name}</div>
                   </div>
