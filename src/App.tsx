@@ -18,9 +18,10 @@ import Footer from "./components/Footer/Footer";
 import { ButtonArrow as ArrowIcon } from "./assets/svg/ButtonArrow";
 
 function App() {
-  const { setIsHomePage, setWindowSize, setWindowTopPosition } = useActions();
+  const { setIsHomePage, setWindowSize, setWindowTopPosition, getCategories } = useActions();
   const [isMoveUpActive, setIsMoveUpActive] = useState(false);
   const isNoScroll = useTypedSelector((state) => state.mainReducer.isNoScroll);
+  const categroies = useTypedSelector((state) => state.categoryReducer.categories);
   const { pathname } = useLocation();
 
   useLayoutEffect(() => {
@@ -30,6 +31,9 @@ function App() {
 
   useEffect(() => {
     getWindowSize();
+    if (!Array.isArray(categroies) || categroies === undefined || categroies.length === 0) {
+      getCategories();
+    }
   }, []);
 
   useEffect(() => {
