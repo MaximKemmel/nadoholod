@@ -1,0 +1,37 @@
+$background_color: #FFFFFF
+$text_color: #043848
+$error_color: #480404
+
+.wrapper_content
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    width: 100vw
+    height: 100vh
+    background-color: $background_color
+    gap: 50px
+
+    .title
+        color: $text_color
+        font-size: 30px
+        font-family: "Russo One"
+        font-weight: 500
+
+    form
+        display: flex
+        flex-direction: column
+        gap: 15px
+        align-items: center
+
+        input
+            width: 375px
+
+        button
+            margin-top: 30px
+            border-radius: 5px
+            width: 100%
+
+        .error
+            color: $error_color
+            font-size: 15px

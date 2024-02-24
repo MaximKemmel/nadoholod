@@ -9,13 +9,10 @@ import styles from "./Header.module.sass";
 import MessageModal from "../Modal/MessageModal";
 import OrderModal from "../Modal/OrderModal";
 
-import { productionCategoriesList } from "../../data/productionCategoriesList";
-
-import { IProductionCategory } from "../../types/production/productionCategory";
+import { ICategory } from "../../types/category/category";
 
 import Logo from "../../assets/images/logo_white.png";
 import LogoBlue from "../../assets/images/logo_blue.png";
-
 import { Search as SearchIcon } from "../../assets/svg/Search";
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 import { Menu as MenuIcon } from "../../assets/svg/Menu";
@@ -23,6 +20,7 @@ import { Menu as MenuIcon } from "../../assets/svg/Menu";
 const Header = () => {
   const { setIsNoScroll } = useActions();
   const isHomePage = useTypedSelector((state) => state.mainReducer.isHomePage);
+  const categories = useTypedSelector((state) => state.categoryReducer.categories);
   const navigate = useNavigate();
   const [isMessageShow, setIsMessageShow] = useState(false);
   const [isOrderShow, setIsOrderShow] = useState(false);
@@ -78,25 +76,30 @@ const Header = () => {
             <li onClick={() => navigate("/")}>Главная</li>
             <li>
               Продукция <ArrowIcon />
-              <ul className={styles.sub_menu}>
-                {productionCategoriesList.map((productionCategory: IProductionCategory, index: number) => (
-                  <li className={index ? styles.bordered : ""}>
-                    {productionCategory.full_name}
-                    <ArrowIcon />
-                    <ul className={styles.last_sub_menu}>
-                      <li onClick={() => navigate(`/catalog/0`)}>
-                        Элемент 1<ArrowIcon />
+              {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
+                <ul className={styles.sub_menu}>
+                  {categories
+                    .filter((category: ICategory) => category.id < 6)
+                    .map((category: ICategory, index: number) => (
+                      <li className={index ? styles.bordered : ""} onClick={() => navigate(`/catalog/${category.id}`)}>
+                        {category.category}
+                        {/*
+                        <ArrowIcon />
+                        <ul className={styles.last_sub_menu}>
+                          <li onClick={() => navigate(`/catalog/0`)}>
+                            Элемент 1<ArrowIcon />
+                          </li>
+                          <li className={styles.bordered} onClick={() => navigate(`/catalog/0`)}>
+                            Элемент 2<ArrowIcon />
+                          </li>
+                          <li className={styles.bordered} onClick={() => navigate(`/catalog/0`)}>
+                            Элемент 3<ArrowIcon />
+                          </li>
+                        </ul>*/}
                       </li>
-                      <li className={styles.bordered} onClick={() => navigate(`/catalog/0`)}>
-                        Элемент 2<ArrowIcon />
-                      </li>
-                      <li className={styles.bordered} onClick={() => navigate(`/catalog/0`)}>
-                        Элемент 3<ArrowIcon />
-                      </li>
-                    </ul>
-                  </li>
-                ))}
-              </ul>
+                    ))}
+                </ul>
+              ) : null}
             </li>
             <li>Компания</li>
             <li>Оборудование</li>

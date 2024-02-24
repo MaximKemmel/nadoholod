@@ -1,0 +1,57 @@
+$text_color: #043848
+$action_color: #01AAC1
+$background_color: #FFFFFF
+
+.navigation
+    height: 100vh
+    display: flex
+    flex-shrink: 0
+    flex-direction: column
+    justify-content: space-between
+    width: 360px
+    border-right: 1px solid $action_color
+    color: $text_color
+
+    .logo_container
+        padding: 15px
+        width: calc(100% - 30px)
+        display: flex
+        gap: 15px
+        align-items: center
+        border-bottom: 1px solid $action_color
+
+        img
+            width: 75px
+            height: auto
+
+        .title
+            font-family: "Russo One"
+            font-size: 22px
+
+    .navigation_list
+        display: flex
+        flex-direction: column
+        width: 100%
+        flex-grow: 1
+
+        .navigation_title
+            padding: 20px 15px
+            font-weight: 500
+            font-size: 18px
+            font-family: "Russo One"
+
+        .navigation_item
+            padding: 20px 15px
+            cursor: pointer
+            transition: all .2s ease-out
+
+            &.active
+                background-color: $action_color
+                color: $background_color
+
+    .bottom_container
+        padding: 15px
+        width: calc(100% - 30px)
+
+        button
+            width: 100%

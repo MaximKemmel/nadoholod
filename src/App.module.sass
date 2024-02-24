@@ -1,6 +1,8 @@
 $background_color: #FFFFFF
 $action_color: #01AAC1
+$wrong_color: #EB5757
 $gray_color: #7EA4B3
+$gray_wrong_color: #B37E8A
 $text_color: #043848
 $move_up_background_color: #F1F1F1
 $move_up_icon_color: #232731
@@ -50,9 +52,14 @@ button
     &.small
         height: 40px
 
+    &.wrong
+        background-color: $wrong_color
+
 input[type='text'],
 input[type='name'],
 input[type='phone'],
+input[type='login'],
+input[type='password'],
 textarea
     border-radius: 4px
     background-color: $background_color
@@ -73,7 +80,9 @@ textarea
 
 input[type='text'],
 input[type='name'],
-input[type='phone']
+input[type='phone'],
+input[type='login'],
+input[type='password']
     height: 24px
 
 textarea
@@ -147,6 +156,10 @@ p
     button
         &:hover
             background-color: $gray_color
+
+        &.wrong
+            &:hover
+                background-color: $gray_wrong_color
 
 @media (max-width: 1024px)
     button

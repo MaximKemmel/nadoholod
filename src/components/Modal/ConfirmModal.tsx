@@ -2,14 +2,15 @@ import styles from "./Modal.module.sass";
 
 import { Close as CloseIcon } from "../../assets/svg/Close";
 
-interface IMessageModalProps {
+interface IConfirmModalProps {
   isShow: boolean;
   setIsShow: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
   message: string;
+  handleConfirmOnClick: Function;
 }
 
-const MessageModal: React.FC<IMessageModalProps> = ({ isShow, setIsShow, title, message }) => {
+const ConfirmModal: React.FC<IConfirmModalProps> = ({ isShow, setIsShow, title, message, handleConfirmOnClick }) => {
   return (
     <div className={`${styles.modal} ${isShow ? styles.active : ""}`}>
       <div className={`${styles.overlay} ${isShow ? styles.active : ""}`} onClick={() => setIsShow(false)} />
@@ -20,10 +21,18 @@ const MessageModal: React.FC<IMessageModalProps> = ({ isShow, setIsShow, title, 
         <div className={styles.content}>
           {title.length !== 0 ? <div className={styles.title}>{title}</div> : null}
           <div className={styles.message}>{message}</div>
+          <div className={styles.buttons}>
+            <button type="button" onClick={() => setIsShow(false)}>
+              Отмена
+            </button>
+            <button type="button" onClick={() => handleConfirmOnClick()}>
+              Подтвердить
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default MessageModal;
+export default ConfirmModal;

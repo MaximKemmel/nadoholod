@@ -3,4 +3,5 @@ export interface ICategory {
   category: string;
   description: string;
   parent_id: number;
+  img_path: string;
 }

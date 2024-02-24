@@ -7,15 +7,15 @@ import { useTypedSelector } from "../../../../hooks/useTypedSeletor";
 
 import styles from "./Face.module.sass";
 
-import { productionCategoriesList } from "../../../../data/productionCategoriesList";
-
-import { IProductionCategory } from "../../../../types/production/productionCategory";
+import { ICategory } from "../../../../types/category/category";
+import { initCategory } from "../../../../types/category/initCategory";
 
 import FaceImage from "../../../../assets/images/face_image.png";
 import { ButtonArrow as ArrowIcon } from "../../../../assets/svg/ButtonArrow";
 
 const Face = () => {
-  const [currentProductionCategory, setCurrentProductionCategory] = useState(productionCategoriesList[0]);
+  const categories = useTypedSelector((state) => state.categoryReducer.categories);
+  const [currentCategory, setCurrentCategory] = useState(initCategory());
   const [isTransition, setIsTransition] = useState(false);
   const windowSize = useTypedSelector((state) => state.mainReducer.windowSize);
   const [productionsGap, setProductionsGap] = useState(30);
@@ -64,13 +64,18 @@ const Face = () => {
   };
 
   useLayoutEffect(() => {
-    setCurrentProductionCategory(productionCategoriesList[0]);
     if (windowSize.innerWidth > 1380) {
       setProductionsGap(30);
     } else {
       setProductionsGap(20);
     }
   }, []);
+
+  useEffect(() => {
+    if (Array.isArray(categories) && categories !== undefined && categories.length > 0) {
+      setCurrentCategory(categories[0]);
+    }
+  }, [categories]);
 
   useEffect(() => {
     if (windowSize.innerWidth > 1380) {
@@ -82,20 +87,20 @@ const Face = () => {
     }
   }, [windowSize]);
 
-  const handleProductionOnClick = async (productionCategory: IProductionCategory) => {
+  const handleProductionOnClick = async (category: ICategory) => {
     setIsTransition(true);
     var indicator = document.getElementById("indicator");
     var production = document.getElementById("production");
     indicator!.style.marginLeft = `${
       (production!.clientWidth - indicator!.clientWidth) / 2 +
-      productionCategory.id * production!.clientWidth +
-      productionCategory.id * productionsGap
+      (category.id - 1) * production!.clientWidth +
+      (category.id - 1) * productionsGap
     }px`;
     await new Promise((res) => setTimeout(res, 200));
-    setCurrentProductionCategory(productionCategory);
+    setCurrentCategory(category);
     setIsTransition(false);
-    sliderVertical?.current?.slickGoTo(productionCategory.id);
-    sliderHorizontal?.current?.slickGoTo(productionCategory.id);
+    sliderVertical?.current?.slickGoTo(category.id - 1);
+    sliderHorizontal?.current?.slickGoTo(category.id - 1);
   };
 
   return (
@@ -127,33 +132,35 @@ const Face = () => {
           <div className={styles.content}>
             <div className={styles.head}>
               <h1>Продукция</h1>
-              <div className={styles.production_list}>
-                {productionCategoriesList.map((productionCategory: IProductionCategory) => (
-                  <div
-                    className={styles.production_item}
-                    id={productionCategory.id === 0 ? "production" : ""}
-                    onClick={() => handleProductionOnClick(productionCategory)}
-                  >
-                    <img src={`/uploads/production/${productionCategory.prefix}.png`} alt="" />
-                  </div>
-                ))}
-              </div>
+              {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
+                <div className={styles.production_list}>
+                  {categories
+                    .filter((category: ICategory) => category.id < 6)
+                    .map((category: ICategory) => (
+                      <div
+                        className={styles.production_item}
+                        id={category.id - 1 === 0 ? "production" : ""}
+                        onClick={() => handleProductionOnClick(category)}
+                      >
+                        <img src={`/uploads/${category.img_path}`} alt="" />
+                      </div>
+                    ))}
+                </div>
+              ) : null}
               <div className={styles.indicator} id="indicator" />
             </div>
             <div className={styles.description_container}>
               <div className={styles.description}>
                 <div className={styles.text}>
-                  <div className={`${styles.name} ${!isTransition ? styles.active : ""}`}>
-                    {currentProductionCategory.full_name}
-                  </div>
+                  <div className={`${styles.name} ${!isTransition ? styles.active : ""}`}>{currentCategory.category}</div>
                   <div className={`${styles.about} ${!isTransition ? styles.active : ""}`}>
-                    {parse(currentProductionCategory.description)}
+                    {parse(currentCategory.description)}
                   </div>
                   <div className={styles.bottom}>
                     <div
                       className={`${styles.price} ${!isTransition ? styles.active : ""}`}
-                    >{`от ${currentProductionCategory.min_price.toLocaleString()}₽`}</div>
-                    <button type="button" onClick={() => navigate(`/catalog/0`)}>
+                    >{`от ${"55555".toLocaleString()}₽`}</div>
+                    <button type="button" onClick={() => navigate(`/catalog/${currentCategory.id}`)}>
                       Перейти в каталог
                     </button>
                   </div>
@@ -162,34 +169,42 @@ const Face = () => {
             </div>
           </div>
           <div className={`${styles.slider} ${styles.vertical}`}>
-            <Slider ref={sliderVertical} {...settingsVertical}>
-              {productionCategoriesList.map((productionCategory: IProductionCategory) => (
-                <div>
-                  <div className={styles.image}>
-                    <img
-                      className={currentProductionCategory.id === productionCategory.id ? styles.active : ""}
-                      src={`/uploads/production/${productionCategory.prefix}.png`}
-                      alt=""
-                    />
-                  </div>
-                </div>
-              ))}
-            </Slider>
+            {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
+              <Slider ref={sliderVertical} {...settingsVertical}>
+                {categories
+                  .filter((category: ICategory) => category.id < 6)
+                  .map((category: ICategory) => (
+                    <div>
+                      <div className={styles.image}>
+                        <img
+                          className={category.id === currentCategory.id ? styles.active : ""}
+                          src={`/uploads/${category.img_path}`}
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  ))}
+              </Slider>
+            ) : null}
           </div>
           <div className={`${styles.slider} ${styles.horizontal}`}>
-            <Slider ref={sliderHorizontal} {...settingsHorizontal}>
-              {productionCategoriesList.map((productionCategory: IProductionCategory) => (
-                <div>
-                  <div className={styles.image}>
-                    <img
-                      className={currentProductionCategory.id === productionCategory.id ? styles.active : ""}
-                      src={`/uploads/production/${productionCategory.prefix}.png`}
-                      alt=""
-                    />
-                  </div>
-                </div>
-              ))}
-            </Slider>
+            {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
+              <Slider ref={sliderHorizontal} {...settingsHorizontal}>
+                {categories
+                  .filter((category: ICategory) => category.id < 6)
+                  .map((category: ICategory) => (
+                    <div>
+                      <div className={styles.image}>
+                        <img
+                          className={category.id === currentCategory.id ? styles.active : ""}
+                          src={`/uploads/${category.img_path}`}
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  ))}
+              </Slider>
+            ) : null}
           </div>
         </div>
       </div>

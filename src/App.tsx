@@ -11,6 +11,9 @@ import Home from "./pages/Home/Home";
 import Equipments from "./pages/Equipment/Equipment";
 import Catalog from "./pages/Catalog/Catalog";
 import Product from "./pages/Product/Product";
+import Login from "./pages/Login/Login";
+import Admin from "./pages/Admin/Admin";
+
 import Header from "./components/Header/Header";
 import ContactUs from "./components/ContactUs/ContactUs";
 import Footer from "./components/Footer/Footer";
@@ -73,22 +76,28 @@ function App() {
 
   return (
     <section className={`${styles.wrapper} ${isNoScroll ? styles.no_scroll : ""}`} onScroll={handleScroll}>
-      <Header />
+      {!pathname.includes("admin") ? <Header /> : null}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/equipment/:id" element={<Equipments />} />
         <Route path="/catalog/:id" element={<Catalog />} />
         <Route path="/product/:id" element={<Product />} />
+        <Route path="/admin/login" element={<Login />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<Home />} />
       </Routes>
-      <ContactUs />
-      <Footer />
-      <div
-        className={`${styles.move_up} ${isMoveUpActive ? styles.active : ""}`}
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      >
-        <ArrowIcon />
-      </div>
+      {!pathname.includes("admin") ? (
+        <>
+          <ContactUs />
+          <Footer />
+          <div
+            className={`${styles.move_up} ${isMoveUpActive ? styles.active : ""}`}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            <ArrowIcon />
+          </div>
+        </>
+      ) : null}
     </section>
   );
 }

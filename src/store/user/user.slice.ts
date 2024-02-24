@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import { authMe, login } from "./user.actions";
 
@@ -24,9 +24,12 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    logoutUser: (state) => {
+    logout: (state) => {
       state.user = {} as IUser;
       state.isAuth = false;
+    },
+    setLoginStatus(state, action: PayloadAction<IServerStatus>) {
+      state.loginStatus = action.payload;
     },
   },
   extraReducers: (builder) => {
