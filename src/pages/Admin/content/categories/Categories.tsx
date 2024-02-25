@@ -17,6 +17,7 @@ import { initCategory } from "../../../../types/category/initCategory";
 import { ServerStatusType } from "../../../../enums/serverStatusType";
 import { initServerStatus } from "../../../../types/main/serverStatus";
 import { IDropdownItem } from "../../../../types/main/dropdownItem";
+import { DropdownType } from "../../../../enums/dropdownType";
 
 import { Plus as PlusIcon } from "../../../../assets/svg/Plus";
 import { List as ListIcon } from "../../../../assets/svg/List";
@@ -49,7 +50,7 @@ const Categories = () => {
   const quillRefDescription = useRef<ReactQuill>(null);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [uploadProgress, setUploadProgress] = useState(-1);
-  const [isDropdownActive, setIsDropdownActive] = useState(false);
+  const [activeComponent, setActiveComponent] = useState(DropdownType.None);
   const [isMessageShow, setIsMessageShow] = useState(false);
   const [isConfirmShow, setIsConfirmShow] = useState(false);
   const [titleMessage, setTitleMessage] = useState("");
@@ -180,7 +181,7 @@ const Categories = () => {
     }
     if (selectedCategory.category.trim().length !== 0) {
       var isOk = true;
-      if (selectedCategory.id > -1 && selectedCategory.id < 6) {
+      if (selectedCategory.is_main) {
         if (description.replaceAll("<p>", "").replaceAll("</p>", "").replaceAll("<br>", "").length === 0) {
           isOk = false;
         }
@@ -259,7 +260,7 @@ const Categories = () => {
               {selectedCategory.id === -1 ? "Добавление категории" : "Редактирование категории"}
             </div>
           </div>
-          <form onSubmit={handleOnSubmit}>
+          <form className={pageStyles.form} onSubmit={handleOnSubmit}>
             <div className={pageStyles.row}>
               <div className={pageStyles.fields}>
                 <div className={pageStyles.input_field}>
@@ -270,18 +271,16 @@ const Categories = () => {
                     placeholder="Название"
                     value={selectedCategory.category}
                     onChange={(event) => setSelectedCategory({ ...selectedCategory, category: event.target.value })}
-                    onClick={() => setIsDropdownActive(false)}
+                    onClick={() => setActiveComponent(DropdownType.None)}
                   />
                 </div>
-                {Array.isArray(categories) &&
-                categories !== undefined &&
-                categories.length > 0 &&
-                (selectedCategory.id === -1 || selectedCategory.id > 5) ? (
+                {!selectedCategory.is_main ? (
                   <div className={pageStyles.input_field}>
                     <div className={pageStyles.label}>Родительская категория</div>
                     <Dropdown
-                      isActive={isDropdownActive}
-                      setIsActive={setIsDropdownActive}
+                      activeComponent={activeComponent}
+                      setActiveComponent={setActiveComponent}
+                      dropdownType={DropdownType.CategorySelector}
                       items={[
                         {
                           id: -1,
@@ -300,13 +299,13 @@ const Categories = () => {
                       ]}
                       onItemSelect={(item: IDropdownItem) => {
                         setSelectedCategory({ ...selectedCategory, parent_id: item.id });
-                        setIsDropdownActive(false);
+                        setActiveComponent(DropdownType.None);
                       }}
                     />
                   </div>
                 ) : null}
-                {selectedCategory.id > -1 && selectedCategory.id < 6 ? (
-                  <div className={pageStyles.input_field} onClick={() => setIsDropdownActive(false)}>
+                {selectedCategory.is_main ? (
+                  <div className={pageStyles.input_field} onClick={() => setActiveComponent(DropdownType.None)}>
                     <div className={pageStyles.label}>Описание</div>
                     <ReactQuill
                       ref={quillRefDescription}

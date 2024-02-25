@@ -79,7 +79,7 @@ const Header = () => {
               {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
                 <ul className={styles.sub_menu}>
                   {categories
-                    .filter((category: ICategory) => category.id < 6)
+                    .filter((category: ICategory) => category.is_main)
                     .map((category: ICategory, index: number) => (
                       <li className={index ? styles.bordered : ""} onClick={() => navigate(`/catalog/${category.id}`)}>
                         {category.category}

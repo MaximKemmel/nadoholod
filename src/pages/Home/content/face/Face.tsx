@@ -135,7 +135,7 @@ const Face = () => {
               {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
                 <div className={styles.production_list}>
                   {categories
-                    .filter((category: ICategory) => category.id < 6)
+                    .filter((category: ICategory) => category.is_main)
                     .map((category: ICategory) => (
                       <div
                         className={styles.production_item}
@@ -172,7 +172,7 @@ const Face = () => {
             {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
               <Slider ref={sliderVertical} {...settingsVertical}>
                 {categories
-                  .filter((category: ICategory) => category.id < 6)
+                  .filter((category: ICategory) => category.is_main)
                   .map((category: ICategory) => (
                     <div>
                       <div className={styles.image}>
@@ -191,7 +191,7 @@ const Face = () => {
             {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
               <Slider ref={sliderHorizontal} {...settingsHorizontal}>
                 {categories
-                  .filter((category: ICategory) => category.id < 6)
+                  .filter((category: ICategory) => category.is_main)
                   .map((category: ICategory) => (
                     <div>
                       <div className={styles.image}>

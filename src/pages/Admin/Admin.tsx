@@ -12,7 +12,7 @@ import Products from "./content/products/Products";
 
 const Admin = () => {
   const navigate = useNavigate();
-  const { getCategories } = useActions();
+  const { getCategories, getProducts } = useActions();
   const isAuth = useTypedSelector((state) => state.userReducer.isAuth);
   const [activeComponent, setActiveComponent] = useState(-1);
   const pageSections = [<Categories />, <Products />] as JSX.Element[];
@@ -20,6 +20,7 @@ const Admin = () => {
   useEffect(() => {
     document.title = "Панель управления";
     getCategories();
+    getProducts();
   }, []);
 
   useEffect(() => {
@@ -27,6 +28,7 @@ const Admin = () => {
       navigate("/admin/login");
     } else {
       getCategories();
+      getProducts();
     }
   }, [isAuth]);
 

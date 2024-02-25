@@ -1,9 +1,13 @@
+import { IProductImage } from "./productImage";
+
 export interface IProduct {
   id: number;
   category_id: number;
   name: string;
-  prefix: string;
-  manufacturer: string;
+  description: string;
+  full_description: string;
   price: number;
-  card_description: string;
+  delivery_info: string;
+  instruction_path: string;
+  images: IProductImage[];
 }

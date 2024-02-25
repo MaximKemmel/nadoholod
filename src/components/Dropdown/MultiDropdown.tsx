@@ -1,4 +1,4 @@
-import styles from "./Dropdown.module.sass";
+import styles from "./MultiDropdown.module.sass";
 
 import { DropdownType } from "../../enums/dropdownType";
 import { IDropdownItem } from "../../types/main/dropdownItem";

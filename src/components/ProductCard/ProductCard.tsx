@@ -3,7 +3,7 @@ import parse from "html-react-parser";
 
 import styles from "./ProductCard.module.sass";
 
-import { IProduct } from "../../types/product/product";
+import { IProduct } from "../../types/_product/product";
 import PolairImage from "../../assets/images/manufacturer/polair.png";
 
 interface IProductCardProps {

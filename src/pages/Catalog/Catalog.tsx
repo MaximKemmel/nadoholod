@@ -9,7 +9,7 @@ import { productionCategoriesList } from "../../data/productionCategoriesList";
 import { recommendedProductsList } from "../../data/recommendedProductsList";
 
 import { IProductionCategory } from "../../types/production/productionCategory";
-import { IProduct } from "../../types/product/product";
+import { IProduct } from "../../types/_product/product";
 
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 import MultiDropdown from "../../components/Dropdown/MultiDropdown";

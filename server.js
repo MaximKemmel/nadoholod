@@ -36,6 +36,7 @@ app.get("/api/categories", index_1.CategoryController.getCategories);
 app.post("/api/add_category", checkAuth_1.default, index_1.CategoryController.addCategory);
 app.post("/api/update_category", checkAuth_1.default, index_1.CategoryController.updateCategory);
 app.post("/api/delete_category", checkAuth_1.default, index_1.CategoryController.deleteCategory);
+app.get("/api/products", index_1.ProductController.getProducts);
 app.use(express.static(path.join(__dirname, "dist")));
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 app.get("*", function (request, response) {

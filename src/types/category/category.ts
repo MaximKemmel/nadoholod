@@ -4,4 +4,5 @@ export interface ICategory {
   description: string;
   parent_id: number;
   img_path: string;
+  is_main: boolean;
 }

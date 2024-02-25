@@ -7,6 +7,7 @@ export function initCategory(): ICategory {
     description: "",
     parent_id: -1,
     img_path: "",
+    is_main: false,
   };
 
   return {

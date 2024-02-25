@@ -11,7 +11,7 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 
 import { recommendedProductsList } from "../../data/recommendedProductsList";
 
-import { IProduct } from "../../types/product/product";
+import { IProduct } from "../../types/_product/product";
 
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 import PolairImage from "../../assets/images/manufacturer/polair.png";

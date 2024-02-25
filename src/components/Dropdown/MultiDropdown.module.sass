@@ -1,29 +1,36 @@
 $text_color: #043848
-$hover_color: #49AEC833
-$background_color: #FFFFFF
 $border_color: #7EA4B3
+$background_color: #FFFFFF
+$hover_color: #49AEC833
 $active_color: #01AAC1
 
 .dropdown
     position: relative
-    width: 100%
+    width: max-content
     font-size: 16px
     font-weight: 300
     color: $text_color
 
+    &.full_width
+        width: 100%
+
     .dropdown_button
-        font-size: 16px
+        font-size: 14px
         border-radius: 5px
         height: 22px
-        width: calc(100% - 42px)
+        width: max-content
         display: flex
         gap: 20px
         align-items: center
         padding: 16px 20px 16px 20px
         border: 1px solid $border_color
         background-color: $background_color
-        justify-content: space-between
         transition: all .2s ease-out
+
+        &.full_width
+            width: calc(100% - 42px)
+            justify-content: space-between
+            font-size: 16px
 
         .arrow
             height: 24px
@@ -46,7 +53,7 @@ $active_color: #01AAC1
                 transform: rotate(180deg)
 
     .dropdown_container
-        font-size: 16px
+        font-size: 14px
         position: absolute
         z-index: 5
         top: 56px
@@ -65,7 +72,7 @@ $active_color: #01AAC1
 
         .dropdown_list
             width: 100%
-            max-height: 320px
+            max-height: 315px
             height: max-content
             display: flex
             flex-direction: column
@@ -78,7 +85,40 @@ $active_color: #01AAC1
                 display: flex
                 align-items: center
 
-@media (min-width: 768px)
+                input[type='checkbox']
+                    clip: rect(0 0 0 0)
+                    clip-path: inset(50%)
+                    height: 1px
+                    overflow: hidden
+                    position: absolute
+                    white-space: nowrap
+                    width: 1px
+
+                .checkbox
+                    display: flex
+                    align-items: center
+                    gap: 10px
+
+                    .checkbox_mark
+                        cursor: pointer
+                        height: 18px
+                        width: 18px
+                        background: $background_color
+                        border: 1px $active_color solid
+                        border-radius: 4px
+                        padding: 3px
+                        display: flex
+                        transition: all .2s ease-out
+                        flex-shrink: 0
+
+                        svg
+                            height: 100%
+                            width: 100%
+
+                        &.active
+                            background-color: $active_color
+
+@media (min-width: 1024px)
     .dropdown
         .dropdown_container
             .dropdown_list

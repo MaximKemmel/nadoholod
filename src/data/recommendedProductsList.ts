@@ -1,4 +1,4 @@
-import { IProduct } from "../types/product/product";
+import { IProduct } from "../types/_product/product";
 
 export const recommendedProductsList = [
   {

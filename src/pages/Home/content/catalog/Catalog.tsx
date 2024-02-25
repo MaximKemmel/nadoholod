@@ -20,7 +20,7 @@ const Catalog = () => {
           {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
             <div className={styles.catalog_list}>
               {categories
-                .filter((category: ICategory) => category.id < 6)
+                .filter((category: ICategory) => category.is_main)
                 .map((category: ICategory) => (
                   <div
                     className={`${styles.item} ${category.id - 1 === 0 ? styles.big : ""}`}
