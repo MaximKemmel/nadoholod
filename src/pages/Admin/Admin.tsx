@@ -9,13 +9,14 @@ import styles from "./Admin.module.sass";
 import Navigation from "./content/navigation/Navigation";
 import Categories from "./content/categories/Categories";
 import Products from "./content/products/Products";
+import Attributes from "./content/attributes/Attributes";
 
 const Admin = () => {
   const navigate = useNavigate();
-  const { getCategories, getProducts } = useActions();
+  const { getCategories, getProducts, getAttributes } = useActions();
   const isAuth = useTypedSelector((state) => state.userReducer.isAuth);
   const [activeComponent, setActiveComponent] = useState(-1);
-  const pageSections = [<Categories />, <Products />] as JSX.Element[];
+  const pageSections = [<Categories />, <Products />, <Attributes />] as JSX.Element[];
 
   useEffect(() => {
     document.title = "Панель управления";
@@ -29,6 +30,7 @@ const Admin = () => {
     } else {
       getCategories();
       getProducts();
+      getAttributes();
     }
   }, [isAuth]);
 

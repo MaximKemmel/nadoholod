@@ -32,6 +32,18 @@ const Navigation: React.FC<INavigationProps> = ({ activeComponent, setActiveComp
         >
           Товары
         </div>
+        <div
+          className={`${styles.navigation_item} ${activeComponent === 2 ? styles.active : ""}`}
+          onClick={() => setActiveComponent(2)}
+        >
+          Аттрибуты
+        </div>
+        <div
+          className={`${styles.navigation_item} ${activeComponent === 3 ? styles.active : ""}`}
+          onClick={() => setActiveComponent(3)}
+        >
+          Фильтры
+        </div>
       </div>
       <div className={styles.bottom_container}>
         <button type="button" onClick={() => logout()}>
