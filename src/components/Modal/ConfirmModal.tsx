@@ -18,7 +18,7 @@ const ConfirmModal: React.FC<IConfirmModalProps> = ({ isShow, setIsShow, title, 
         <div className={styles.modal_close} onClick={() => setIsShow(false)}>
           <CloseIcon />
         </div>
-        <div className={styles.content}>
+        <div className={`${styles.content} ${styles.confirm}`}>
           {title.length !== 0 ? <div className={styles.title}>{title}</div> : null}
           <div className={styles.message}>{message}</div>
           <div className={styles.buttons}>

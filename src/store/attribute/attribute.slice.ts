@@ -1,21 +1,29 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { getAttributes } from "./attribute.actions";
+import { addAttributes, getAttributes } from "./attribute.actions";
 
 import { IAttribute } from "../../types/attribute/attribute";
+import { IServerStatus, initServerStatus } from "../../types/main/serverStatus";
+import { ServerStatusType } from "../../enums/serverStatusType";
 
 interface IAttributeState {
   attributes: IAttribute[];
+  addAttributesStatus: IServerStatus;
 }
 
 const initialState: IAttributeState = {
   attributes: [] as IAttribute[],
+  addAttributesStatus: initServerStatus(),
 };
 
 export const attributeSlice = createSlice({
   name: "attribute",
   initialState,
-  reducers: {},
+  reducers: {
+    setAddAttributesStatus(state, action: PayloadAction<IServerStatus>) {
+      state.addAttributesStatus = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getAttributes.fulfilled, (state, action) => {
       state.attributes = [];
@@ -23,6 +31,25 @@ export const attributeSlice = createSlice({
     });
     builder.addCase(getAttributes.rejected, (state) => {
       state.attributes = [];
+    });
+
+    builder.addCase(addAttributes.pending, (state) => {
+      state.addAttributesStatus = {
+        status: ServerStatusType.InProgress,
+        error: "",
+      } as IServerStatus;
+    });
+    builder.addCase(addAttributes.fulfilled, (state, action) => {
+      state.addAttributesStatus = {
+        status: action.payload.success ? ServerStatusType.Success : ServerStatusType.Error,
+        error: action.payload.success ? "" : action.payload.message,
+      };
+    });
+    builder.addCase(addAttributes.rejected, (state) => {
+      state.addAttributesStatus = {
+        status: ServerStatusType.Error,
+        error: "",
+      } as IServerStatus;
     });
   },
 });

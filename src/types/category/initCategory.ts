@@ -1,4 +1,5 @@
 import { ICategory } from "./category";
+import { ICategoryAttribute } from "./categoryAttribute";
 
 export function initCategory(): ICategory {
   const defaults = {
@@ -8,6 +9,7 @@ export function initCategory(): ICategory {
     parent_id: -1,
     img_path: "",
     is_main: false,
+    attributes: [] as ICategoryAttribute[],
   };
 
   return {

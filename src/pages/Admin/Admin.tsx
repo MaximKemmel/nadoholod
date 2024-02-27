@@ -13,7 +13,7 @@ import Attributes from "./content/attributes/Attributes";
 
 const Admin = () => {
   const navigate = useNavigate();
-  const { getCategories, getProducts, getAttributes } = useActions();
+  const { getCategories, getProducts, getAttributes, getFilters } = useActions();
   const isAuth = useTypedSelector((state) => state.userReducer.isAuth);
   const [activeComponent, setActiveComponent] = useState(-1);
   const pageSections = [<Categories />, <Products />, <Attributes />] as JSX.Element[];
@@ -31,6 +31,7 @@ const Admin = () => {
       getCategories();
       getProducts();
       getAttributes();
+      getFilters();
     }
   }, [isAuth]);
 

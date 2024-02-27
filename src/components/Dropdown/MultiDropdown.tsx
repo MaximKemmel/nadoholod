@@ -24,9 +24,13 @@ const MultiDropdown: React.FC<IMultiDropdownProps> = ({
   onItemSelect,
 }) => {
   return (
-    <div className={`${styles.dropdown} ${activeComponent === dropdownType ? styles.active : ""}`}>
+    <div
+      className={`${styles.dropdown} ${activeComponent === dropdownType ? styles.active : ""} ${
+        label === "" ? styles.full_width : ""
+      }`}
+    >
       <div
-        className={styles.dropdown_button}
+        className={`${styles.dropdown_button} ${label === "" ? styles.full_width : ""}`}
         onClick={() => setActiveComponent(activeComponent === dropdownType ? DropdownType.None : dropdownType)}
       >
         {label}

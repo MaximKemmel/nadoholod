@@ -50,6 +50,7 @@ const Products = () => {
     setDescription("");
     setFullDescription("");
     setDeliveryInfo("");
+    setActiveComponent(DropdownType.None);
     setIsCheckFields(false);
     setViewType(viewType === 0 ? 1 : 0);
   };
@@ -59,6 +60,7 @@ const Products = () => {
     setDescription(product.description);
     setFullDescription(product.full_description);
     setDeliveryInfo(product.delivery_info);
+    setActiveComponent(DropdownType.None);
     setIsCheckFields(false);
     setViewType(1);
   };
@@ -68,6 +70,7 @@ const Products = () => {
     setDescription("");
     setFullDescription("");
     setDeliveryInfo("");
+    setActiveComponent(DropdownType.None);
     setIsCheckFields(false);
     setViewType(0);
   };

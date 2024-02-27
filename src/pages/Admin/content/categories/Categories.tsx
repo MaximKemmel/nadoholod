@@ -11,6 +11,7 @@ import pageStyles from "../../Admin.module.sass";
 import MessageModal from "../../../../components/Modal/MessageModal";
 import ConfirmModal from "../../../../components/Modal/ConfirmModal";
 import Dropdown from "../../../../components/Dropdown/Dropdown";
+import MultiDropdown from "../../../../components/Dropdown/MultiDropdown";
 
 import { ICategory } from "../../../../types/category/category";
 import { initCategory } from "../../../../types/category/initCategory";
@@ -18,6 +19,8 @@ import { ServerStatusType } from "../../../../enums/serverStatusType";
 import { initServerStatus } from "../../../../types/main/serverStatus";
 import { IDropdownItem } from "../../../../types/main/dropdownItem";
 import { DropdownType } from "../../../../enums/dropdownType";
+import { IAttribute } from "../../../../types/attribute/attribute";
+import { ICategoryAttribute } from "../../../../types/category/categoryAttribute";
 
 import { Plus as PlusIcon } from "../../../../assets/svg/Plus";
 import { List as ListIcon } from "../../../../assets/svg/List";
@@ -38,6 +41,7 @@ const Categories = () => {
     getCategories,
   } = useActions();
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
+  const attributes = useTypedSelector((state) => state.attributeReducer.attributes);
   const path = useTypedSelector((state) => state.fileReducer.path);
   const uploadStatus = useTypedSelector((state) => state.fileReducer.uploadCategoryImageStatus);
   const addCategoryStatus = useTypedSelector((state) => state.categoryReducer.addCategoryStatus);
@@ -141,6 +145,7 @@ const Categories = () => {
   const handleAddOnClick = () => {
     setSelectedCategory(initCategory());
     setDescription("");
+    setActiveComponent(DropdownType.None);
     setIsCheckFields(false);
     setViewType(viewType === 0 ? 1 : 0);
   };
@@ -148,6 +153,7 @@ const Categories = () => {
   const handleEditOnClick = (category: ICategory) => {
     setSelectedCategory(category);
     setDescription(category.description);
+    setActiveComponent(DropdownType.None);
     setIsCheckFields(false);
     setViewType(1);
   };
@@ -155,6 +161,7 @@ const Categories = () => {
   const handleBackOnClick = () => {
     setSelectedCategory(initCategory());
     setDescription("");
+    setActiveComponent(DropdownType.None);
     setIsCheckFields(false);
     setViewType(0);
   };
@@ -239,7 +246,7 @@ const Categories = () => {
                   <button type="button" onClick={() => handleEditOnClick(category)}>
                     <EditIcon />
                   </button>
-                  {category.parent_id !== -1 ? (
+                  {!category.is_main ? (
                     <button type="button" className={appStyles.wrong} onClick={() => handleDeleteOnClick(category)}>
                       <DeleteIcon />
                     </button>
@@ -323,6 +330,56 @@ const Categories = () => {
                     />
                   </div>
                 ) : null}
+                <div className={pageStyles.input_field}>
+                  <div className={pageStyles.label}>{`Аттрибуты товаров (${selectedCategory.attributes.length})`}</div>
+                  <MultiDropdown
+                    dropdownType={DropdownType.ManufacturerSelector}
+                    activeComponent={activeComponent}
+                    setActiveComponent={setActiveComponent}
+                    label=""
+                    items={
+                      attributes.map((attribute: IAttribute) => {
+                        return {
+                          id: attribute.id,
+                          text: attribute.attribute,
+                          is_selected:
+                            selectedCategory.attributes.filter(
+                              (categoryAttribute: ICategoryAttribute) => categoryAttribute.attribute_id === attribute.id
+                            ).length > 0,
+                        } as IDropdownItem;
+                      }) as IDropdownItem[]
+                    }
+                    onItemSelect={(item: IDropdownItem) => {
+                      if (
+                        selectedCategory.attributes.filter(
+                          (categoryAttribute: ICategoryAttribute) => categoryAttribute.attribute_id === item.id
+                        ).length > 0
+                      ) {
+                        setSelectedCategory({
+                          ...selectedCategory,
+                          attributes: selectedCategory.attributes.filter(
+                            (categoryAttribute: ICategoryAttribute) => categoryAttribute.attribute_id !== item.id
+                          ),
+                        });
+                      } else {
+                        setSelectedCategory({
+                          ...selectedCategory,
+                          attributes: [
+                            ...selectedCategory.attributes,
+                            {
+                              id:
+                                selectedCategory.attributes.length === 0
+                                  ? 0
+                                  : selectedCategory.attributes[selectedCategory.attributes.length - 1].id + 1,
+                              attribute_id: item.id,
+                              category_id: selectedCategory.id,
+                            } as ICategoryAttribute,
+                          ],
+                        });
+                      }
+                    }}
+                  />
+                </div>
               </div>
               <div className={pageStyles.image_selector}>
                 <div

@@ -21,12 +21,14 @@ import Footer from "./components/Footer/Footer";
 import { ButtonArrow as ArrowIcon } from "./assets/svg/ButtonArrow";
 
 function App() {
-  const { setIsHomePage, setWindowSize, setWindowTopPosition, getCategories, getProducts, getAttributes } = useActions();
+  const { setIsHomePage, setWindowSize, setWindowTopPosition, getCategories, getProducts, getAttributes, getFilters } =
+    useActions();
   const [isMoveUpActive, setIsMoveUpActive] = useState(false);
   const isNoScroll = useTypedSelector((state) => state.mainReducer.isNoScroll);
   const categroies = useTypedSelector((state) => state.categoryReducer.categories);
   const products = useTypedSelector((state) => state.productReducer.products);
   const attributes = useTypedSelector((state) => state.attributeReducer.attributes);
+  const filters = useTypedSelector((state) => state.filterReducer.filters);
   const { pathname } = useLocation();
 
   useLayoutEffect(() => {
@@ -44,6 +46,9 @@ function App() {
     }
     if (!Array.isArray(attributes) || attributes === undefined || attributes.length === 0) {
       getAttributes();
+    }
+    if (!Array.isArray(filters) || filters === undefined || filters.length === 0) {
+      getFilters();
     }
   }, []);
 

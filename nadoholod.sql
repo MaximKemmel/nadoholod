@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Фев 25 2024 г., 22:47
+-- Время создания: Фев 27 2024 г., 22:43
 -- Версия сервера: 10.4.24-MariaDB
 -- Версия PHP: 7.4.29
 
@@ -20,6 +20,25 @@ SET time_zone = "+00:00";
 --
 -- База данных: `nadoholod`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `attributes`
+--
+
+CREATE TABLE `attributes` (
+  `id` int(11) NOT NULL,
+  `attribute` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `attributes`
+--
+
+INSERT INTO `attributes` (`id`, `attribute`) VALUES
+(0, 'Аттрибут1'),
+(1, 'Аттрибут2');
 
 -- --------------------------------------------------------
 
@@ -46,6 +65,49 @@ INSERT INTO `categories` (`id`, `category`, `description`, `parent_id`, `img_pat
 (3, 'Чиллеры', '<p>Благодаря особой конструкции чиллеров их&nbsp;можно эксплуатировать в&nbsp;круглогодичном режиме, при&nbsp;этом процесс полностью автоматизирован.<span class=\"ql-cursor\">﻿</span></p>', -1, '/categories/3.png', 1),
 (4, 'Камеры сушки/вялки', '<p>Оборудование для&nbsp;вяления и&nbsp;сушки рыбы представляет собой специальные сушильные камеры с&nbsp;постоянной циркуляцией воздуха. В&nbsp;зависимости от&nbsp;режимов сушки и&nbsp;вяления, внутри камеры поддерживается определённый температурный режим.</p>', -1, '/categories/4.png', 1),
 (5, 'Центральное холодоснабжение', '<p>Целесообразно монтировать централизованное холодоснабжение при&nbsp;объёме обслуживаемых площадей от&nbsp;400м².</p><p>Это&nbsp;многокомпрессорные агрегаты, компрессоры в&nbsp;которых подключены параллельно и&nbsp;функционируют в&nbsp;одном температурном режиме.</p>', -1, '/categories/5.png', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `category_attributes`
+--
+
+CREATE TABLE `category_attributes` (
+  `id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `category_attributes`
+--
+
+INSERT INTO `category_attributes` (`id`, `category_id`, `attribute_id`) VALUES
+(1, 1, 1),
+(2, 7, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `filters`
+--
+
+CREATE TABLE `filters` (
+  `id` int(11) NOT NULL,
+  `filter` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `filter_items`
+--
+
+CREATE TABLE `filter_items` (
+  `id` int(11) NOT NULL,
+  `filter_id` int(11) NOT NULL,
+  `filter_item` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -115,9 +177,33 @@ INSERT INTO `users` (`id`, `login`, `password`) VALUES
 --
 
 --
+-- Индексы таблицы `attributes`
+--
+ALTER TABLE `attributes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `categories`
 --
 ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `category_attributes`
+--
+ALTER TABLE `category_attributes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `filters`
+--
+ALTER TABLE `filters`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `filter_items`
+--
+ALTER TABLE `filter_items`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -146,7 +232,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT для таблицы `category_attributes`
+--
+ALTER TABLE `category_attributes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT для таблицы `filters`
+--
+ALTER TABLE `filters`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `filter_items`
+--
+ALTER TABLE `filter_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `products`

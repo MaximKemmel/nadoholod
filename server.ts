@@ -1,6 +1,12 @@
 import checkAuth from "./src/utils/checkAuth";
 
-import { CategoryController, ProductController, AttributeController, UserController } from "./src/server/index";
+import {
+  CategoryController,
+  ProductController,
+  AttributeController,
+  FilterController,
+  UserController,
+} from "./src/server/index";
 
 const express = require("express");
 const multer = require("multer");
@@ -48,6 +54,9 @@ app.post("/api/delete_category", checkAuth, CategoryController.deleteCategory);
 app.get("/api/products", ProductController.getProducts);
 
 app.get("/api/attributes", AttributeController.getAttributes);
+app.post("/api/add_attributes", checkAuth, AttributeController.addAttributes);
+
+app.get("/api/filters", FilterController.getFilters);
 
 app.use(express.static(path.join(__dirname, "dist")));
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));

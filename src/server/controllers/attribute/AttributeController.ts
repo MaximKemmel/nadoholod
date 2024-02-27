@@ -2,6 +2,8 @@ import { connectionPool } from "../../connectionPool";
 
 import { IAttribute } from "../../../types/attribute/attribute";
 
+const mysql = require("mysql");
+
 const getAttributes = (_request, response) => {
   try {
     connectionPool.query("SELECT * FROM attributes", (error, data) => {
@@ -23,4 +25,33 @@ const getAttributes = (_request, response) => {
   }
 };
 
-export { getAttributes };
+const addAttributes = (request, response) => {
+  try {
+    let sql = "DELETE FROM attributes;";
+    const values = [] as string[];
+    request.body.params.attributes.forEach((attribute) => {
+      sql += "INSERT INTO attributes (??, ??) VALUES (?, ?); ";
+      values.push("id", "attribute", attribute.id, attribute.attribute);
+    });
+    const query = mysql.format(sql, values);
+    connectionPool.query(query, (error) => {
+      if (error) {
+        return response.status(404).json({
+          success: false,
+          message: "Не удалось сохранить аттрибуты",
+          error: error,
+        });
+      } else {
+        return response.status(200).json({ success: true });
+      }
+    });
+  } catch (error) {
+    response.status(500).json({
+      success: false,
+      message: "Не удалось сохранить аттрибуты",
+      error: error,
+    });
+  }
+};
+
+export { getAttributes, addAttributes };
