@@ -155,8 +155,8 @@ var updateCategory = function (request, response) {
 exports.updateCategory = updateCategory;
 var deleteCategory = function (request, response) {
     try {
-        var sql = "DELETE FROM categories WHERE ?? = ?;";
-        var query = mysql.format(sql, ["id", request.body.params.category.id]);
+        var sql = "DELETE FROM categories WHERE ?? = ?; DELETE FROM category_attributes WHERE ?? = ?;";
+        var query = mysql.format(sql, ["id", request.body.params.category.id, "category_id", request.body.params.category.id]);
         connectionPool_1.connectionPool.query(query, function (error) {
             if (error) {
                 return response.status(404).json({

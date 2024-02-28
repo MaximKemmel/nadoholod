@@ -1,13 +1,18 @@
 {
-  "extends": ["development"],
+  "extends": [
+    "development"
+  ],
   "hints": {
     "compat-api/css": [
       "default",
       {
-        "ignore": ["user-select"]
+        "ignore": [
+          "user-select"
+        ]
       }
     ],
     "no-inline-styles": "off",
-    "axe/forms": "off"
+    "axe/forms": "off",
+    "axe/name-role-value": "off"
   }
 }

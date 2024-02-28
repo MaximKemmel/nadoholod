@@ -10,13 +10,14 @@ import Navigation from "./content/navigation/Navigation";
 import Categories from "./content/categories/Categories";
 import Products from "./content/products/Products";
 import Attributes from "./content/attributes/Attributes";
+import Filters from "./content/filters/Filters";
 
 const Admin = () => {
   const navigate = useNavigate();
   const { getCategories, getProducts, getAttributes, getFilters } = useActions();
   const isAuth = useTypedSelector((state) => state.userReducer.isAuth);
   const [activeComponent, setActiveComponent] = useState(-1);
-  const pageSections = [<Categories />, <Products />, <Attributes />] as JSX.Element[];
+  const pageSections = [<Categories />, <Products />, <Attributes />, <Filters />] as JSX.Element[];
 
   useEffect(() => {
     document.title = "Панель управления";
