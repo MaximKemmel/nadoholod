@@ -57,6 +57,9 @@ app.get("/api/attributes", AttributeController.getAttributes);
 app.post("/api/add_attributes", checkAuth, AttributeController.addAttributes);
 
 app.get("/api/filters", FilterController.getFilters);
+app.post("/api/add_filter", checkAuth, FilterController.addFilter);
+app.post("/api/update_filter", checkAuth, FilterController.updateFilter);
+app.post("/api/delete_filter", checkAuth, FilterController.deleteFilter);
 
 app.use(express.static(path.join(__dirname, "dist")));
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));

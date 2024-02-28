@@ -1,4 +1,5 @@
 import { IProduct } from "./product";
+import { IProductAttribute } from "./productAttribute";
 import { IProductImage } from "./productImage";
 
 export function initProduct(): IProduct {
@@ -12,6 +13,7 @@ export function initProduct(): IProduct {
     delivery_info: "",
     instruction_path: "",
     images: [] as IProductImage[],
+    attributes: [] as IProductAttribute[],
   };
 
   return {

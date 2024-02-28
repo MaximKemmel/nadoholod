@@ -27,6 +27,8 @@ import { List as ListIcon } from "../../../../assets/svg/List";
 import { Edit as EditIcon } from "../../../../assets/svg/Edit";
 import { Delete as DeleteIcon } from "../../../../assets/svg/Delete";
 import { Arrow as ArrowIcon } from "../../../../assets/svg/Arrow";
+import { IFilter } from "src/types/filter/filter";
+import { ICategoryFilter } from "src/types/category/categoryFilter";
 
 const Categories = () => {
   const {
@@ -42,6 +44,7 @@ const Categories = () => {
   } = useActions();
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
   const attributes = useTypedSelector((state) => state.attributeReducer.attributes);
+  const filters = useTypedSelector((state) => state.filterReducer.filters);
   const path = useTypedSelector((state) => state.fileReducer.path);
   const uploadStatus = useTypedSelector((state) => state.fileReducer.uploadCategoryImageStatus);
   const addCategoryStatus = useTypedSelector((state) => state.categoryReducer.addCategoryStatus);
@@ -374,6 +377,56 @@ const Categories = () => {
                               attribute_id: item.id,
                               category_id: selectedCategory.id,
                             } as ICategoryAttribute,
+                          ],
+                        });
+                      }
+                    }}
+                  />
+                </div>
+                <div className={pageStyles.input_field}>
+                  <div className={pageStyles.label}>{`Фильтры товаров (${selectedCategory.filters.length})`}</div>
+                  <MultiDropdown
+                    dropdownType={DropdownType.SizeSelector}
+                    activeComponent={activeComponent}
+                    setActiveComponent={setActiveComponent}
+                    label=""
+                    items={
+                      filters.map((filter: IFilter) => {
+                        return {
+                          id: filter.id,
+                          text: filter.filter,
+                          is_selected:
+                            selectedCategory.filters.filter(
+                              (categoryFilter: ICategoryFilter) => categoryFilter.filter_id === filter.id
+                            ).length > 0,
+                        } as IDropdownItem;
+                      }) as IDropdownItem[]
+                    }
+                    onItemSelect={(item: IDropdownItem) => {
+                      if (
+                        selectedCategory.filters.filter(
+                          (categoryFilter: ICategoryFilter) => categoryFilter.filter_id === item.id
+                        ).length > 0
+                      ) {
+                        setSelectedCategory({
+                          ...selectedCategory,
+                          filters: selectedCategory.filters.filter(
+                            (categoryFilter: ICategoryFilter) => categoryFilter.filter_id !== item.id
+                          ),
+                        });
+                      } else {
+                        setSelectedCategory({
+                          ...selectedCategory,
+                          filters: [
+                            ...selectedCategory.filters,
+                            {
+                              id:
+                                selectedCategory.filters.length === 0
+                                  ? 0
+                                  : selectedCategory.filters[selectedCategory.filters.length - 1].id + 1,
+                              filter_id: item.id,
+                              category_id: selectedCategory.id,
+                            } as ICategoryFilter,
                           ],
                         });
                       }

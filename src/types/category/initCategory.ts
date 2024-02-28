@@ -1,5 +1,6 @@
 import { ICategory } from "./category";
 import { ICategoryAttribute } from "./categoryAttribute";
+import { ICategoryFilter } from "./categoryFilter";
 
 export function initCategory(): ICategory {
   const defaults = {
@@ -10,6 +11,7 @@ export function initCategory(): ICategory {
     img_path: "",
     is_main: false,
     attributes: [] as ICategoryAttribute[],
+    filters: [] as ICategoryFilter[],
   };
 
   return {

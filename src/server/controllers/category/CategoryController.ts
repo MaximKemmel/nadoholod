@@ -2,32 +2,40 @@ import { connectionPool } from "../../connectionPool";
 
 import { ICategory } from "../../../types/category/category";
 import { ICategoryAttribute } from "../../../types/category/categoryAttribute";
+import { ICategoryFilter } from "../../../types/category/categoryFilter";
 
 const mysql = require("mysql");
 
 const getCategories = (_request, response) => {
   try {
-    connectionPool.query("SELECT * FROM categories; SELECT * FROM category_attributes;", (error, data) => {
-      if (error) {
-        return response.status(404).json({
-          message: "Категории не найдены",
-          error: error,
-        });
-      } else {
-        const categories = data[0] as ICategory[];
-        const categoryAttributes = data[1] as ICategoryAttribute[];
-        const categoriesList = [] as ICategory[];
-        categories.forEach((category: ICategory) => {
-          categoriesList.push({
-            ...category,
-            attributes: categoryAttributes.filter(
-              (attribute: ICategoryAttribute) => attribute.category_id === category.id
-            ) as ICategoryAttribute[],
+    connectionPool.query(
+      "SELECT * FROM categories; SELECT * FROM category_attributes; SELECT * FROM category_filters;",
+      (error, data) => {
+        if (error) {
+          return response.status(404).json({
+            message: "Категории не найдены",
+            error: error,
           });
-        });
-        return response.json(categoriesList);
+        } else {
+          const categories = data[0] as ICategory[];
+          const categoryAttributes = data[1] as ICategoryAttribute[];
+          const categoryFilters = data[2] as ICategoryFilter[];
+          const categoriesList = [] as ICategory[];
+          categories.forEach((category: ICategory) => {
+            categoriesList.push({
+              ...category,
+              attributes: categoryAttributes.filter(
+                (attribute: ICategoryAttribute) => attribute.category_id === category.id
+              ) as ICategoryAttribute[],
+              filters: categoryFilters.filter(
+                (filter: ICategoryFilter) => filter.category_id === category.id
+              ) as ICategoryFilter[],
+            });
+          });
+          return response.json(categoriesList);
+        }
       }
-    });
+    );
   } catch (error) {
     response.status(500).json({
       message: "Не удалось получить категории",
@@ -58,11 +66,15 @@ const addCategory = (request, response) => {
         });
       } else {
         const category_id = data["insertId"];
-        let sqlSecond = "DELETE FROM category_attributes WHERE ?? = ?; ";
-        const values = ["category_id", category_id] as string[];
+        let sqlSecond = "DELETE FROM category_attributes WHERE ?? = ?; DELETE FROM category_filters WHERE ?? = ?; ";
+        const values = ["category_id", category_id, "category_id", category_id] as string[];
         request.body.params.category.attributes.forEach((attribute) => {
           sqlSecond += "INSERT INTO category_attributes (??, ??) VALUES (?, ?); ";
           values.push("category_id", "attribute_id", category_id, attribute.attribute_id);
+        });
+        request.body.params.category.filters.forEach((filter) => {
+          sqlSecond += "INSERT INTO category_filters (??, ??) VALUES (?, ?); ";
+          values.push("category_id", "filter_id", category_id, filter.filter_id);
         });
         const query = mysql.format(sqlSecond, values);
         connectionPool.query(query, (error) => {
@@ -111,11 +123,20 @@ const updateCategory = (request, response) => {
           error: error,
         });
       } else {
-        let sqlSecond = "DELETE FROM category_attributes WHERE ?? = ?; ";
-        const values = ["category_id", request.body.params.category.id] as string[];
+        let sqlSecond = "DELETE FROM category_attributes WHERE ?? = ?; DELETE FROM category_filters WHERE ?? = ?; ";
+        const values = [
+          "category_id",
+          request.body.params.category.id,
+          "category_id",
+          request.body.params.category.id,
+        ] as string[];
         request.body.params.category.attributes.forEach((attribute) => {
           sqlSecond += "INSERT INTO category_attributes (??, ??) VALUES (?, ?); ";
           values.push("category_id", "attribute_id", request.body.params.category.id, attribute.attribute_id);
+        });
+        request.body.params.category.filters.forEach((filter) => {
+          sqlSecond += "INSERT INTO category_filters (??, ??) VALUES (?, ?); ";
+          values.push("category_id", "filter_id", request.body.params.category.id, filter.filter_id);
         });
         const query = mysql.format(sqlSecond, values);
         connectionPool.query(query, (error) => {

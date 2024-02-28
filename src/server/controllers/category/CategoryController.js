@@ -16,7 +16,7 @@ var connectionPool_1 = require("../../connectionPool");
 var mysql = require("mysql");
 var getCategories = function (_request, response) {
     try {
-        connectionPool_1.connectionPool.query("SELECT * FROM categories; SELECT * FROM category_attributes;", function (error, data) {
+        connectionPool_1.connectionPool.query("SELECT * FROM categories; SELECT * FROM category_attributes; SELECT * FROM category_filters;", function (error, data) {
             if (error) {
                 return response.status(404).json({
                     message: "Категории не найдены",
@@ -26,9 +26,10 @@ var getCategories = function (_request, response) {
             else {
                 var categories = data[0];
                 var categoryAttributes_1 = data[1];
+                var categoryFilters_1 = data[2];
                 var categoriesList_1 = [];
                 categories.forEach(function (category) {
-                    categoriesList_1.push(__assign(__assign({}, category), { attributes: categoryAttributes_1.filter(function (attribute) { return attribute.category_id === category.id; }) }));
+                    categoriesList_1.push(__assign(__assign({}, category), { attributes: categoryAttributes_1.filter(function (attribute) { return attribute.category_id === category.id; }), filters: categoryFilters_1.filter(function (filter) { return filter.category_id === category.id; }) }));
                 });
                 return response.json(categoriesList_1);
             }
@@ -65,11 +66,15 @@ var addCategory = function (request, response) {
             }
             else {
                 var category_id_1 = data["insertId"];
-                var sqlSecond_1 = "DELETE FROM category_attributes WHERE ?? = ?; ";
-                var values_1 = ["category_id", category_id_1];
+                var sqlSecond_1 = "DELETE FROM category_attributes WHERE ?? = ?; DELETE FROM category_filters WHERE ?? = ?; ";
+                var values_1 = ["category_id", category_id_1, "category_id", category_id_1];
                 request.body.params.category.attributes.forEach(function (attribute) {
                     sqlSecond_1 += "INSERT INTO category_attributes (??, ??) VALUES (?, ?); ";
                     values_1.push("category_id", "attribute_id", category_id_1, attribute.attribute_id);
+                });
+                request.body.params.category.filters.forEach(function (filter) {
+                    sqlSecond_1 += "INSERT INTO category_filters (??, ??) VALUES (?, ?); ";
+                    values_1.push("category_id", "filter_id", category_id_1, filter.filter_id);
                 });
                 var query_1 = mysql.format(sqlSecond_1, values_1);
                 connectionPool_1.connectionPool.query(query_1, function (error) {
@@ -121,11 +126,20 @@ var updateCategory = function (request, response) {
                 });
             }
             else {
-                var sqlSecond_2 = "DELETE FROM category_attributes WHERE ?? = ?; ";
-                var values_2 = ["category_id", request.body.params.category.id];
+                var sqlSecond_2 = "DELETE FROM category_attributes WHERE ?? = ?; DELETE FROM category_filters WHERE ?? = ?; ";
+                var values_2 = [
+                    "category_id",
+                    request.body.params.category.id,
+                    "category_id",
+                    request.body.params.category.id,
+                ];
                 request.body.params.category.attributes.forEach(function (attribute) {
                     sqlSecond_2 += "INSERT INTO category_attributes (??, ??) VALUES (?, ?); ";
                     values_2.push("category_id", "attribute_id", request.body.params.category.id, attribute.attribute_id);
+                });
+                request.body.params.category.filters.forEach(function (filter) {
+                    sqlSecond_2 += "INSERT INTO category_filters (??, ??) VALUES (?, ?); ";
+                    values_2.push("category_id", "filter_id", request.body.params.category.id, filter.filter_id);
                 });
                 var query_2 = mysql.format(sqlSecond_2, values_2);
                 connectionPool_1.connectionPool.query(query_2, function (error) {

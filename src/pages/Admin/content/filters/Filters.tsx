@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSeletor";
 
 import appStyles from "../../../../App.module.sass";
 import pageStyles from "../../Admin.module.sass";
 
+import MessageModal from "../../../../components/Modal/MessageModal";
+import ConfirmModal from "../../../../components/Modal/ConfirmModal";
+
 import { IFilter } from "../../../../types/filter/filter";
 import { initFilter } from "../../../../types/filter/initFilter";
 import { IFilterItem } from "../../../../types/filter/filterItem";
+import { ServerStatusType } from "../../../../enums/serverStatusType";
+import { initServerStatus } from "../../../../types/main/serverStatus";
 
 import { Plus as PlusIcon } from "../../../../assets/svg/Plus";
 import { List as ListIcon } from "../../../../assets/svg/List";
@@ -16,12 +22,84 @@ import { Delete as DeleteIcon } from "../../../../assets/svg/Delete";
 import { Arrow as ArrowIcon } from "../../../../assets/svg/Arrow";
 
 const Filters = () => {
+  const {
+    addFilter,
+    setAddFilterStatus,
+    updateFilter,
+    setUpdateFilterStatus,
+    deleteFilter,
+    setDeleteFilterStatus,
+    getFilters,
+  } = useActions();
   const filters = useTypedSelector((state) => state.filterReducer.filters);
+  const addFilterStatus = useTypedSelector((state) => state.filterReducer.addFilterStatus);
+  const updateFilterStatus = useTypedSelector((state) => state.filterReducer.updateFilterStatus);
+  const deleteFilterStatus = useTypedSelector((state) => state.filterReducer.deleteFilterStatus);
   const [selectedFilter, setSelectedFilter] = useState(initFilter());
   const [selectedFilterItem, setSelectedFilteritem] = useState({} as IFilterItem);
   const [viewType, setViewType] = useState(0);
   const [isCheckFields, setIsCheckFields] = useState(false);
+  const [isMessageShow, setIsMessageShow] = useState(false);
   const [isConfirmShow, setIsConfirmShow] = useState(false);
+  const [titleMessage, setTitleMessage] = useState("");
+  const [infoMessage, setInfoMessage] = useState("");
+
+  useEffect(() => {
+    if (addFilterStatus.status === ServerStatusType.Success) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      getFilters();
+      setTitleMessage("Успех!");
+      setInfoMessage("Фильтр добавлен");
+      setIsMessageShow(true);
+      setSelectedFilter(initFilter());
+      setViewType(0);
+      setAddFilterStatus(initServerStatus());
+    }
+    if (addFilterStatus.status === ServerStatusType.Error) {
+      setTitleMessage("Ошибка");
+      setInfoMessage("Ошибка при добавлении фильтра");
+      setIsMessageShow(true);
+      setAddFilterStatus(initServerStatus());
+    }
+  }, [addFilterStatus]);
+
+  useEffect(() => {
+    if (updateFilterStatus.status === ServerStatusType.Success) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      getFilters();
+      setTitleMessage("Успех!");
+      setInfoMessage("Фильтр обновлен");
+      setIsMessageShow(true);
+      setSelectedFilter(initFilter());
+      setViewType(0);
+      setUpdateFilterStatus(initServerStatus());
+    }
+    if (updateFilterStatus.status === ServerStatusType.Error) {
+      setTitleMessage("Ошибка");
+      setInfoMessage("Ошибка при обновлении фильтра");
+      setIsMessageShow(true);
+      setUpdateFilterStatus(initServerStatus());
+    }
+  }, [updateFilterStatus]);
+
+  useEffect(() => {
+    setIsConfirmShow(false);
+    if (deleteFilterStatus.status === ServerStatusType.Success) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      getFilters();
+      setTitleMessage("Успех!");
+      setInfoMessage("Фильтр удален");
+      setIsMessageShow(true);
+      setSelectedFilter(initFilter());
+      setDeleteFilterStatus(initServerStatus());
+    }
+    if (deleteFilterStatus.status === ServerStatusType.Error) {
+      setTitleMessage("Ошибка");
+      setInfoMessage("Ошибка при удалении фильтра");
+      setIsMessageShow(true);
+      setDeleteFilterStatus(initServerStatus());
+    }
+  }, [deleteFilterStatus]);
 
   const handleAddOnClick = () => {
     setSelectedFilter(initFilter());
@@ -45,13 +123,32 @@ const Filters = () => {
     event.preventDefault();
     if (!isCheckFields) {
       setIsCheckFields(true);
-      console.log(isConfirmShow);
+    }
+    if (
+      selectedFilter.filter.trim().length > 0 &&
+      selectedFilter.items.length > 0 &&
+      selectedFilter.items.filter((filterItem: IFilterItem) => filterItem.filter_item.trim().length === 0).length === 0
+    ) {
+      if (selectedFilter.id === -1) {
+        addFilter({ filter: selectedFilter });
+      } else {
+        updateFilter({ filter: selectedFilter });
+      }
+    } else {
+      setTitleMessage("Внимание");
+      setInfoMessage("Не все поля заполнены");
+      setIsMessageShow(true);
     }
   };
 
   const handleDeleteOnClick = (filter: IFilter) => {
     setSelectedFilter(filter);
     setIsConfirmShow(true);
+  };
+
+  const handleDeleteOnConfirm = () => {
+    deleteFilter({ filter: selectedFilter });
+    setIsConfirmShow(false);
   };
 
   const handleAddItemOnClick = () => {
@@ -136,15 +233,15 @@ const Filters = () => {
                     onChange={(event) => setSelectedFilter({ ...selectedFilter, filter: event.target.value })}
                   />
                 </div>
-                <div className={pageStyles.input_field}>
-                  Значения фильтров
+                <div className={pageStyles.text_field}>
+                  Значения фильтра
                   <button className={pageStyles.add_button} type="button" onClick={handleAddItemOnClick}>
                     <PlusIcon />
                   </button>
                 </div>
                 {selectedFilter.items.map((filterItem: IFilterItem) => (
                   <div className={pageStyles.input_field}>
-                    <div className={pageStyles.label}>Аттрибут</div>
+                    <div className={pageStyles.label}>Значение</div>
                     <input
                       className={filterItem.filter_item.trim().length === 0 && isCheckFields ? pageStyles.wrong : ""}
                       type="text"
@@ -175,6 +272,14 @@ const Filters = () => {
           </form>
         </div>
       ) : null}
+      <MessageModal isShow={isMessageShow} setIsShow={setIsMessageShow} title={titleMessage} message={infoMessage} />
+      <ConfirmModal
+        isShow={isConfirmShow}
+        setIsShow={setIsConfirmShow}
+        title="Подтвердите удаление"
+        message="Вы действительно хотите элемент?"
+        handleConfirmOnClick={viewType === 0 ? handleDeleteOnConfirm : handleDeleteItemOnConfirm}
+      />
     </div>
   );
 };

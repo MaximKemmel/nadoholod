@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "../../../../quill.css";
 
@@ -15,16 +15,20 @@ import { IProductImage } from "../../../../types/product/productImage";
 import { ICategory } from "../../../../types/category/category";
 import { IDropdownItem } from "../../../../types/main/dropdownItem";
 import { DropdownType } from "../../../../enums/dropdownType";
+import { IAttribute } from "../../../../types/attribute/attribute";
+import { IProductAttribute } from "../../../../types/product/productAttribute";
 
 import { Plus as PlusIcon } from "../../../../assets/svg/Plus";
 import { List as ListIcon } from "../../../../assets/svg/List";
 import { Edit as EditIcon } from "../../../../assets/svg/Edit";
 import { Delete as DeleteIcon } from "../../../../assets/svg/Delete";
 import { Arrow as ArrowIcon } from "../../../../assets/svg/Arrow";
+import { ICategoryAttribute } from "src/types/category/categoryAttribute";
 
 const Products = () => {
   const products = useTypedSelector((state) => state.productReducer.products);
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
+  const attributes = useTypedSelector((state) => state.attributeReducer.attributes);
   const [selectedProduct, setSelectedProduct] = useState(initProduct());
   const [description, setDescription] = useState("");
   const [fullDescription, setFullDescription] = useState("");
@@ -36,6 +40,28 @@ const Products = () => {
   const quillRefDeliveryInfo = useRef<ReactQuill>(null);
   const [activeComponent, setActiveComponent] = useState(DropdownType.None);
   const [isConfirmShow, setIsConfirmShow] = useState(false);
+
+  useEffect(() => {
+    if (selectedProduct.category_id === -1) {
+      setSelectedProduct({ ...selectedProduct, attributes: [] as IProductAttribute[] });
+    } else {
+      if (Array.isArray(attributes) && attributes !== undefined && attributes.length > 0) {
+        var category = categories.find((category: ICategory) => category.id === selectedProduct.category_id);
+        var tmpProductAttributes = [] as IProductAttribute[];
+        category?.attributes.forEach((categoryAttribute: ICategoryAttribute) => {
+          if (attributes.filter((attribute: IAttribute) => attribute.id === categoryAttribute.attribute_id).length > 0) {
+            tmpProductAttributes.push({
+              id: categoryAttribute.attribute_id,
+              product_id: selectedProduct.id,
+              attribute_id: categoryAttribute.attribute_id,
+              value: "",
+            } as IProductAttribute);
+          }
+        });
+        setSelectedProduct({ ...selectedProduct, attributes: tmpProductAttributes });
+      }
+    }
+  }, [selectedProduct.category_id, attributes]);
 
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],
@@ -186,6 +212,25 @@ const Products = () => {
                     }}
                   />
                 </div>
+                <div className={pageStyles.input_field}>
+                  <div className={pageStyles.label}>Цена, ₽</div>
+                  <input
+                    className={selectedProduct.name.trim().length === 0 && isCheckFields ? pageStyles.wrong : ""}
+                    type="text"
+                    placeholder="Цена"
+                    value={selectedProduct.price}
+                    onChange={(event) =>
+                      setSelectedProduct({
+                        ...selectedProduct,
+                        price:
+                          Number.isNaN(Number(event.target.value)) || Number(event.target.value) < 0
+                            ? selectedProduct.price
+                            : Number(event.target.value),
+                      })
+                    }
+                    onClick={() => setActiveComponent(DropdownType.None)}
+                  />
+                </div>
                 <div className={pageStyles.input_field} onClick={() => setActiveComponent(DropdownType.None)}>
                   <div className={pageStyles.label}>Краткое описание</div>
                   <ReactQuill
@@ -220,6 +265,43 @@ const Products = () => {
                     onKeyUp={() => setFullDescription(`${quillRefFullDescription.current?.getEditorContents()}`)}
                   />
                 </div>
+                {selectedProduct.attributes.length > 0 ? (
+                  <>
+                    <div className={pageStyles.text_field}>Аттрибуты товара</div>
+                    {selectedProduct.attributes.map((productAttribute: IProductAttribute) => (
+                      <div className={pageStyles.input_field}>
+                        <div className={pageStyles.label}>
+                          {
+                            attributes.find((attribute: IAttribute) => attribute.id === productAttribute.attribute_id)
+                              ?.attribute
+                          }
+                        </div>
+                        <input
+                          type="text"
+                          placeholder={
+                            attributes.find((attribute: IAttribute) => attribute.id === productAttribute.attribute_id)
+                              ?.attribute
+                          }
+                          value={productAttribute.value}
+                          onChange={(event) =>
+                            setSelectedProduct({
+                              ...selectedProduct,
+                              attributes: selectedProduct.attributes.map((attributeTmp: IProductAttribute) => {
+                                if (attributeTmp.id === productAttribute.id) {
+                                  return {
+                                    ...attributeTmp,
+                                    vaue: event.target.value,
+                                  };
+                                } else return attributeTmp;
+                              }),
+                            })
+                          }
+                          onClick={() => setActiveComponent(DropdownType.None)}
+                        />
+                      </div>
+                    ))}
+                  </>
+                ) : null}
                 <div className={pageStyles.input_field} onClick={() => setActiveComponent(DropdownType.None)}>
                   <div className={pageStyles.label}>Доставка</div>
                   <ReactQuill
