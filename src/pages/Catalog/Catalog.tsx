@@ -5,11 +5,9 @@ import { useTypedSelector } from "../../hooks/useTypedSeletor";
 
 import styles from "./Catalog.module.sass";
 
-//import ProductCard from "../../components/ProductCard/ProductCard";
+import ProductCard from "../../components/ProductCard/ProductCard";
 import Slider from "../../components/Slider/Slider";
 import MultiDropdown from "../../components/Dropdown/MultiDropdown";
-
-//import { recommendedProductsList } from "../../data/recommendedProductsList";
 
 import { ICategory } from "../../types/category/category";
 import { initCategory } from "../../types/category/initCategory";
@@ -189,9 +187,9 @@ const Catalog = () => {
                     </div>
                   </div>
                   <div className={styles.products_list}>
-                    {/*products.slice((currentPage - 1) * 12, (currentPage - 1) * 12 + 12).map((product: IProduct) => (
+                    {categoryProducts.slice((currentPage - 1) * 12, (currentPage - 1) * 12 + 12).map((product: IProduct) => (
                       <ProductCard product={product} />
-                    ))*/}
+                    ))}
                   </div>
                   {products.length > 12 ? (
                     <div className={styles.pagination}>

@@ -97,6 +97,7 @@ const Categories = () => {
       setDescription("");
       setViewType(0);
       setAddCategoryStatus(initServerStatus());
+      setActiveComponent(DropdownType.None);
     }
     if (addCategoryStatus.status === ServerStatusType.Error) {
       setTitleMessage("Ошибка");
@@ -117,6 +118,7 @@ const Categories = () => {
       setDescription("");
       setViewType(0);
       setUpdateCategoryStatus(initServerStatus());
+      setActiveComponent(DropdownType.None);
     }
     if (updateCategoryStatus.status === ServerStatusType.Error) {
       setTitleMessage("Ошибка");

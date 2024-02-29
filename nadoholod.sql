@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Фев 28 2024 г., 22:51
+-- Время создания: Фев 29 2024 г., 21:32
 -- Версия сервера: 10.4.24-MariaDB
 -- Версия PHP: 7.4.29
 
@@ -150,6 +150,26 @@ INSERT INTO `filter_items` (`id`, `filter_id`, `filter_item`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `manufacturers`
+--
+
+CREATE TABLE `manufacturers` (
+  `id` int(11) NOT NULL,
+  `manufacturer` varchar(250) NOT NULL,
+  `image_path` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `manufacturers`
+--
+
+INSERT INTO `manufacturers` (`id`, `manufacturer`, `image_path`) VALUES
+(1, 'Polair', '/manufacturers/polair.png'),
+(2, 'Север', '/manufacturers/sever.png');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `products`
 --
 
@@ -161,15 +181,9 @@ CREATE TABLE `products` (
   `full_description` text NOT NULL,
   `price` int(11) NOT NULL,
   `delivery_info` text NOT NULL,
-  `instruction_path` text NOT NULL
+  `instruction_path` text NOT NULL,
+  `manufacturer_id` int(11) NOT NULL DEFAULT -1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `products`
---
-
-INSERT INTO `products` (`id`, `category_id`, `name`, `description`, `full_description`, `price`, `delivery_info`, `instruction_path`) VALUES
-(1, 1, 'Товар', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 67760, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', '');
 
 -- --------------------------------------------------------
 
@@ -187,6 +201,19 @@ CREATE TABLE `product_attributes` (
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `product_filters`
+--
+
+CREATE TABLE `product_filters` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `filter_id` int(11) NOT NULL,
+  `filter_item_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `product_images`
 --
 
@@ -196,13 +223,6 @@ CREATE TABLE `product_images` (
   `path` text NOT NULL,
   `is_main` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `product_images`
---
-
-INSERT INTO `product_images` (`id`, `product_id`, `path`, `is_main`) VALUES
-(1, 1, '/products/product.png', 1);
 
 -- --------------------------------------------------------
 
@@ -264,6 +284,12 @@ ALTER TABLE `filter_items`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `manufacturers`
+--
+ALTER TABLE `manufacturers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `products`
 --
 ALTER TABLE `products`
@@ -273,6 +299,12 @@ ALTER TABLE `products`
 -- Индексы таблицы `product_attributes`
 --
 ALTER TABLE `product_attributes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `product_filters`
+--
+ALTER TABLE `product_filters`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -322,6 +354,12 @@ ALTER TABLE `filter_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT для таблицы `manufacturers`
+--
+ALTER TABLE `manufacturers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
@@ -331,13 +369,19 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT для таблицы `product_attributes`
 --
 ALTER TABLE `product_attributes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT для таблицы `product_filters`
+--
+ALTER TABLE `product_filters`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `users`

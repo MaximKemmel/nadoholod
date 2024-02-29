@@ -6,6 +6,7 @@ import {
   AttributeController,
   FilterController,
   UserController,
+  ManufacturerController,
 } from "./src/server/index";
 
 const express = require("express");
@@ -52,6 +53,9 @@ app.post("/api/update_category", checkAuth, CategoryController.updateCategory);
 app.post("/api/delete_category", checkAuth, CategoryController.deleteCategory);
 
 app.get("/api/products", ProductController.getProducts);
+app.post("/api/add_product", checkAuth, ProductController.addProduct);
+app.post("/api/update_product", checkAuth, ProductController.updateProduct);
+app.post("/api/delete_product", checkAuth, ProductController.deleteProduct);
 
 app.get("/api/attributes", AttributeController.getAttributes);
 app.post("/api/add_attributes", checkAuth, AttributeController.addAttributes);
@@ -60,6 +64,8 @@ app.get("/api/filters", FilterController.getFilters);
 app.post("/api/add_filter", checkAuth, FilterController.addFilter);
 app.post("/api/update_filter", checkAuth, FilterController.updateFilter);
 app.post("/api/delete_filter", checkAuth, FilterController.deleteFilter);
+
+app.get("/api/manufacturers", ManufacturerController.getManufacturers);
 
 app.use(express.static(path.join(__dirname, "dist")));
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));

@@ -37,12 +37,16 @@ app.post("/api/add_category", checkAuth_1.default, index_1.CategoryController.ad
 app.post("/api/update_category", checkAuth_1.default, index_1.CategoryController.updateCategory);
 app.post("/api/delete_category", checkAuth_1.default, index_1.CategoryController.deleteCategory);
 app.get("/api/products", index_1.ProductController.getProducts);
+app.post("/api/add_product", checkAuth_1.default, index_1.ProductController.addProduct);
+app.post("/api/update_product", checkAuth_1.default, index_1.ProductController.updateProduct);
+app.post("/api/delete_product", checkAuth_1.default, index_1.ProductController.deleteProduct);
 app.get("/api/attributes", index_1.AttributeController.getAttributes);
 app.post("/api/add_attributes", checkAuth_1.default, index_1.AttributeController.addAttributes);
 app.get("/api/filters", index_1.FilterController.getFilters);
 app.post("/api/add_filter", checkAuth_1.default, index_1.FilterController.addFilter);
 app.post("/api/update_filter", checkAuth_1.default, index_1.FilterController.updateFilter);
 app.post("/api/delete_filter", checkAuth_1.default, index_1.FilterController.deleteFilter);
+app.get("/api/manufacturers", index_1.ManufacturerController.getManufacturers);
 app.use(express.static(path.join(__dirname, "dist")));
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 app.get("*", function (request, response) {

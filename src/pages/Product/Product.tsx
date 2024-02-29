@@ -7,14 +7,7 @@ import styles from "./Product.module.sass";
 import ProductMessageModal from "../../components/Modal/ProductMessageModal";
 import ProductOrderModal from "../../components/Modal/ProductOrderModal";
 
-import ProductCard from "../../components/ProductCard/ProductCard";
-
-import { recommendedProductsList } from "../../data/recommendedProductsList";
-
-import { IProduct } from "../../types/_product/product";
-
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
-import PolairImage from "../../assets/images/manufacturer/polair.png";
 import CarIcon from "../../assets/images/car.png";
 import TimeIcon from "../../assets/images/time.png";
 import ServiceIcon from "../../assets/images/service.png";
@@ -70,7 +63,7 @@ const Product = () => {
             </div>
             <div className={styles.info_container}>
               <h5>Холодильная камера 2.9</h5>
-              <img src={PolairImage} alt="" width={74} />
+              {/*<img src={PolairImage} alt="" width={74} />*/}
               <div className={styles.description}>
                 Камера предназначена для хранения продуктов, которым требуется умеренно низкая температура. Поддерживает
                 температуру от 0-8 °С
@@ -182,14 +175,14 @@ const Product = () => {
               </div>
             ) : null}
           </div>
-          <div className={styles.recommended_products}>
+          {/*<div className={styles.recommended_products}>
             <h4>Похожие товары</h4>
             <div className={styles.recommended_products_list}>
               {recommendedProductsList.map((product: IProduct) => (
                 <ProductCard product={product} />
               ))}
             </div>
-          </div>
+              </div>*/}
         </div>
       </div>
       <ProductMessageModal
