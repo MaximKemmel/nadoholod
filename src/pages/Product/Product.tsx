@@ -1,11 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Slider from "react-slick";
 
 import { useActions } from "../../hooks/useActions";
+import { useTypedSelector } from "../../hooks/useTypedSeletor";
 
 import styles from "./Product.module.sass";
 
+import ProductCard from "../../components/ProductCard/ProductCard";
 import ProductMessageModal from "../../components/Modal/ProductMessageModal";
 import ProductOrderModal from "../../components/Modal/ProductOrderModal";
+
+import { IProduct } from "../../types/product/product";
 
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 import CarIcon from "../../assets/images/car.png";
@@ -15,10 +20,41 @@ import PdfIcon from "../../assets/images/pdf_icon.png";
 
 const Product = () => {
   const { setIsNoScroll } = useActions();
+  const products = useTypedSelector((state) => state.productReducer.products);
   const [mainPhoto, setMainPhoto] = useState("/uploads/products/product.png");
   const [activeTab, setActiveTab] = useState(0);
   const [isMessageShow, setIsMessageShow] = useState(false);
   const [isOrderShow, setIsOrderShow] = useState(false);
+  const slider = useRef(null as Slider);
+
+  const settings = {
+    className: "center",
+    infinite: true,
+    autoplay: false,
+    centerPadding: "30px",
+    slidesToShow: 4,
+    speed: 500,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 900,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 500,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -77,15 +113,21 @@ const Product = () => {
               </div>
               <div className={styles.advantages_list}>
                 <div className={styles.advantage}>
-                  <img src={CarIcon} alt="" />
+                  <div className={styles.image}>
+                    <img src={CarIcon} alt="" />
+                  </div>
                   Доставка по всей России
                 </div>
                 <div className={styles.advantage}>
-                  <img src={TimeIcon} alt="" />
+                  <div className={styles.image}>
+                    <img src={TimeIcon} alt="" />
+                  </div>
                   Изгоовление 2 недели
                 </div>
                 <div className={styles.advantage}>
-                  <img src={ServiceIcon} alt="" />
+                  <div className={styles.image}>
+                    <img src={ServiceIcon} alt="" />
+                  </div>
                   Гарантия 5 лет
                 </div>
               </div>
@@ -175,14 +217,33 @@ const Product = () => {
               </div>
             ) : null}
           </div>
-          {/*<div className={styles.recommended_products}>
-            <h4>Похожие товары</h4>
-            <div className={styles.recommended_products_list}>
-              {recommendedProductsList.map((product: IProduct) => (
-                <ProductCard product={product} />
-              ))}
+          {Array.isArray(products) && products !== undefined && products.length > 0 ? (
+            <div className={styles.recommended_products}>
+              <h4>Возможно вас заинтересует</h4>
+              <div className={styles.recommended_products_list}>
+                {Array(4)
+                  .fill(products[0])
+                  .map((product: IProduct) => (
+                    <div className={styles.card}>
+                      <ProductCard product={product} viewType={0} />
+                    </div>
+                  ))}
+              </div>
+              <div className={styles.slider}>
+                <Slider ref={slider} {...settings}>
+                  {Array(4)
+                    .fill(products[0])
+                    .map((product: IProduct) => (
+                      <div>
+                        <div className={styles.card}>
+                          <ProductCard product={product} viewType={0} />
+                        </div>
+                      </div>
+                    ))}
+                </Slider>
+              </div>
             </div>
-              </div>*/}
+          ) : null}
         </div>
       </div>
       <ProductMessageModal

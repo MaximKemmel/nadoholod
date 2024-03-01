@@ -27,8 +27,11 @@ const storage = multer.diskStorage({
     fs.mkdirsSync(path);
     callback(null, path);
   },
-  filename: (_, file, cb) => {
-    fileName = `ct${String(Date.now())}.${file.originalname.split(".")[file.originalname.split(".").length - 1]}`;
+  filename: (req, file, cb) => {
+    fileName = `im${String(Date.now())}.${file.originalname.split(".")[file.originalname.split(".").length - 1]}`;
+    if (req.params.type === "instructions") {
+      fileName = `in${String(Date.now())}${file.originalname}`;
+    }
     cb(null, fileName);
   },
 });

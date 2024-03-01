@@ -342,6 +342,7 @@ const Categories = () => {
                     activeComponent={activeComponent}
                     setActiveComponent={setActiveComponent}
                     label=""
+                    isFullWidth={true}
                     items={
                       attributes.map((attribute: IAttribute) => {
                         return {
@@ -392,6 +393,7 @@ const Categories = () => {
                     activeComponent={activeComponent}
                     setActiveComponent={setActiveComponent}
                     label=""
+                    isFullWidth={false}
                     items={
                       filters.map((filter: IFilter) => {
                         return {

@@ -13,6 +13,7 @@ interface IMultiDropdownProps {
   label: string;
   items: IDropdownItem[];
   onItemSelect: Function;
+  isFullWidth: boolean;
 }
 
 const MultiDropdown: React.FC<IMultiDropdownProps> = ({
@@ -22,15 +23,16 @@ const MultiDropdown: React.FC<IMultiDropdownProps> = ({
   label,
   items,
   onItemSelect,
+  isFullWidth,
 }) => {
   return (
     <div
       className={`${styles.dropdown} ${activeComponent === dropdownType ? styles.active : ""} ${
-        label === "" ? styles.full_width : ""
+        label === "" || isFullWidth ? styles.full_width : ""
       }`}
     >
       <div
-        className={`${styles.dropdown_button} ${label === "" ? styles.full_width : ""}`}
+        className={`${styles.dropdown_button} ${label === "" || isFullWidth ? styles.full_width : ""}`}
         onClick={() => setActiveComponent(activeComponent === dropdownType ? DropdownType.None : dropdownType)}
       >
         {label}
@@ -40,7 +42,7 @@ const MultiDropdown: React.FC<IMultiDropdownProps> = ({
       </div>
       <div
         className={`${styles.dropdown_container} ${activeComponent === dropdownType ? styles.active : ""} ${
-          label === "" ? styles.full_width : ""
+          label === "" || isFullWidth ? styles.full_width : ""
         }`}
       >
         <div className={styles.dropdown_list}>

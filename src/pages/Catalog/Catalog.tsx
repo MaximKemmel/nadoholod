@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Slider from "react-slick";
 
 import { useTypedSelector } from "../../hooks/useTypedSeletor";
 
 import styles from "./Catalog.module.sass";
 
 import ProductCard from "../../components/ProductCard/ProductCard";
-import Slider from "../../components/Slider/Slider";
+import InputSlider from "../../components/InputSlider/InputSlider";
 import MultiDropdown from "../../components/Dropdown/MultiDropdown";
 
 import { ICategory } from "../../types/category/category";
@@ -16,15 +17,25 @@ import { DropdownType } from "../../enums/dropdownType";
 import { IDropdownItem } from "../../types/main/dropdownItem";
 
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
+import { Check as CheckIcon } from "../../assets/svg/Check";
+import { List as ListIcon } from "../../assets/svg/List";
+import { Grid as GridIcon } from "../../assets/svg/Grid";
+import { Filter as FilterIcon } from "../../assets/svg/Filter";
+import { Close as CloseIcon } from "../../assets/svg/Close";
+import { ButtonArrow as ButtonArrowIcon } from "../../assets/svg/ButtonArrow";
 
 const Catalog = () => {
   const { id } = useParams();
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
   const products = useTypedSelector((state) => state.productReducer.products);
+  const windowSize = useTypedSelector((state) => state.mainReducer.windowSize);
   const [category, setCategory] = useState(initCategory());
   const [categoryProducts, setCategoryProducts] = useState([] as IProduct[]);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeDropdown, setActiveDropdown] = useState(DropdownType.None);
+  const [isSortSelected, setIsSortSelected] = useState(false);
+  const [isFiltersActive, setIsFiltersActive] = useState(false);
+  const [viewType, setViewType] = useState(0);
   const [manufacturers, setManufacturers] = useState([
     { id: 0, text: "Polair", is_selected: false } as IDropdownItem,
     { id: 1, text: "Север", is_selected: false } as IDropdownItem,
@@ -43,6 +54,36 @@ const Catalog = () => {
     { id: 2, text: "-15°С; -25°С", is_selected: false } as IDropdownItem,
   ] as IDropdownItem[]);
   const navigate = useNavigate();
+  const slider = useRef(null as Slider);
+
+  const settings = {
+    className: "center",
+    infinite: true,
+    autoplay: false,
+    centerPadding: "30px",
+    slidesToShow: 4,
+    speed: 500,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 900,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 500,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -53,7 +94,7 @@ const Catalog = () => {
   }, [currentPage]);
 
   useEffect(() => {
-    if (id !== undefined) {
+    if (id !== undefined && categories !== undefined && Array.isArray(categories)) {
       if (
         !Number.isNaN(id) &&
         categories.length > 0 &&
@@ -68,7 +109,8 @@ const Catalog = () => {
 
   useEffect(() => {
     if (category.id !== -1 && products) {
-      setCategoryProducts(products.filter((product: IProduct) => product.category_id === category.id));
+      //setCategoryProducts(products.filter((product: IProduct) => product.category_id === category.id));
+      setCategoryProducts(Array(23).fill(products[0]));
     }
   }, [category, products]);
 
@@ -99,7 +141,7 @@ const Catalog = () => {
                 .filter((categoryTmp: ICategory) => categoryTmp.parent_id === category.id)
                 .map((categoryTmp: ICategory) => (
                   <div className={styles.subcategory} onClick={() => navigate(`/catalog/${categoryTmp.id}`)}>
-                    <img src={`/uploads/${category.img_path}`} alt="" />
+                    <img src={`/uploads/${categoryTmp.img_path}`} alt="" />
                     <div className={styles.name}>{categoryTmp.category}</div>
                   </div>
                 ))}
@@ -115,6 +157,7 @@ const Catalog = () => {
                       setActiveComponent={setActiveDropdown}
                       label="Производитель"
                       items={manufacturers}
+                      isFullWidth={false}
                       onItemSelect={(item: IDropdownItem) => {
                         const tmpManufacturers = manufacturers.map((value: IDropdownItem) => {
                           return {
@@ -131,6 +174,7 @@ const Catalog = () => {
                       setActiveComponent={setActiveDropdown}
                       label="Напряжение"
                       items={voltages}
+                      isFullWidth={false}
                       onItemSelect={(item: IDropdownItem) => {
                         const tmpVoltages = voltages.map((value: IDropdownItem) => {
                           return {
@@ -147,6 +191,7 @@ const Catalog = () => {
                       setActiveComponent={setActiveDropdown}
                       label="Толщина сэндвич-панели"
                       items={sizes}
+                      isFullWidth={false}
                       onItemSelect={(item: IDropdownItem) => {
                         const tmpSizes = sizes.map((value: IDropdownItem) => {
                           return {
@@ -163,6 +208,7 @@ const Catalog = () => {
                       setActiveComponent={setActiveDropdown}
                       label="Температура"
                       items={temperatures}
+                      isFullWidth={false}
                       onItemSelect={(item: IDropdownItem) => {
                         const tmpTemperatures = temperatures.map((value: IDropdownItem) => {
                           return {
@@ -175,7 +221,7 @@ const Catalog = () => {
                     />
                     <div className={styles.main_filter}>
                       <div className={styles.filter}>
-                        <Slider min={2} max={50} label="Объем, м³" unit="м³" />
+                        <InputSlider min={2} max={50} label="Объем, м³" unit="м³" />
                       </div>
                       <div className={styles.filter}>
                         Цена, ₽
@@ -186,21 +232,48 @@ const Catalog = () => {
                       </div>
                     </div>
                   </div>
+                  <div className={styles.filters_container}>
+                    <div className={styles.sort}>
+                      Сортировка:
+                      <label className={styles.checkbox}>
+                        <input type="checkbox" />
+                        <span
+                          className={`${styles.checkbox_mark} ${isSortSelected ? styles.active : ""}`}
+                          aria-hidden="true"
+                          onClick={() => setIsSortSelected(!isSortSelected)}
+                        >
+                          {isSortSelected ? <CheckIcon /> : null}
+                        </span>
+                        <div className={styles.text}>По цене</div>
+                      </label>
+                    </div>
+                    <div
+                      className={`${styles.filter_button} ${viewType === 1 ? styles.list : ""}`}
+                      onClick={() => setViewType(viewType === 0 ? 1 : 0)}
+                    >
+                      {viewType === 0 ? <GridIcon /> : <ListIcon />}
+                    </div>
+                    <div className={styles.filter_button} onClick={() => setIsFiltersActive(!isFiltersActive)}>
+                      <FilterIcon />
+                    </div>
+                  </div>
                   <div className={styles.products_list}>
                     {categoryProducts.slice((currentPage - 1) * 12, (currentPage - 1) * 12 + 12).map((product: IProduct) => (
-                      <ProductCard product={product} />
+                      <div className={styles.card}>
+                        <ProductCard product={product} viewType={windowSize.innerWidth < 361 ? viewType : 0} />
+                      </div>
                     ))}
                   </div>
-                  {products.length > 12 ? (
+                  {categoryProducts.length > 12 ? (
                     <div className={styles.pagination}>
-                      {Math.ceil(products.length / 12) > 0 ? (
+                      {Math.ceil(categoryProducts.length / 12) > 0 ? (
                         <>
                           {currentPage !== 1 ? (
                             <div className={styles.prev_button} onClick={() => setCurrentPage(currentPage - 1)}>
                               <ArrowIcon />
                             </div>
                           ) : null}
-                          {Array(Math.ceil(products.length / 12))
+                          {Array(Math.ceil(categoryProducts.length / 12))
                             .fill(1)
                             .map((_value, index: number) => (
                               <div
@@ -210,7 +283,7 @@ const Catalog = () => {
                                 {index + 1}
                               </div>
                             ))}
-                          {currentPage !== Math.ceil(products.length / 12) ? (
+                          {currentPage !== Math.ceil(categoryProducts.length / 12) ? (
                             <div className={styles.next_button} onClick={() => setCurrentPage(currentPage + 1)}>
                               <ArrowIcon />
                             </div>
@@ -224,12 +297,121 @@ const Catalog = () => {
             </>
           )}
         </div>
-        <div className={styles.recommended_products}>
-          <h4>Возможно вас заинтересует</h4>
-          <div className={styles.recommended_products_list}>
-            {/*recommendedProductsList.map((product: IProduct) => (
-              <ProductCard product={product} />
-            ))*/}
+        {Array.isArray(products) && products !== undefined && products.length > 0 ? (
+          <div className={styles.recommended_products}>
+            <h4>Возможно вас заинтересует</h4>
+            <div className={styles.recommended_products_list}>
+              {Array(4)
+                .fill(products[0])
+                .map((product: IProduct) => (
+                  <div className={styles.card}>
+                    <ProductCard product={product} viewType={0} />
+                  </div>
+                ))}
+            </div>
+            <div className={styles.slider}>
+              <Slider ref={slider} {...settings}>
+                {Array(4)
+                  .fill(products[0])
+                  .map((product: IProduct) => (
+                    <div>
+                      <div className={styles.card}>
+                        <ProductCard product={product} viewType={0} />
+                      </div>
+                    </div>
+                  ))}
+              </Slider>
+            </div>
+          </div>
+        ) : null}
+      </div>
+      <div className={`${styles.filters_wrapper} ${isFiltersActive ? styles.active : ""}`}>
+        <div className={styles.overlay} onClick={() => setIsFiltersActive(false)} />
+        <div className={styles.wrapper_content}>
+          <div className={styles.close_button} onClick={() => setIsFiltersActive(false)}>
+            <CloseIcon />
+          </div>
+          <div className={styles.back_button} onClick={() => setIsFiltersActive(false)}>
+            <ButtonArrowIcon />
+            Фильтр
+          </div>
+          <div className={styles.filters_list}>
+            <MultiDropdown
+              dropdownType={DropdownType.ManufacturerSelector}
+              activeComponent={activeDropdown}
+              setActiveComponent={setActiveDropdown}
+              label="Производитель"
+              items={manufacturers}
+              isFullWidth={true}
+              onItemSelect={(item: IDropdownItem) => {
+                const tmpManufacturers = manufacturers.map((value: IDropdownItem) => {
+                  return {
+                    ...value,
+                    is_selected: item.id === value.id ? !value.is_selected : value.is_selected,
+                  };
+                });
+                setManufacturers(tmpManufacturers);
+              }}
+            />
+            <MultiDropdown
+              dropdownType={DropdownType.VoltageSelector}
+              activeComponent={activeDropdown}
+              setActiveComponent={setActiveDropdown}
+              label="Напряжение"
+              items={voltages}
+              isFullWidth={true}
+              onItemSelect={(item: IDropdownItem) => {
+                const tmpVoltages = voltages.map((value: IDropdownItem) => {
+                  return {
+                    ...value,
+                    is_selected: item.id === value.id ? !value.is_selected : value.is_selected,
+                  };
+                });
+                setVoltages(tmpVoltages);
+              }}
+            />
+            <MultiDropdown
+              dropdownType={DropdownType.SizeSelector}
+              activeComponent={activeDropdown}
+              setActiveComponent={setActiveDropdown}
+              label="Толщина сэндвич-панели"
+              items={sizes}
+              isFullWidth={true}
+              onItemSelect={(item: IDropdownItem) => {
+                const tmpSizes = sizes.map((value: IDropdownItem) => {
+                  return {
+                    ...value,
+                    is_selected: item.id === value.id ? !value.is_selected : value.is_selected,
+                  };
+                });
+                setSizes(tmpSizes);
+              }}
+            />
+            <MultiDropdown
+              dropdownType={DropdownType.TemperaturesSelector}
+              activeComponent={activeDropdown}
+              setActiveComponent={setActiveDropdown}
+              label="Температура"
+              items={temperatures}
+              isFullWidth={true}
+              onItemSelect={(item: IDropdownItem) => {
+                const tmpTemperatures = temperatures.map((value: IDropdownItem) => {
+                  return {
+                    ...value,
+                    is_selected: item.id === value.id ? !value.is_selected : value.is_selected,
+                  };
+                });
+                setTemperatures(tmpTemperatures);
+              }}
+            />
+            <div />
+            Цена, ₽
+            <input type="text" placeholder="от 50 000" />
+            <input type="text" placeholder="до 500 000" />
+            <div className={styles.filter}></div>
+          </div>
+          <div className={styles.clear_filters}>
+            <CloseIcon /> Очистить фильтр
           </div>
         </div>
       </div>

@@ -2,30 +2,45 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import parse from "html-react-parser";
 
+import { useActions } from "../../hooks/useActions";
+import { useTypedSelector } from "../../hooks/useTypedSeletor";
+
 import styles from "./Equipment.module.sass";
 
 import { equipmentsList } from "../../data/equipmentsList";
 
 import { IEquipment } from "../../types/equipment/equipment";
 import { IEquipmentFeature } from "../../types/equipment/equipmentFeature";
+import { IEquipmentPrice } from "../..//types/equipment/equipmentPrice";
 
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 import { ButtonArrow as ButtonArrowIcon } from "../../assets/svg/ButtonArrow";
+import { DoubleArrow as DoubleArrowIcon } from "../../assets/svg/DoubleArrow";
+import { Close as CloseIcon } from "../../assets/svg/Close";
 import CarIcon from "../../assets/images/car.png";
 import ShieldIcon from "../../assets/images/shield.png";
 import VentilationIcon from "../../assets/images/ventilation.png";
 import TimeIcon from "../../assets/images/time.png";
 import ProcentsIcon from "../../assets/images/procents.png";
 import ServiceIcon from "../../assets/images/service.png";
-import { IEquipmentPrice } from "src/types/equipment/equipmentPrice";
+import OrderImage from "../../assets/images/order_image.png";
+import SnowImage from "../../assets/images/snow.png";
 
 const Equipments = () => {
   const { id } = useParams();
+  const { setIsNoScroll } = useActions();
+  const windowSize = useTypedSelector((state) => state.mainReducer.windowSize);
+  const [isOrderShow, setIsOrderShow] = useState(false);
+  const [isMessageVisible, setIsMessageVisible] = useState(false);
   const [equipment, setEquipment] = useState({ id: -1 } as IEquipment);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  useEffect(() => {
+    setIsNoScroll(isOrderShow);
+  }, [isOrderShow]);
 
   useEffect(() => {
     if (id !== undefined) {
@@ -34,6 +49,11 @@ const Equipments = () => {
       document.title = tmpEquipment.name;
     }
   }, [id]);
+
+  const handleOnSubmit = async (event) => {
+    event.preventDefault();
+    setIsMessageVisible(true);
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -49,6 +69,9 @@ const Equipments = () => {
           <div className={styles.about}>
             <div className={styles.content}>
               <h2>{equipment.full_name}</h2>
+              <div className={styles.image_mobile}>
+                <img src={`/uploads/equipments/${equipment.prefix}_main.png`} alt="" />
+              </div>
               <div className={styles.description}>{parse(equipment.description)}</div>
               <button type="button">
                 Каталог
@@ -118,6 +141,9 @@ const Equipments = () => {
           </div>
           <div className={styles.prices}>
             <h5>Как производится расчет?</h5>
+            <div className={styles.image_mobile}>
+              <img src={`/uploads/equipments/${equipment.prefix}_schema.png`} alt="" />
+            </div>
             <div className={styles.parameters}>{parse(equipment.parameters)}</div>
             <div className={styles.content}>
               <div className={styles.prices_content}>
@@ -149,8 +175,71 @@ const Equipments = () => {
               </div>
             </div>
           </div>
+          <div className={styles.application_container} id="order_button">
+            <div
+              className={`${styles.application_button} ${isOrderShow ? styles.hidden : ""}`}
+              onClick={() => {
+                var orderButton = document.getElementById("order_button");
+                var container = document.getElementById("about_container");
+                window.scrollTo({
+                  top: container?.offsetTop! + orderButton?.offsetTop! - (windowSize.innerHeight - 615) / 2,
+                  behavior: "smooth",
+                });
+                setIsOrderShow(true);
+              }}
+            >
+              <DoubleArrowIcon />
+              <div className={styles.button_text}>Подобрать камеру</div>
+            </div>
+            <div className={`${styles.order} ${isOrderShow ? styles.active : ""}`}>
+              <div className={styles.order_container}>
+                <div className={styles.content}>
+                  <div className={styles.title}>Поможем подобрать холодильное оборудование!</div>
+                  <div className={styles.description}>Наш специалист свяжется с вами и уточнит детали заказа</div>
+                  <form onSubmit={handleOnSubmit}>
+                    <input type="name" placeholder="Ваше имя" />
+                    <input type="phone" placeholder="+7 (___) ___-__-__" />
+                    <button type="submit" onClick={() => setIsMessageVisible(true)}>
+                      Оставить заявку
+                    </button>
+                    <div className={styles.agreement}>
+                      Продолжая, вы соглашаетесь{" "}
+                      <span>со сбором и обработкой персональных данных и пользовательским соглашением</span>
+                    </div>
+                  </form>
+                </div>
+                <div className={styles.image}>
+                  <img src={OrderImage} alt="" />
+                </div>
+                <div className={styles.close} onClick={() => setIsOrderShow(false)}>
+                  <CloseIcon />
+                </div>
+              </div>
+            </div>
+            <div className={`${styles.message} ${isMessageVisible ? styles.active : ""}`}>
+              <div className={styles.message_container}>
+                <div
+                  className={styles.close}
+                  onClick={() => {
+                    setIsOrderShow(false);
+                    setIsMessageVisible(false);
+                  }}
+                >
+                  <CloseIcon />
+                </div>
+                <div className={styles.content}>
+                  <div className={styles.title}>Заявка успешно отправлена!</div>
+                  <div className={styles.description}>Наши менеджеры свяжутся с вами в ближайшее время</div>
+                </div>
+                <div className={styles.image}>
+                  <img src={SnowImage} alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       ) : null}
+      <div className={`${styles.overlay} ${isOrderShow ? styles.active : ""}`} />
     </div>
   );
 };

@@ -21,6 +21,7 @@ $active_color: #01AAC1
             padding: 60px 0
             font-size: 14px
             gap: 5px
+            flex-wrap: wrap
 
             .element
                 opacity: 0.5
@@ -107,9 +108,7 @@ $active_color: #01AAC1
                         gap: 10px
                         border-top: 1px solid $text_color
                         padding-top: 20px
-                        margin-right: -40px
                         width: 100%
-                        padding-right: 40px
 
                         .advantage
                             max-width: 33%
@@ -134,6 +133,8 @@ $active_color: #01AAC1
                     align-items: center
                     width: 100%
                     border-bottom: 1px solid $text_color
+                    overflow-x: auto
+                    overflow-y: hidden
 
                     .tab
                         display: flex
@@ -198,6 +199,12 @@ $active_color: #01AAC1
                     width: 100%
                     gap: 33px
 
+                .slider
+                    display: none
+
+                .card
+                    width: calc((100% - 99px) / 4)
+
 @media (min-width: 1024px)
     .wrapper
         .container
@@ -208,3 +215,217 @@ $active_color: #01AAC1
                             img
                                 &:hover
                                     opacity: 0.5
+
+@media (max-width: 1380px)
+    .wrapper
+        .container
+            width: calc(100% - 120px)
+            padding: 0 60px
+            gap: 100px
+
+            .breadcumbs
+                padding: 40px 0
+
+            .content
+                margin-top: -100px
+
+                .main_container
+                    flex-direction: column
+
+                    .info_container
+                        .advantages_list
+                            width: max-content
+                            justify-content: start
+                            gap: 10px
+
+                            .advantage
+                                width: max-content
+                                gap: 10px
+
+                .recommended_products
+                    .recommended_products_list
+                        display: none
+
+                    .slider
+                        display: block
+                        width: 100%
+                        align-self: center
+
+                    .card
+                        width: auto
+                        margin: 0 15px
+
+@media (max-width: 1024px)
+    .wrapper
+        .container
+            gap: 75px
+
+            .breadcumbs
+                padding: 30px 0
+
+            .content
+                margin-top: -75px
+                gap: 50px
+
+                .recommended_products
+                    .card
+                        margin: 0 10px
+
+@media (max-width: 900px)
+    .wrapper
+        .container
+            .content
+                .main_container
+                    .info_container
+                        .advantages_list
+                            width: 100%
+                            justify-content: space-between
+
+                            .advantage
+                                width: 33%
+                                gap: 10px
+
+@media (max-width: 768px)
+    .wrapper
+        .container
+            width: calc(100% - 40px)
+            padding: 0 20px
+            gap: 50px
+
+            .breadcumbs
+                padding: 20px 0
+
+            .content
+                margin-top: -50px
+                gap: 35px
+
+                .main_container
+                    .photos_container
+                        .photos_list
+                            img
+                                border-radius: 4px
+                                width: 60px
+
+                .tabs_container
+                    display: flex
+                    flex-direction: column
+                    width: 100%
+
+                    .tabs_list
+                        display: flex
+                        align-items: center
+                        width: 100%
+                        border-bottom: 1px solid $text_color
+
+                        .tab
+                            display: flex
+                            align-items: center
+                            justify-content: center
+                            font-size: 17px
+                            border-radius: 4px 4px 0 0
+                            padding: 10px 20px
+                            width: max-content
+                            color: $text_color
+                            cursor: pointer
+                            transition: all .2s ease-out
+
+                            &.active
+                                background-color: $active_color
+                                color: $main_text_color
+                                margin-bottom: -2px
+
+                    .tab_view
+                        padding: 25px
+                        line-height: 21px
+                        width: calc(100% - 50px)
+
+                        p
+                            margin-top: 15px
+
+                .recommended_products
+                    .card
+                        margin: 0 5px
+
+@media (max-width: 700px)
+    .wrapper
+        .container
+            .content
+                .main_container
+                    .info_container
+                        .price_container
+                            flex-direction: column
+                            align-items: start
+                            gap: 20px
+
+                        .advantages_list
+                            flex-direction: column
+                            align-items: start
+                            gap: 20px
+
+                            .advantage
+                                width: 100%
+                                max-width: 100%
+
+                                .image
+                                    width: 80px
+
+@media (max-width: 600px)
+    .wrapper
+        .container
+            .content
+                .main_container
+                    .photos_container
+                        .main_photo
+                            width: calc(100% - 100px)
+                            height: auto
+
+                .tabs_container
+                    .tab_view
+                        p
+                            margin-top: 10px
+
+                        .description_list
+                            gap: 25px
+
+                            .labels,
+                            .values
+                                gap: 10px
+
+                                .label,
+                                .value
+                                    font-size: 14px
+                                    height: 41px
+
+@media (max-width: 360px)
+    .wrapper
+        .container
+            width: calc(100% - 20px)
+            padding: 0 10px
+            gap: 40px
+
+            .content
+                margin-top: -40px
+                gap: 25px
+
+                .main_container
+                    .info_container
+                        padding: 15px
+
+                        .description
+                            font-size: 14px
+
+                .tabs_container
+                    .tab_view
+                        p
+                            margin-top: 10px
+
+                        .description_list
+                            gap: 25px
+
+                            .labels,
+                            .values
+                                gap: 15px
+
+                                .label,
+                                .value
+                                    font-size: 14px

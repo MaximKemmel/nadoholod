@@ -16,18 +16,25 @@ import LogoBlue from "../../assets/images/logo_blue.png";
 import { Search as SearchIcon } from "../../assets/svg/Search";
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 import { Menu as MenuIcon } from "../../assets/svg/Menu";
+import { Close as CloseIcon } from "../../assets/svg/Close";
 
 const Header = () => {
   const { setIsNoScroll } = useActions();
+  const navigate = useNavigate();
   const isHomePage = useTypedSelector((state) => state.mainReducer.isHomePage);
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
-  const navigate = useNavigate();
   const [isMessageShow, setIsMessageShow] = useState(false);
   const [isOrderShow, setIsOrderShow] = useState(false);
+  const [isNavActive, setIsNavActive] = useState(false);
+  const [isSubNavActive, setIsSubNavActive] = useState(false);
 
   useEffect(() => {
-    setIsNoScroll(isMessageShow || isOrderShow);
-  }, [isMessageShow, isOrderShow]);
+    setIsNoScroll(isMessageShow || isOrderShow || isNavActive);
+    if (isOrderShow || isMessageShow) {
+      setIsNavActive(false);
+    }
+    setIsSubNavActive(false);
+  }, [isMessageShow, isOrderShow, isNavActive]);
 
   return (
     <div className={`${styles.wrapper} ${isHomePage ? styles.home : ""}`}>
@@ -57,7 +64,7 @@ const Header = () => {
           </div>
         </div>
         <div className={styles.mobile_head}>
-          <div className={styles.menu_button}>
+          <div className={styles.menu_button} onClick={() => setIsNavActive(true)}>
             <MenuIcon />
           </div>
           <div className={styles.input_container}>
@@ -71,17 +78,34 @@ const Header = () => {
             <SearchIcon />
           </div>
         </div>
-        <nav>
-          <ul className={styles.main_menu}>
-            <li onClick={() => navigate("/")}>Главная</li>
-            <li>
+        <nav className={isNavActive ? styles.active : ""}>
+          <div className={styles.overlay} onClick={() => setIsNavActive(false)} />
+          <ul className={`${styles.main_menu} ${!isSubNavActive ? styles.active : ""}`}>
+            <div className={styles.close_button} onClick={() => setIsNavActive(false)}>
+              <CloseIcon />
+            </div>
+            <li
+              onClick={() => {
+                setIsNavActive(false);
+                navigate("/");
+              }}
+            >
+              Главная
+            </li>
+            <li onClick={() => setIsSubNavActive(true)}>
               Продукция <ArrowIcon />
               {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
                 <ul className={styles.sub_menu}>
                   {categories
                     .filter((category: ICategory) => category.is_main)
                     .map((category: ICategory, index: number) => (
-                      <li className={index ? styles.bordered : ""} onClick={() => navigate(`/catalog/${category.id}`)}>
+                      <li
+                        className={index ? styles.bordered : ""}
+                        onClick={() => {
+                          setIsNavActive(false);
+                          navigate(`/catalog/${category.id}`);
+                        }}
+                      >
                         {category.category}
                         {/*
                         <ArrowIcon />
@@ -107,6 +131,39 @@ const Header = () => {
             <li>Обслуживание</li>
             <li>Доставка</li>
             <li>Контакты</li>
+            <div className={styles.contacts_block}>
+              <div className={styles.phone_number}>+7 913 234-97-54</div>
+              <button type="button" onClick={() => setIsOrderShow(true)}>
+                Заказать звонок
+              </button>
+            </div>
+          </ul>
+          <ul className={`${styles.main_menu} ${isSubNavActive ? styles.active : ""} ${styles.mobile}`}>
+            <div className={styles.close_button} onClick={() => setIsNavActive(false)}>
+              <CloseIcon />
+            </div>
+
+            <li className={styles.reverse} onClick={() => setIsSubNavActive(false)}>
+              <ArrowIcon />
+              Продукция
+            </li>
+            {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
+              <>
+                {categories
+                  .filter((category: ICategory) => category.is_main)
+                  .map((category: ICategory, index: number) => (
+                    <li
+                      className={index ? styles.bordered : ""}
+                      onClick={() => {
+                        setIsNavActive(false);
+                        navigate(`/catalog/${category.id}`);
+                      }}
+                    >
+                      {category.category}
+                    </li>
+                  ))}
+              </>
+            ) : null}
           </ul>
         </nav>
       </div>

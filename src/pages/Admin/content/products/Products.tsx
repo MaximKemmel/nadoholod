@@ -40,6 +40,8 @@ const Products = () => {
     deleteProduct,
     setDeleteProductStatus,
     getProducts,
+    uploadProductInstruction,
+    setUploadProductInstructionStatus,
   } = useActions();
   const products = useTypedSelector((state) => state.productReducer.products);
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
@@ -48,6 +50,8 @@ const Products = () => {
   const addProductStatus = useTypedSelector((state) => state.productReducer.addProductStatus);
   const updateProductStatus = useTypedSelector((state) => state.productReducer.updateProductStatus);
   const deleteProductStatus = useTypedSelector((state) => state.productReducer.deleteProductStatus);
+  const path = useTypedSelector((state) => state.fileReducer.path);
+  const uploadInstructionStatus = useTypedSelector((state) => state.fileReducer.uploadProductInstructionStatus);
   const [selectedProduct, setSelectedProduct] = useState(initProduct());
   const [description, setDescription] = useState("");
   const [fullDescription, setFullDescription] = useState("");
@@ -57,6 +61,8 @@ const Products = () => {
   const quillRefDescription = useRef<ReactQuill>(null);
   const quillRefFullDescription = useRef<ReactQuill>(null);
   const quillRefDeliveryInfo = useRef<ReactQuill>(null);
+  const inputInstructionRef = useRef<HTMLInputElement>(null);
+  const [uploadInstructionProgress, setUploadInstructionProgress] = useState(-1);
   const [activeComponent, setActiveComponent] = useState(DropdownType.None);
   const [isMessageShow, setIsMessageShow] = useState(false);
   const [isConfirmShow, setIsConfirmShow] = useState(false);
@@ -92,6 +98,21 @@ const Products = () => {
       }
     }
   }, [selectedProduct.category_id, attributes]);
+
+  useEffect(() => {
+    if (uploadInstructionStatus.status === ServerStatusType.Success && path !== "") {
+      setUploadInstructionProgress(-1);
+      setSelectedProduct({ ...selectedProduct, instruction_path: path });
+      setUploadProductInstructionStatus(initServerStatus());
+    }
+    if (uploadInstructionStatus.status === ServerStatusType.Error) {
+      setTitleMessage("Ошибка");
+      setInfoMessage("Не удалось загрузить изображение");
+      setIsMessageShow(true);
+      setUploadInstructionProgress(-1);
+      setUploadProductInstructionStatus(initServerStatus());
+    }
+  }, [uploadInstructionStatus]);
 
   useEffect(() => {
     if (addProductStatus.status === ServerStatusType.Success) {
@@ -223,6 +244,29 @@ const Products = () => {
   const handleDeleteOnClick = (product: IProduct) => {
     setSelectedProduct(product);
     setIsConfirmShow(true);
+  };
+
+  const handleChangeInstruction = (event) => {
+    try {
+      const file = event.target.files[0];
+      uploadProductInstruction({
+        file: file,
+        onUploadProgress: (data) => {
+          setUploadInstructionProgress(Math.round(100 * (data.loaded / data.total!)));
+        },
+      });
+      event.target.value = "";
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
+  const handleInstructionOnClick = () => {
+    if (selectedProduct.instruction_path === "") {
+      inputInstructionRef.current!.click();
+    } else {
+      setSelectedProduct({ ...selectedProduct, instruction_path: "" });
+    }
   };
 
   return (
@@ -478,6 +522,31 @@ const Products = () => {
                     modules={{ toolbar: toolbarOptions }}
                     onKeyUp={() => setDeliveryInfo(`${quillRefDeliveryInfo.current?.getEditorContents()}`)}
                   />
+                </div>
+                <div className={pageStyles.file_field}>
+                  <div className={pageStyles.label}>Инструкция</div>
+                  <div className={pageStyles.value}>
+                    {selectedProduct.instruction_path !== "" ? (
+                      <a href={`/uploads/${selectedProduct.instruction_path}`} target="blank">
+                        {selectedProduct.instruction_path.split("/")[2]}
+                      </a>
+                    ) : null}
+                  </div>
+                  <input ref={inputInstructionRef} type="file" onChange={handleChangeInstruction} hidden />
+                  <button
+                    type="button"
+                    className={selectedProduct.instruction_path !== "" ? `${appStyles.wrong} ${pageStyles.delete}` : ""}
+                    onClick={handleInstructionOnClick}
+                    disabled={uploadInstructionProgress > -1}
+                  >
+                    {uploadInstructionProgress !== -1 ? (
+                      `Загрузка...(${uploadInstructionProgress}%)`
+                    ) : selectedProduct.instruction_path === "" ? (
+                      "Загрузить"
+                    ) : (
+                      <DeleteIcon />
+                    )}
+                  </button>
                 </div>
               </div>
             </div>

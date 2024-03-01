@@ -1,14 +1,14 @@
 import { useRef, useState } from "react";
-import styles from "./Slider.module.sass";
+import styles from "./InputSlider.module.sass";
 
-interface ISliderProps {
+interface IInputSliderProps {
   min: number;
   max: number;
   label: string;
   unit: string;
 }
 
-const Slider: React.FC<ISliderProps> = ({ min, max, label, unit }) => {
+const InputSlider: React.FC<IInputSliderProps> = ({ min, max, label, unit }) => {
   const [value, setValue] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -74,4 +74,4 @@ const Slider: React.FC<ISliderProps> = ({ min, max, label, unit }) => {
   );
 };
 
-export default Slider;
+export default InputSlider;

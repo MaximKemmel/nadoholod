@@ -17,8 +17,11 @@ var storage = multer.diskStorage({
         fs.mkdirsSync(path);
         callback(null, path);
     },
-    filename: function (_, file, cb) {
-        fileName = "ct".concat(String(Date.now()), ".").concat(file.originalname.split(".")[file.originalname.split(".").length - 1]);
+    filename: function (req, file, cb) {
+        fileName = "im".concat(String(Date.now()), ".").concat(file.originalname.split(".")[file.originalname.split(".").length - 1]);
+        if (req.params.type === "instructions") {
+            fileName = "in".concat(String(Date.now())).concat(file.originalname);
+        }
         cb(null, fileName);
     },
 });
