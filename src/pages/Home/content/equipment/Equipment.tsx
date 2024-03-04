@@ -28,7 +28,7 @@ const Equipment = () => {
   };
 
   return (
-    <div className={pageStyles.container}>
+    <div className={pageStyles.container} id="equipment_container">
       <div className={pageStyles.container_content}>
         <div className={styles.content}>
           <div className={styles.equipments}>

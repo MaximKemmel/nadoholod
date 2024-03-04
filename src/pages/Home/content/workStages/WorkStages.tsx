@@ -5,7 +5,7 @@ import WorkStagesImage from "../../../../assets/images/work_stages.png";
 
 const WorkStages = () => {
   return (
-    <div className={pageStyles.container}>
+    <div className={pageStyles.container} id="stages_container">
       <div className={pageStyles.container_content}>
         <h3>Этапы работы</h3>
         <div className={pageStyles.about}>

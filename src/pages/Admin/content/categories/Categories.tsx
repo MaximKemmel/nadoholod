@@ -336,12 +336,12 @@ const Categories = () => {
                   </div>
                 ) : null}
                 <div className={pageStyles.input_field}>
-                  <div className={pageStyles.label}>{`Аттрибуты товаров (${selectedCategory.attributes.length})`}</div>
+                  <div className={pageStyles.label}>{`Аттрибуты товаров`}</div>
                   <MultiDropdown
                     dropdownType={DropdownType.ManufacturerSelector}
                     activeComponent={activeComponent}
                     setActiveComponent={setActiveComponent}
-                    label=""
+                    label={`Выбрано (${selectedCategory.attributes.length})`}
                     isFullWidth={true}
                     items={
                       attributes.map((attribute: IAttribute) => {
@@ -387,13 +387,13 @@ const Categories = () => {
                   />
                 </div>
                 <div className={pageStyles.input_field}>
-                  <div className={pageStyles.label}>{`Фильтры товаров (${selectedCategory.filters.length})`}</div>
+                  <div className={pageStyles.label}>{`Фильтры товаров`}</div>
                   <MultiDropdown
                     dropdownType={DropdownType.SizeSelector}
                     activeComponent={activeComponent}
                     setActiveComponent={setActiveComponent}
-                    label=""
-                    isFullWidth={false}
+                    label={`Выбрано (${selectedCategory.filters.length})`}
+                    isFullWidth={true}
                     items={
                       filters.map((filter: IFilter) => {
                         return {

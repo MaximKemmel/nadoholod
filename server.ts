@@ -7,6 +7,7 @@ import {
   FilterController,
   UserController,
   ManufacturerController,
+  MailController,
 } from "./src/server/index";
 
 const express = require("express");
@@ -69,6 +70,8 @@ app.post("/api/update_filter", checkAuth, FilterController.updateFilter);
 app.post("/api/delete_filter", checkAuth, FilterController.deleteFilter);
 
 app.get("/api/manufacturers", ManufacturerController.getManufacturers);
+
+app.post("/api/send_mail", MailController.sendMail);
 
 app.use(express.static(path.join(__dirname, "dist")));
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));

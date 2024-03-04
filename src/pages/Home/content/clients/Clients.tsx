@@ -17,7 +17,7 @@ const Clients = () => {
   const windowSize = useTypedSelector((state) => state.mainReducer.windowSize);
 
   return (
-    <div className={pageStyles.container}>
+    <div className={pageStyles.container} id="clients_container">
       <div className={pageStyles.container_content}>
         <h3>Клиенты</h3>
         <div className={styles.clients}>

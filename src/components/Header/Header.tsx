@@ -36,6 +36,14 @@ const Header = () => {
     setIsSubNavActive(false);
   }, [isMessageShow, isOrderShow, isNavActive]);
 
+  const handleLinkOnClick = (link: string) => {
+    setIsNavActive(false);
+    var element = document.getElementById(link);
+    element!.scrollIntoView({
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div className={`${styles.wrapper} ${isHomePage ? styles.home : ""}`}>
       <div className={styles.container}>
@@ -125,12 +133,12 @@ const Header = () => {
                 </ul>
               ) : null}
             </li>
-            <li>Компания</li>
-            <li>Оборудование</li>
-            <li>Производство</li>
-            <li>Обслуживание</li>
-            <li>Доставка</li>
-            <li>Контакты</li>
+            <li onClick={() => handleLinkOnClick("about_container")}>Компания</li>
+            <li onClick={() => handleLinkOnClick("equipment_container")}>Оборудование</li>
+            <li onClick={() => handleLinkOnClick("production_container")}>Производство</li>
+            <li onClick={() => handleLinkOnClick("service_container")}>Обслуживание</li>
+            <li onClick={() => handleLinkOnClick("delivery_container")}>Доставка</li>
+            <li onClick={() => handleLinkOnClick("contacts_container")}>Контакты</li>
             <div className={styles.contacts_block}>
               <div className={styles.phone_number}>+7 913 234-97-54</div>
               <button type="button" onClick={() => setIsOrderShow(true)}>

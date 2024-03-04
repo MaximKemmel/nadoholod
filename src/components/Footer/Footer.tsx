@@ -1,6 +1,10 @@
 import { useNavigate } from "react-router-dom";
 
+import { useTypedSelector } from "../../hooks/useTypedSeletor";
+
 import styles from "./Footer.module.sass";
+
+import { ICategory } from "../../types/category/category";
 
 import Logo from "../../assets/images/logo_white.png";
 import { Telegram as TelegramIcon } from "../../assets/svg/Telegram";
@@ -9,6 +13,14 @@ import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 
 const Footer = () => {
   const navigate = useNavigate();
+  const categories = useTypedSelector((state) => state.categoryReducer.categories);
+
+  const handleLinkOnClick = (link: string) => {
+    var element = document.getElementById(link);
+    element!.scrollIntoView({
+      behavior: "smooth",
+    });
+  };
 
   return (
     <footer>
@@ -27,19 +39,19 @@ const Footer = () => {
             <div className={styles.column}>
               <div className={styles.head}>О компании</div>
               <div className={styles.links}>
-                <div className={styles.link}>
+                <div className={styles.link} onClick={() => handleLinkOnClick("about_container")}>
                   <ArrowIcon />
                   Компания
                 </div>
-                <div className={styles.link}>
+                <div className={styles.link} onClick={() => handleLinkOnClick("stages_container")}>
                   <ArrowIcon />
                   Этапы работы
                 </div>
-                <div className={styles.link}>
+                <div className={styles.link} onClick={() => handleLinkOnClick("catalog_container")}>
                   <ArrowIcon />
                   Области работы
                 </div>
-                <div className={styles.link}>
+                <div className={styles.link} onClick={() => handleLinkOnClick("clients_container")}>
                   <ArrowIcon />
                   Клиенты
                 </div>
@@ -47,45 +59,35 @@ const Footer = () => {
             </div>
             <div className={styles.column}>
               <div className={styles.head}>Каталог</div>
-              <div className={styles.links}>
-                <div className={styles.link} onClick={() => navigate(`/catalog/0`)}>
-                  <ArrowIcon />
-                  Камеры хранения готовой продукции
+              {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
+                <div className={styles.links}>
+                  {categories
+                    .filter((category: ICategory) => category.is_main)
+                    .map((category: ICategory) => (
+                      <div className={styles.link} onClick={() => navigate(`/catalog/${category.id}`)}>
+                        <ArrowIcon />
+                        {category.category}
+                      </div>
+                    ))}
                 </div>
-                <div className={styles.link} onClick={() => navigate(`/catalog/0`)}>
-                  <ArrowIcon />
-                  Генераторы ледяной воды
-                </div>
-                <div className={styles.link} onClick={() => navigate(`/catalog/0`)}>
-                  <ArrowIcon />
-                  Чиллеры
-                </div>
-                <div className={styles.link} onClick={() => navigate(`/catalog/0`)}>
-                  <ArrowIcon />
-                  Центральное холодоснабжение
-                </div>
-                <div className={styles.link} onClick={() => navigate(`/catalog/0`)}>
-                  <ArrowIcon />
-                  Камеры сушки/вялки
-                </div>
-              </div>
+              ) : null}
             </div>
             <div className={`${styles.column} ${styles.desktop}`}>
               <div className={styles.head}>Услуги</div>
               <div className={styles.links}>
-                <div className={styles.link}>
+                <div className={styles.link} onClick={() => handleLinkOnClick("production_container")}>
                   <ArrowIcon />
                   Производство
                 </div>
-                <div className={styles.link}>
+                <div className={styles.link} onClick={() => handleLinkOnClick("service_container")}>
                   <ArrowIcon />
                   Обслуживание
                 </div>
-                <div className={styles.link}>
+                <div className={styles.link} onClick={() => handleLinkOnClick("delivery_container")}>
                   <ArrowIcon />
                   Доставка
                 </div>
-                <div className={styles.link}>
+                <div className={styles.link} onClick={() => handleLinkOnClick("contacts_container")}>
                   <ArrowIcon />
                   Контакты
                 </div>

@@ -5,7 +5,7 @@ import MapImage from "../../../../assets/images/map.png";
 
 const Delivery = () => {
   return (
-    <div className={pageStyles.container}>
+    <div className={pageStyles.container} id="delivery_container">
       <div className={pageStyles.container_content}>
         <h3>Доставка</h3>
         <div className={pageStyles.about}>

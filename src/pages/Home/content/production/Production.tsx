@@ -24,7 +24,7 @@ const Production = () => {
   };
 
   return (
-    <div className={pageStyles.container}>
+    <div className={pageStyles.container} id="production_container">
       <div className={styles.container_content}>
         <div className={styles.content}>
           <h3>Производство</h3>

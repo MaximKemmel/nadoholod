@@ -37,7 +37,7 @@ const Service = () => {
 
   return (
     <>
-      <div className={pageStyles.container}>
+      <div className={pageStyles.container} id="service_container">
         <div className={pageStyles.container_content}>
           <h3>Обслуживание</h3>
           <div className={`${pageStyles.about} ${pageStyles.services}`}>

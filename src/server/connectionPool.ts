@@ -8,7 +8,7 @@ const host = "localhost";
 //const user = "default-db";
 //const password = "Rn7DtPAT&gaH";
 //const database = "default-db";
-//const host: "10.16.0.1";
+//const host = "10.16.0.1";
 
 export const connectionPool = mysql.createPool({
   host: host,

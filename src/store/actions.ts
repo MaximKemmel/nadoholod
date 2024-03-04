@@ -12,6 +12,8 @@ import { actions as userActions } from "./user/user.slice";
 import * as userActionsDB from "./user/user.actions";
 import { actions as fileActions } from "./file/file.slice";
 import * as fileActionsDB from "./file/file.actions";
+import { actions as mailActions } from "./mail/mail.slice";
+import * as mailActionsDB from "./mail/mail.actions";
 
 export const rootActions = {
   ...mainActions,
@@ -28,4 +30,6 @@ export const rootActions = {
   ...userActionsDB,
   ...fileActions,
   ...fileActionsDB,
+  ...mailActions,
+  ...mailActionsDB,
 };

@@ -10,6 +10,7 @@ import pageStyles from "../../Admin.module.sass";
 
 import MessageModal from "../../../../components/Modal/MessageModal";
 import ConfirmModal from "../../../../components/Modal/ConfirmModal";
+import MultiDropdown from "../../../../components/Dropdown/MultiDropdown";
 import Dropdown from "../../../../components/Dropdown/Dropdown";
 
 import { IProduct } from "../../../../types/product/product";
@@ -22,14 +23,18 @@ import { ServerStatusType } from "../../../../enums/serverStatusType";
 import { initServerStatus } from "../../../../types/main/serverStatus";
 import { IAttribute } from "../../../../types/attribute/attribute";
 import { IProductAttribute } from "../../../../types/product/productAttribute";
+import { IProductFilter } from "../../../../types/product/productFilter";
 import { ICategoryAttribute } from "../../../../types/category/categoryAttribute";
+import { IFilter } from "../../../../types/filter/filter";
 import { IManufacturer } from "../../../../types/manufacturer/manufacturer";
+import { ICategoryFilter } from "../../../../types/category/categoryFilter";
 
 import { Plus as PlusIcon } from "../../../../assets/svg/Plus";
 import { List as ListIcon } from "../../../../assets/svg/List";
 import { Edit as EditIcon } from "../../../../assets/svg/Edit";
 import { Delete as DeleteIcon } from "../../../../assets/svg/Delete";
 import { Arrow as ArrowIcon } from "../../../../assets/svg/Arrow";
+import { IFilterItem } from "../../../../types/filter/filterItem";
 
 const Products = () => {
   const {
@@ -45,7 +50,9 @@ const Products = () => {
   } = useActions();
   const products = useTypedSelector((state) => state.productReducer.products);
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
+  const [categoryFilters, setCategoryFilters] = useState([] as IFilter[]);
   const attributes = useTypedSelector((state) => state.attributeReducer.attributes);
+  const filters = useTypedSelector((state) => state.filterReducer.filters);
   const manufacturers = useTypedSelector((state) => state.manufacturerReducer.manufacturers);
   const addProductStatus = useTypedSelector((state) => state.productReducer.addProductStatus);
   const updateProductStatus = useTypedSelector((state) => state.productReducer.updateProductStatus);
@@ -79,7 +86,8 @@ const Products = () => {
 
   useEffect(() => {
     if (selectedProduct.category_id === -1) {
-      setSelectedProduct({ ...selectedProduct, attributes: [] as IProductAttribute[] });
+      setSelectedProduct({ ...selectedProduct, attributes: [] as IProductAttribute[], filters: [] as IProductFilter[] });
+      setCategoryFilters([]);
     } else {
       if (Array.isArray(attributes) && attributes !== undefined && attributes.length > 0) {
         var category = categories.find((category: ICategory) => category.id === selectedProduct.category_id);
@@ -95,6 +103,16 @@ const Products = () => {
           }
         });
         setSelectedProduct({ ...selectedProduct, attributes: tmpProductAttributes });
+      }
+      if (Array.isArray(filters) && filters !== undefined && filters.length > 0) {
+        var category = categories.find((category: ICategory) => category.id === selectedProduct.category_id);
+        var tmpFilters = [] as IFilter[];
+        category?.filters.forEach((categoryFilter: ICategoryFilter) => {
+          if (filters.filter((filter: IFilter) => filter.id === categoryFilter.filter_id).length > 0) {
+            tmpFilters.push(filters.find((filter: IFilter) => filter.id === categoryFilter.filter_id)!);
+          }
+        });
+        setCategoryFilters(tmpFilters);
       }
     }
   }, [selectedProduct.category_id, attributes]);
@@ -473,38 +491,65 @@ const Products = () => {
                     <div className={pageStyles.text_field} />
                   </>
                 ) : null}
-                {selectedProduct.attributes.length > 0 ? (
+                {categoryFilters.length > 0 ? (
                   <>
                     <div className={pageStyles.text_field}>Фильтры товара</div>
-                    {selectedProduct.attributes.map((productAttribute: IProductAttribute) => (
+                    {categoryFilters.map((filter: IFilter) => (
                       <div className={pageStyles.input_field}>
-                        <div className={pageStyles.label}>
-                          {
-                            attributes.find((attribute: IAttribute) => attribute.id === productAttribute.attribute_id)
-                              ?.attribute
+                        <div className={pageStyles.label}>{filter.filter}</div>
+                        <MultiDropdown
+                          dropdownType={(filter.id + 1) * 2}
+                          activeComponent={activeComponent}
+                          setActiveComponent={setActiveComponent}
+                          label={`Выбрано (${
+                            selectedProduct.filters.filter(
+                              (productFilter: IProductFilter) => productFilter.filter_id === filter.id
+                            ).length
+                          })`}
+                          isFullWidth={true}
+                          items={
+                            filter.items.map((filterItem: IFilterItem) => {
+                              return {
+                                id: filterItem.id,
+                                sub_id: filter.id,
+                                text: filterItem.filter_item,
+                                is_selected:
+                                  selectedProduct.filters.filter(
+                                    (productFilter: IProductFilter) => productFilter.filter_item_id === filterItem.id
+                                  ).length > 0,
+                              } as IDropdownItem;
+                            }) as IDropdownItem[]
                           }
-                        </div>
-                        <input
-                          type="text"
-                          placeholder={
-                            attributes.find((attribute: IAttribute) => attribute.id === productAttribute.attribute_id)
-                              ?.attribute
-                          }
-                          value={productAttribute.value}
-                          onChange={(event) =>
-                            setSelectedProduct({
-                              ...selectedProduct,
-                              attributes: selectedProduct.attributes.map((attributeTmp: IProductAttribute) => {
-                                if (attributeTmp.id === productAttribute.id) {
-                                  return {
-                                    ...attributeTmp,
-                                    vaue: event.target.value,
-                                  };
-                                } else return attributeTmp;
-                              }),
-                            })
-                          }
-                          onClick={() => setActiveComponent(DropdownType.None)}
+                          onItemSelect={(item: IDropdownItem) => {
+                            if (
+                              selectedProduct.filters.filter(
+                                (productFilter: IProductFilter) => productFilter.filter_item_id === item.id
+                              ).length > 0
+                            ) {
+                              setSelectedProduct({
+                                ...selectedProduct,
+                                filters: selectedProduct.filters.filter(
+                                  (productFilter: IProductFilter) => productFilter.filter_item_id !== item.id
+                                ),
+                              });
+                            } else {
+                              setSelectedProduct({
+                                ...selectedProduct,
+                                filters: [
+                                  ...selectedProduct.filters,
+                                  {
+                                    id:
+                                      selectedProduct.filters.length === 0
+                                        ? 0
+                                        : selectedProduct.filters[selectedProduct.filters.length - 1].id + 1,
+                                    filter_id: item.sub_id,
+                                    filter_item_id: item.id,
+                                    product_id: selectedProduct.id,
+                                  } as IProductFilter,
+                                ],
+                              });
+                            }
+                          }}
                         />
                       </div>
                     ))}

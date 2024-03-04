@@ -8,6 +8,7 @@ import { reducer as filterReducer } from "./filter/filter.slice";
 import { reducer as manufacturerReducer } from "./manufacturer/manufacturer.slice";
 import { reducer as userReducer } from "./user/user.slice";
 import { reducer as fileReducer } from "./file/file.slice";
+import { reducer as mailReducer } from "./mail/mail.slice";
 
 export const reducers = combineReducers({
   mainReducer,
@@ -18,4 +19,5 @@ export const reducers = combineReducers({
   manufacturerReducer,
   userReducer,
   fileReducer,
+  mailReducer,
 });

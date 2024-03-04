@@ -26,7 +26,7 @@ const Contacts = () => {
   }, [windowSize]);
 
   return (
-    <div className={pageStyles.container}>
+    <div className={pageStyles.container} id="contacts_container">
       <div className={pageStyles.container_content}>
         <h3>Контакты</h3>
         <div className={styles.content}>

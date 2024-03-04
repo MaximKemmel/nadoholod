@@ -13,7 +13,7 @@ const Catalog = () => {
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
 
   return (
-    <div className={pageStyles.container}>
+    <div className={pageStyles.container} id="catalog_container">
       <div className={pageStyles.container_content}>
         <h3>Каталог</h3>
         <div className={styles.content}>
