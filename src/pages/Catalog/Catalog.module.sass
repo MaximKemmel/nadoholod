@@ -28,6 +28,10 @@ $filter_gray_color: #748491
             .element
                 opacity: 0.5
 
+            .link
+                cursor: pointer
+                transition: all .2s ease-out
+
             svg
                 width: 15px
                 height: auto
@@ -47,7 +51,7 @@ $filter_gray_color: #748491
                 gap: 30px
 
                 .subcategory
-                    width: calc((100% - 60px) / 3 - 40px)
+                    width: calc((100% - 60px) / 3 - 42px)
                     display: flex
                     flex-direction: column
                     cursor: pointer
@@ -56,6 +60,7 @@ $filter_gray_color: #748491
                     gap: 20px
                     transition: all .2s ease-out
                     justify-content: space-between
+                    border: 1px solid $main_text_color
 
                     .name
                         font-family: "Russo One"
@@ -281,14 +286,19 @@ $filter_gray_color: #748491
 @media (min-width: 1024px)
     .wrapper
         .container
+            .breadcumbs
+                .link
+                    &:hover
+                        color: $active_color
+
             .content
                 .subcategories_list
                     .subcategory
                         &:hover
-                            background-color: $active_color
+                            border: 1px solid $active_color
 
                             .name
-                                color: $main_text_color
+                                color: $active_color
 
 @media (max-width: 1380px)
     .wrapper
@@ -308,7 +318,7 @@ $filter_gray_color: #748491
                     gap: 20px
 
                     .subcategory
-                        width: calc((100% - 40px) / 3 - 40px)
+                        width: calc((100% - 40px) / 3 - 42px)
 
                 .products_wrapper
                     .products_list
@@ -345,7 +355,7 @@ $filter_gray_color: #748491
                 .subcategories_list
                     .subcategory
                         padding: 15px
-                        width: calc((100% - 20px) / 2 - 30px)
+                        width: calc((100% - 20px) / 2 - 32px)
 
                 .products_wrapper
                     .products_list
@@ -372,7 +382,7 @@ $filter_gray_color: #748491
 
                 .subcategories_list
                     .subcategory
-                        width: calc((100% - 20px) / 2 - 30px)
+                        width: calc((100% - 20px) / 2 - 32px)
 
                 .products_wrapper
                     .products_list
@@ -391,7 +401,7 @@ $filter_gray_color: #748491
                     gap: 15px
 
                     .subcategory
-                        width: calc(100% - 30px)
+                        width: calc(100% - 32px)
 
                 .products_wrapper
                     .products_list

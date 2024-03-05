@@ -108,7 +108,7 @@ const Face = () => {
       <div className={styles.face_container}>
         <div className={styles.container}>
           <div className={styles.title}>Продажа и производство холодильного оборудования любой сложности</div>
-          <button type="button" onClick={() => navigate(`/catalog/0`)}>
+          <button type="button" onClick={() => navigate("/catalog/0")}>
             Продукция
             <ArrowIcon />
           </button>
@@ -169,6 +169,7 @@ const Face = () => {
             </div>
           </div>
           <div className={`${styles.slider} ${styles.vertical}`}>
+            <div className={styles.overlay} />
             {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
               <Slider ref={sliderVertical} {...settingsVertical}>
                 {categories

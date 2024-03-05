@@ -103,12 +103,22 @@ const Footer = () => {
                 <div className={styles.address}>holodpro22@gmail.com</div>
                 <div className={styles.address}>г.Барнаул, ул.Германа Титова 35а</div>
                 <div className={styles.socials_list}>
-                  <div className={styles.link}>
+                  <a
+                    href={`https://t.me/+79132349754`}
+                    target="_blank"
+                    title={"Написать в Telegram"}
+                    className={styles.link}
+                  >
                     <TelegramIcon />
-                  </div>
-                  <div className={styles.link}>
+                  </a>
+                  <a
+                    href={`https://api.whatsapp.com/send/?phone=79132349754`}
+                    target="_blank"
+                    title={"Написать в WhatsApp"}
+                    className={styles.link}
+                  >
                     <WhatsAppIcon />
-                  </div>
+                  </a>
                 </div>
               </div>
             </div>

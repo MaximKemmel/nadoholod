@@ -95,12 +95,14 @@ const Catalog = () => {
 
   useEffect(() => {
     if (id !== undefined && categories !== undefined && Array.isArray(categories)) {
-      if (
-        !Number.isNaN(id) &&
-        categories.length > 0 &&
-        categories.filter((category: ICategory) => category.id === Number(id)).length > 0
-      ) {
-        setCategory(categories.find((category: ICategory) => category.id === Number(id))!);
+      if (!Number.isNaN(id) && categories.length > 0) {
+        if (categories.filter((category: ICategory) => category.id === Number(id)).length > 0) {
+          setCategory(categories.find((category: ICategory) => category.id === Number(id))!);
+        } else if (Number(id) == 0) {
+          setCategory({ ...initCategory(), category: "Каталог" });
+        } else {
+          navigate("/");
+        }
       } else {
         navigate("/");
       }
@@ -118,20 +120,35 @@ const Catalog = () => {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.breadcumbs}>
-          <div className={styles.breadcumb}>Главная</div>
+          <div className={styles.link} onClick={() => navigate("/")}>
+            Главная
+          </div>
           <ArrowIcon />
-          <div className={styles.breadcumb}>Каталог</div>
-          <ArrowIcon />
-          {category.parent_id !== -1 &&
+          {category.category !== "Каталог" ? (
+            <>
+              <div className={styles.link} onClick={() => navigate("/catalog/0")}>
+                Каталог
+              </div>
+              <ArrowIcon />
+            </>
+          ) : null}
+          {category.category !== "" &&
           categories.filter((categoryTmp: ICategory) => categoryTmp.id === category.parent_id).length > 0 ? (
             <>
-              <div className={styles.breadcumb}>
+              <div
+                className={styles.link}
+                onClick={() =>
+                  navigate(
+                    `/catalog/${categories.find((categoryTmp: ICategory) => categoryTmp.id === category.parent_id)!.id}`
+                  )
+                }
+              >
                 {categories.find((categoryTmp: ICategory) => categoryTmp.id === category.parent_id)!.category}
               </div>
               <ArrowIcon />
             </>
           ) : null}
-          <div className={styles.breadcumb}>{category.category}</div>
+          <div className={styles.element}>{category.category}</div>
         </div>
         <div className={styles.content}>
           <h3>{category.category}</h3>

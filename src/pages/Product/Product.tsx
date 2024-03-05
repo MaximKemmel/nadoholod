@@ -15,7 +15,6 @@ import { IProduct } from "../../types/product/product";
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 import CarIcon from "../../assets/images/car.png";
 import TimeIcon from "../../assets/images/time.png";
-import ServiceIcon from "../../assets/images/service.png";
 import PdfIcon from "../../assets/images/pdf_icon.png";
 
 const Product = () => {
@@ -123,12 +122,6 @@ const Product = () => {
                     <img src={TimeIcon} alt="" />
                   </div>
                   Изгоовление 2 недели
-                </div>
-                <div className={styles.advantage}>
-                  <div className={styles.image}>
-                    <img src={ServiceIcon} alt="" />
-                  </div>
-                  Гарантия 5 лет
                 </div>
               </div>
             </div>
