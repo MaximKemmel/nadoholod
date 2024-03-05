@@ -33,6 +33,7 @@ import { Plus as PlusIcon } from "../../../../assets/svg/Plus";
 import { List as ListIcon } from "../../../../assets/svg/List";
 import { Edit as EditIcon } from "../../../../assets/svg/Edit";
 import { Delete as DeleteIcon } from "../../../../assets/svg/Delete";
+import { Close as CloseIcon } from "../../../../assets/svg/Close";
 import { Arrow as ArrowIcon } from "../../../../assets/svg/Arrow";
 import { IFilterItem } from "../../../../types/filter/filterItem";
 
@@ -47,6 +48,8 @@ const Products = () => {
     getProducts,
     uploadProductInstruction,
     setUploadProductInstructionStatus,
+    uploadProductImage,
+    setUploadProductImageStatus,
   } = useActions();
   const products = useTypedSelector((state) => state.productReducer.products);
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
@@ -59,6 +62,7 @@ const Products = () => {
   const deleteProductStatus = useTypedSelector((state) => state.productReducer.deleteProductStatus);
   const path = useTypedSelector((state) => state.fileReducer.path);
   const uploadInstructionStatus = useTypedSelector((state) => state.fileReducer.uploadProductInstructionStatus);
+  const uploadImageStatus = useTypedSelector((state) => state.fileReducer.uploadProductImageStatus);
   const [selectedProduct, setSelectedProduct] = useState(initProduct());
   const [description, setDescription] = useState("");
   const [fullDescription, setFullDescription] = useState("");
@@ -69,7 +73,9 @@ const Products = () => {
   const quillRefFullDescription = useRef<ReactQuill>(null);
   const quillRefDeliveryInfo = useRef<ReactQuill>(null);
   const inputInstructionRef = useRef<HTMLInputElement>(null);
+  const inputImageRef = useRef<HTMLInputElement>(null);
   const [uploadInstructionProgress, setUploadInstructionProgress] = useState(-1);
+  const [uploadImageProgress, setUploadImageProgress] = useState(-1);
   const [activeComponent, setActiveComponent] = useState(DropdownType.None);
   const [isMessageShow, setIsMessageShow] = useState(false);
   const [isConfirmShow, setIsConfirmShow] = useState(false);
@@ -197,6 +203,45 @@ const Products = () => {
     }
   }, [deleteProductStatus]);
 
+  useEffect(() => {
+    if (uploadImageStatus.status === ServerStatusType.Success && path !== "") {
+      setUploadImageProgress(-1);
+      setSelectedProduct({
+        ...selectedProduct,
+        images: [
+          ...selectedProduct.images,
+          {
+            id: selectedProduct.images.length === 0 ? 0 : selectedProduct.images[selectedProduct.images.length - 1].id + 1,
+            path: path,
+            is_main: selectedProduct.images.length === 0,
+          } as IProductImage,
+        ],
+      });
+      setUploadProductImageStatus(initServerStatus());
+    }
+    if (uploadImageStatus.status === ServerStatusType.Error) {
+      setTitleMessage("Ошибка");
+      setInfoMessage("Не удалось загрузить изображение");
+      setIsMessageShow(true);
+      setUploadImageProgress(-1);
+      setUploadProductImageStatus(initServerStatus());
+    }
+  }, [uploadImageStatus]);
+
+  useEffect(() => {
+    if (
+      selectedProduct.images.length > 0 &&
+      selectedProduct.images.filter((image: IProductImage) => image.is_main).length === 0
+    ) {
+      setSelectedProduct({
+        ...selectedProduct,
+        images: selectedProduct.images.map((image: IProductImage, index: number) => {
+          return { ...image, is_main: index === 0 } as IProductImage;
+        }),
+      });
+    }
+  }, [selectedProduct.images]);
+
   const handleAddOnClick = () => {
     setSelectedProduct(initProduct());
     setDescription("");
@@ -284,6 +329,21 @@ const Products = () => {
       inputInstructionRef.current!.click();
     } else {
       setSelectedProduct({ ...selectedProduct, instruction_path: "" });
+    }
+  };
+
+  const handleChangeImage = (event) => {
+    try {
+      const file = event.target.files[0];
+      uploadProductImage({
+        file: file,
+        onUploadProgress: (data) => {
+          setUploadImageProgress(Math.round(100 * (data.loaded / data.total!)));
+        },
+      });
+      event.target.value = "";
+    } catch (error) {
+      console.warn(error);
     }
   };
 
@@ -593,6 +653,58 @@ const Products = () => {
                     )}
                   </button>
                 </div>
+              </div>
+              <div className={pageStyles.images_fields}>
+                <div className={pageStyles.images_head}>
+                  {`Изображения (${selectedProduct.images.length})`}
+                  <input
+                    ref={inputImageRef}
+                    type="file"
+                    onChange={handleChangeImage}
+                    accept="image/png, image/jpeg"
+                    hidden
+                  />
+                  <button type="button" onClick={() => inputImageRef.current!.click()} disabled={uploadImageProgress > -1}>
+                    {uploadImageProgress === -1 ? "Выбрать изображение" : `Загрузка...(${uploadImageProgress}%)`}
+                  </button>
+                </div>
+                {selectedProduct.images.length > 0 ? (
+                  <div className={pageStyles.images_list}>
+                    {selectedProduct.images.map((image: IProductImage) => (
+                      <div className={`${pageStyles.image} ${image.is_main ? pageStyles.main : ""}`}>
+                        <img src={`/uploads/${image.path}`} alt="" />
+                        {image.is_main ? (
+                          <div className={pageStyles.main_label}>Главная</div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setSelectedProduct({
+                                ...selectedProduct,
+                                images: selectedProduct.images.map((tmpImage: IProductImage) => {
+                                  return { ...tmpImage, is_main: tmpImage.id === image.id };
+                                }),
+                              })
+                            }
+                          >
+                            Сделать главной
+                          </button>
+                        )}
+                        <div
+                          className={pageStyles.delete_button}
+                          onClick={() =>
+                            setSelectedProduct({
+                              ...selectedProduct,
+                              images: selectedProduct.images.filter((tmpImage: IProductImage) => tmpImage.id !== image.id),
+                            })
+                          }
+                        >
+                          <CloseIcon />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             </div>
             <button type="submit">Сохранить</button>

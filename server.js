@@ -50,6 +50,7 @@ app.post("/api/add_filter", checkAuth_1.default, index_1.FilterController.addFil
 app.post("/api/update_filter", checkAuth_1.default, index_1.FilterController.updateFilter);
 app.post("/api/delete_filter", checkAuth_1.default, index_1.FilterController.deleteFilter);
 app.get("/api/manufacturers", index_1.ManufacturerController.getManufacturers);
+app.post("/api/send_mail", index_1.MailController.sendMail);
 app.use(express.static(path.join(__dirname, "dist")));
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 app.get("*", function (request, response) {
