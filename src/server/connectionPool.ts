@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 
 const user = "root";
-const password = "";
+const password = "root";
 const database = "nadoholod";
 const host = "localhost";
 

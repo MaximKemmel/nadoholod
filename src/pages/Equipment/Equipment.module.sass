@@ -24,6 +24,10 @@ $link_color: #7EA4B3
             gap: 5px
             flex-wrap: wrap
 
+            .link
+                cursor: pointer
+                transition: all .2s ease-out
+
             .element
                 opacity: 0.5
 
@@ -411,6 +415,14 @@ $link_color: #7EA4B3
     &.active
         background: rgba(0, 0, 0, 0.8)
         width: 100%
+
+@media (min-width: 1024px)
+    .wrapper
+        .container
+            .breadcumbs
+                .link
+                    &:hover
+                        color: $active_color
 
 @media (max-width: 1380px)
     .wrapper

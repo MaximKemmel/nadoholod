@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import parse from "html-react-parser";
 
 import { useActions } from "../../hooks/useActions";
@@ -28,7 +28,8 @@ import SnowImage from "../../assets/images/snow.png";
 
 const Equipments = () => {
   const { id } = useParams();
-  const { setIsNoScroll } = useActions();
+  const navigate = useNavigate();
+  const { setIsNoScroll, setCurrentContainer } = useActions();
   const windowSize = useTypedSelector((state) => state.mainReducer.windowSize);
   const [isOrderShow, setIsOrderShow] = useState(false);
   const [isMessageVisible, setIsMessageVisible] = useState(false);
@@ -60,9 +61,13 @@ const Equipments = () => {
       {equipment.id > -1 ? (
         <div className={styles.container}>
           <div className={styles.breadcumbs}>
-            <div className={styles.breadcumb}>Главная</div>
+            <div className={styles.link} onClick={() => navigate("/")}>
+              Главная
+            </div>
             <ArrowIcon />
-            <div className={styles.breadcumb}>Оборудование</div>
+            <div className={styles.link} onClick={() => setCurrentContainer("equipment_container")}>
+              Оборудование
+            </div>
             <ArrowIcon />
             <div className={styles.element}>{equipment.name}</div>
           </div>
@@ -73,7 +78,7 @@ const Equipments = () => {
                 <img src={`/uploads/equipments/${equipment.prefix}_main.png`} alt="" />
               </div>
               <div className={styles.description}>{parse(equipment.description)}</div>
-              <button type="button">
+              <button type="button" onClick={() => navigate("/catalog/0")}>
                 Каталог
                 <ButtonArrowIcon />
               </button>

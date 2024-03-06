@@ -7,6 +7,7 @@ interface IMainState {
   windowSize: IWindowSize;
   windowTopPosition: number;
   isNoScroll: boolean;
+  currentContainer: string;
 }
 
 const initialState: IMainState = {
@@ -17,6 +18,7 @@ const initialState: IMainState = {
   } as IWindowSize,
   windowTopPosition: 0,
   isNoScroll: false,
+  currentContainer: "",
 };
 
 export const mainSlice = createSlice({
@@ -34,6 +36,9 @@ export const mainSlice = createSlice({
     },
     setIsNoScroll(state, action: PayloadAction<boolean>) {
       state.isNoScroll = action.payload;
+    },
+    setCurrentContainer(state, action: PayloadAction<string>) {
+      state.currentContainer = action.payload;
     },
   },
 });

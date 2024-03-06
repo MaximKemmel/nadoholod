@@ -56,6 +56,7 @@ const Product = () => {
   };
 
   useEffect(() => {
+    document.title = "Страница товара";
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 

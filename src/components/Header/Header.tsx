@@ -19,10 +19,11 @@ import { Menu as MenuIcon } from "../../assets/svg/Menu";
 import { Close as CloseIcon } from "../../assets/svg/Close";
 
 const Header = () => {
-  const { setIsNoScroll } = useActions();
+  const { setIsNoScroll, setCurrentContainer } = useActions();
   const navigate = useNavigate();
   const isHomePage = useTypedSelector((state) => state.mainReducer.isHomePage);
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
+  const currentContainer = useTypedSelector((state) => state.mainReducer.currentContainer);
   const [isMessageShow, setIsMessageShow] = useState(false);
   const [isOrderShow, setIsOrderShow] = useState(false);
   const [isNavActive, setIsNavActive] = useState(false);
@@ -46,12 +47,24 @@ const Header = () => {
     setSearchValue("");
   }, [isSearchActive]);
 
+  useEffect(() => {
+    if (currentContainer !== "") {
+      navigate("/");
+    }
+  }, [currentContainer]);
+
   const handleLinkOnClick = (link: string) => {
     setIsNavActive(false);
-    var element = document.getElementById(link);
-    element!.scrollIntoView({
-      behavior: "smooth",
-    });
+    if (isHomePage) {
+      var element = document.getElementById(link);
+      if (element !== null) {
+        element!.scrollIntoView({
+          behavior: "smooth",
+        });
+      }
+    } else {
+      setCurrentContainer(link);
+    }
   };
 
   return (
@@ -59,7 +72,7 @@ const Header = () => {
       <div className={styles.container}>
         <div className={styles.head}>
           <div className={styles.logo_container}>
-            <img src={isHomePage ? Logo : LogoBlue} alt="" />
+            <img src={isHomePage ? Logo : LogoBlue} alt="" onClick={() => navigate("/")} />
             <div className={styles.company_content}>
               <div className={styles.name}>Холод PRO</div>
               <div className={styles.description}>
@@ -95,7 +108,7 @@ const Header = () => {
             />
             <SearchIcon />
           </div>
-          <div className={styles.logo}>
+          <div className={styles.logo} onClick={() => navigate("/")}>
             <img src={isHomePage ? Logo : LogoBlue} alt="" />
           </div>
           <div className={styles.mob_search_container}>

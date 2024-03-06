@@ -86,6 +86,7 @@ const Catalog = () => {
   };
 
   useEffect(() => {
+    document.title = "Каталог";
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
