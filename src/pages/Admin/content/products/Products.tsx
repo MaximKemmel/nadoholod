@@ -28,6 +28,7 @@ import { ICategoryAttribute } from "../../../../types/category/categoryAttribute
 import { IFilter } from "../../../../types/filter/filter";
 import { IManufacturer } from "../../../../types/manufacturer/manufacturer";
 import { ICategoryFilter } from "../../../../types/category/categoryFilter";
+import { IFilterItem } from "../../../../types/filter/filterItem";
 
 import { Plus as PlusIcon } from "../../../../assets/svg/Plus";
 import { List as ListIcon } from "../../../../assets/svg/List";
@@ -35,7 +36,7 @@ import { Edit as EditIcon } from "../../../../assets/svg/Edit";
 import { Delete as DeleteIcon } from "../../../../assets/svg/Delete";
 import { Close as CloseIcon } from "../../../../assets/svg/Close";
 import { Arrow as ArrowIcon } from "../../../../assets/svg/Arrow";
-import { IFilterItem } from "../../../../types/filter/filterItem";
+import { Check as CheckIcon } from "../../../../assets/svg/Check";
 
 const Products = () => {
   const {
@@ -462,6 +463,21 @@ const Products = () => {
                     }
                     onClick={() => setActiveComponent(DropdownType.None)}
                   />
+                </div>
+                <div className={pageStyles.input_field}>
+                  <label className={pageStyles.checkbox}>
+                    <div className={pageStyles.text}>Рекомендованный</div>
+                    <input type="checkbox" />
+                    <span
+                      className={`${pageStyles.checkbox_mark} ${selectedProduct.is_recomendated ? pageStyles.active : ""}`}
+                      aria-hidden="true"
+                      onClick={() =>
+                        setSelectedProduct({ ...selectedProduct, is_recomendated: !selectedProduct.is_recomendated })
+                      }
+                    >
+                      {selectedProduct.is_recomendated ? <CheckIcon /> : null}
+                    </span>
+                  </label>
                 </div>
                 <div className={pageStyles.input_field} onClick={() => setActiveComponent(DropdownType.None)}>
                   <div className={pageStyles.label}>Краткое описание</div>

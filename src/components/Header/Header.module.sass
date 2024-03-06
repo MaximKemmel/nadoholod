@@ -538,3 +538,23 @@ $last_submenu_hover_color: #0A4C62
 
                         *
                             stroke: $input_text_color
+
+                .mob_search_container
+                    display: flex
+                    gap: 10px
+                    position: relative
+                    height: 50px
+                    align-items: center
+
+                    .input_container
+                        display: none
+                        position: absolute
+                        z-index: 2
+                        right: 45px
+
+                        &.active
+                            display: flex
+                            width: calc(100vw - 85px)
+
+                        input
+                            height: 18px

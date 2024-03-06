@@ -14,6 +14,7 @@ export function initProduct(): IProduct {
     delivery_info: "",
     instruction_path: "",
     manufacturer_id: -1,
+    is_recomendated: false,
     images: [] as IProductImage[],
     attributes: [] as IProductAttribute[],
     filters: [] as IProductFilter[],

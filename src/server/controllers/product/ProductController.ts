@@ -49,7 +49,7 @@ const getProducts = (_request, response) => {
 
 const addProduct = (request, response) => {
   try {
-    const sql = "INSERT INTO products (??, ??, ??, ??, ??, ??, ??, ??) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+    const sql = "INSERT INTO products (??, ??, ??, ??, ??, ??, ??, ??, ??) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
     const query = mysql.format(sql, [
       "category_id",
       "name",
@@ -59,6 +59,7 @@ const addProduct = (request, response) => {
       "delivery_info",
       "instruction_path",
       "manufacturer_id",
+      "is_recomendated",
       request.body.params.product.category_id,
       request.body.params.product.name,
       request.body.params.product.description,
@@ -67,6 +68,7 @@ const addProduct = (request, response) => {
       request.body.params.product.delivery_info,
       request.body.params.product.instruction_path,
       request.body.params.product.manufacturer_id,
+      request.body.params.product.is_recomendated,
     ]);
     connectionPool.query(query, (error, data) => {
       if (error) {
@@ -118,7 +120,7 @@ const addProduct = (request, response) => {
 
 const updateProduct = (request, response) => {
   try {
-    const sql = "UPDATE products SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?;";
+    const sql = "UPDATE products SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?;";
     const query = mysql.format(sql, [
       "category_id",
       request.body.params.product.category_id,
@@ -136,6 +138,8 @@ const updateProduct = (request, response) => {
       request.body.params.product.instruction_path,
       "manufacturer_id",
       request.body.params.product.manufacturer_id,
+      "is_recomendated",
+      request.body.params.product.is_recomendated,
       "id",
       request.body.params.product.id,
     ]);

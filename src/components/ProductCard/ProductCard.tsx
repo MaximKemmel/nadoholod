@@ -23,7 +23,10 @@ const ProductCard: React.FC<IProductCardProps> = ({ product, viewType }) => {
       className={`${styles.card} ${viewType === 1 ? styles.list : ""}`}
       onClick={() => navigate(`/product/${product.id}`)}
     >
-      {product.images.length > 0 && product.images.filter((image: IProductImage) => image.is_main).length > 0 ? (
+      {product.images !== undefined &&
+      Array.isArray(product.images) &&
+      product.images.length > 0 &&
+      product.images.filter((image: IProductImage) => image.is_main).length > 0 ? (
         <img src={`/uploads/${product.images.find((image: IProductImage) => image.is_main)!.path}`} alt="" />
       ) : null}
       <div className={styles.info_block}>

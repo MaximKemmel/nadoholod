@@ -46,7 +46,7 @@ var getProducts = function (_request, response) {
 exports.getProducts = getProducts;
 var addProduct = function (request, response) {
     try {
-        var sql = "INSERT INTO products (??, ??, ??, ??, ??, ??, ??, ??) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        var sql = "INSERT INTO products (??, ??, ??, ??, ??, ??, ??, ??, ??) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
         var query = mysql.format(sql, [
             "category_id",
             "name",
@@ -56,6 +56,7 @@ var addProduct = function (request, response) {
             "delivery_info",
             "instruction_path",
             "manufacturer_id",
+            "is_recomendated",
             request.body.params.product.category_id,
             request.body.params.product.name,
             request.body.params.product.description,
@@ -64,6 +65,7 @@ var addProduct = function (request, response) {
             request.body.params.product.delivery_info,
             request.body.params.product.instruction_path,
             request.body.params.product.manufacturer_id,
+            request.body.params.product.is_recomendated,
         ]);
         connectionPool_1.connectionPool.query(query, function (error, data) {
             if (error) {
@@ -117,7 +119,7 @@ var addProduct = function (request, response) {
 exports.addProduct = addProduct;
 var updateProduct = function (request, response) {
     try {
-        var sql = "UPDATE products SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?;";
+        var sql = "UPDATE products SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?;";
         var query = mysql.format(sql, [
             "category_id",
             request.body.params.product.category_id,
@@ -135,6 +137,8 @@ var updateProduct = function (request, response) {
             request.body.params.product.instruction_path,
             "manufacturer_id",
             request.body.params.product.manufacturer_id,
+            "is_recomendated",
+            request.body.params.product.is_recomendated,
             "id",
             request.body.params.product.id,
         ]);

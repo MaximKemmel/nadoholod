@@ -26,7 +26,9 @@ const Header = () => {
   const [isMessageShow, setIsMessageShow] = useState(false);
   const [isOrderShow, setIsOrderShow] = useState(false);
   const [isNavActive, setIsNavActive] = useState(false);
+  const [isSearchActive, setIsSearchActive] = useState(false);
   const [isSubNavActive, setIsSubNavActive] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     setIsNoScroll(isMessageShow || isOrderShow || isNavActive);
@@ -35,6 +37,14 @@ const Header = () => {
     }
     setIsSubNavActive(false);
   }, [isMessageShow, isOrderShow, isNavActive]);
+
+  useEffect(() => {
+    if (isSearchActive) {
+      const input = document.getElementById("searchInput");
+      input?.focus();
+    }
+    setSearchValue("");
+  }, [isSearchActive]);
 
   const handleLinkOnClick = (link: string) => {
     setIsNavActive(false);
@@ -76,14 +86,33 @@ const Header = () => {
             <MenuIcon />
           </div>
           <div className={styles.input_container}>
-            <input type="text" placeholder="Найти..." />
+            <input
+              type="text"
+              placeholder="Найти..."
+              onBlur={() => setIsSearchActive(false)}
+              value={searchValue}
+              onChange={(event) => setSearchValue(event.target.value)}
+            />
             <SearchIcon />
           </div>
           <div className={styles.logo}>
             <img src={isHomePage ? Logo : LogoBlue} alt="" />
           </div>
-          <div className={styles.search_button}>
-            <SearchIcon />
+          <div className={styles.mob_search_container}>
+            <div className={`${styles.input_container} ${isSearchActive ? styles.active : ""}`}>
+              <input
+                type="text"
+                placeholder="Найти..."
+                id="searchInput"
+                onBlur={() => setIsSearchActive(false)}
+                value={searchValue}
+                onChange={(event) => setSearchValue(event.target.value)}
+              />
+              <SearchIcon />
+            </div>
+            <div className={styles.search_button} onClick={() => setIsSearchActive(!isSearchActive)}>
+              {isSearchActive ? <CloseIcon /> : <SearchIcon />}
+            </div>
           </div>
         </div>
         <nav className={isNavActive ? styles.active : ""}>

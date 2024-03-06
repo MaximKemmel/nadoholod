@@ -336,3 +336,40 @@ $focus_border_color: #11323D
                 button
                     width: 250px
                     height: 56px
+
+input[type='checkbox']
+    clip: rect(0 0 0 0)
+    clip-path: inset(50%)
+    height: 1px
+    overflow: hidden
+    position: absolute
+    white-space: nowrap
+    width: 1px
+
+.checkbox
+    display: flex
+    align-items: center
+    gap: 15px
+
+    .text
+        font-weight: 500
+        width: 200px
+
+    .checkbox_mark
+        cursor: pointer
+        height: 18px
+        width: 18px
+        background: $background_color
+        border: 1px $action_color solid
+        border-radius: 4px
+        padding: 3px
+        display: flex
+        transition: all .2s ease-out
+        flex-shrink: 0
+
+        svg
+            height: 100%
+            width: 100%
+
+        &.active
+            background-color: $action_color
