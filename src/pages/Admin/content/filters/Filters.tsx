@@ -53,6 +53,7 @@ const Filters = () => {
       setIsMessageShow(true);
       setSelectedFilter(initFilter());
       setViewType(0);
+      setIsCheckFields(false);
       setAddFilterStatus(initServerStatus());
     }
     if (addFilterStatus.status === ServerStatusType.Error) {
@@ -72,6 +73,7 @@ const Filters = () => {
       setIsMessageShow(true);
       setSelectedFilter(initFilter());
       setViewType(0);
+      setIsCheckFields(false);
       setUpdateFilterStatus(initServerStatus());
     }
     if (updateFilterStatus.status === ServerStatusType.Error) {
@@ -187,26 +189,28 @@ const Filters = () => {
           {viewType === 0 ? <PlusIcon /> : <ListIcon />}
         </button>
       </div>
-      {Array.isArray(filters) && filters.length > 0 && viewType === 0 ? (
+      {Array.isArray(filters) && filters.filter((filter: IFilter) => !filter.is_main).length > 0 && viewType === 0 ? (
         <div className={pageStyles.table}>
           <div className={pageStyles.table_head}>
             <div className={`${pageStyles.part} ${pageStyles.main}`}>Фильтр</div>
             <div className={`${pageStyles.part} ${pageStyles.actions}`}>Действия</div>
           </div>
           <div className={pageStyles.table_list}>
-            {filters.map((filter: IFilter) => (
-              <div className={pageStyles.table_item}>
-                <div className={`${pageStyles.part} ${pageStyles.main}`}>{filter.filter}</div>
-                <div className={`${pageStyles.part} ${pageStyles.actions}`}>
-                  <button type="button" onClick={() => handleEditOnClick(filter)}>
-                    <EditIcon />
-                  </button>
-                  <button type="button" className={appStyles.wrong} onClick={() => handleDeleteOnClick(filter)}>
-                    <DeleteIcon />
-                  </button>
+            {filters
+              .filter((filter: IFilter) => !filter.is_main)
+              .map((filter: IFilter) => (
+                <div className={pageStyles.table_item}>
+                  <div className={`${pageStyles.part} ${pageStyles.main}`}>{filter.filter}</div>
+                  <div className={`${pageStyles.part} ${pageStyles.actions}`}>
+                    <button type="button" onClick={() => handleEditOnClick(filter)}>
+                      <EditIcon />
+                    </button>
+                    <button type="button" className={appStyles.wrong} onClick={() => handleDeleteOnClick(filter)}>
+                      <DeleteIcon />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       ) : null}

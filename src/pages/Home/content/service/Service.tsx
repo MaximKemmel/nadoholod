@@ -7,7 +7,6 @@ import pageStyles from "../../Home.module.sass";
 import styles from "./Service.module.sass";
 import "../../../../slider.css";
 
-import MessageModal from "../../../../components/Modal/MessageModal";
 import OrderModal from "../../../../components/Modal/OrderModal";
 
 import ShopImage from "../../../../assets/images/shop.png";
@@ -16,13 +15,12 @@ import ChillerImage from "../../../../assets/images/chiller.png";
 
 const Service = () => {
   const { setIsNoScroll } = useActions();
-  const [isMessageShow, setIsMessageShow] = useState(false);
   const [isOrderShow, setIsOrderShow] = useState(false);
   const slider = useRef(null as Slider);
 
   useEffect(() => {
-    setIsNoScroll(isMessageShow || isOrderShow);
-  }, [isMessageShow, isOrderShow]);
+    setIsNoScroll(isOrderShow);
+  }, [isOrderShow]);
 
   const settings = {
     className: "center",
@@ -49,8 +47,10 @@ const Service = () => {
               <div className={styles.description}>
                 <div className={styles.name}>Продуктовый магазин</div>
                 <div className={styles.more_info}>5-6 витрин</div>
-                <div className={styles.price}>7 000 ₽/мес</div>
-                <button type="button">Оставить заявку</button>
+                <div className={styles.price}>7 000 ₽/мес</div>{" "}
+                <button type="button" onClick={() => setIsOrderShow(true)}>
+                  Оставить заявку
+                </button>
               </div>
             </div>
             <div className={styles.service_item}>
@@ -121,13 +121,7 @@ const Service = () => {
           </div>
         </div>
       </div>
-      <MessageModal
-        isShow={isMessageShow}
-        setIsShow={setIsMessageShow}
-        title="Заявка успешно отправлена!"
-        message="Наш специалист свяжется с вами и уточнит детали заказа"
-      />
-      <OrderModal isShow={isOrderShow} setIsShow={setIsOrderShow} onSubmit={() => setIsMessageShow(true)} />
+      <OrderModal isShow={isOrderShow} setIsShow={setIsOrderShow} />
     </>
   );
 };

@@ -38,7 +38,6 @@ function App() {
   const attributes = useTypedSelector((state) => state.attributeReducer.attributes);
   const filters = useTypedSelector((state) => state.filterReducer.filters);
   const manufacturers = useTypedSelector((state) => state.manufacturerReducer.manufacturers);
-  const currentContainer = useTypedSelector((state) => state.mainReducer.currentContainer);
   const { pathname } = useLocation();
 
   useLayoutEffect(() => {
@@ -66,9 +65,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (currentContainer === "") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
     setIsHomePage(pathname === "/");
   }, [pathname]);
 

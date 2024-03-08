@@ -1,7 +1,5 @@
 import { useLayoutEffect } from "react";
-
-//import { useActions } from "../../hooks/useActions";
-import { useTypedSelector } from "../../hooks/useTypedSeletor";
+import { useLocation } from "react-router-dom";
 
 import About from "./content/about/About";
 import Advantages from "./content/advantages/Advantages";
@@ -16,12 +14,12 @@ import WorkStages from "./content/workStages/WorkStages";
 import Face from "./content/face/Face";
 
 const Home = () => {
-  //const { setCurrentContainer } = useActions();
-  const currentContainer = useTypedSelector((state) => state.mainReducer.currentContainer);
+  const { state } = useLocation();
+  const { currentContainer } = state === null ? "" : state;
 
   useLayoutEffect(() => {
     document.title = "Главная";
-    if (currentContainer !== "") {
+    if (state !== undefined && currentContainer !== undefined && currentContainer !== "") {
       setTimeout(scrollToContainer, 200);
     } else {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -35,7 +33,6 @@ const Home = () => {
         behavior: "smooth",
       });
     }
-    //setCurrentContainer("");
   };
 
   return (

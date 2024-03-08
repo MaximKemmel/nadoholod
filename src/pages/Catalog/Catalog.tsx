@@ -315,12 +315,14 @@ const Catalog = () => {
             </>
           )}
         </div>
-        {Array.isArray(products) && products !== undefined && products.length > 0 ? (
+        {Array.isArray(products) &&
+        products !== undefined &&
+        products.filter((product: IProduct) => product.is_recomendated).length > 0 ? (
           <div className={styles.recommended_products}>
             <h4>Возможно вас заинтересует</h4>
             <div className={styles.recommended_products_list}>
-              {Array(4)
-                .fill(products[0])
+              {products
+                .filter((product: IProduct) => product.is_recomendated)
                 .map((product: IProduct) => (
                   <div className={styles.card}>
                     <ProductCard product={product} viewType={0} />
@@ -329,8 +331,8 @@ const Catalog = () => {
             </div>
             <div className={styles.slider}>
               <Slider ref={slider} {...settings}>
-                {Array(4)
-                  .fill(products[0])
+                {products
+                  .filter((product: IProduct) => product.is_recomendated)
                   .map((product: IProduct) => (
                     <div>
                       <div className={styles.card}>

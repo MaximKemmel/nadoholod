@@ -31,8 +31,8 @@ var addAttributes = function (request, response) {
         var sql_1 = "DELETE FROM attributes;";
         var values_1 = [];
         request.body.params.attributes.forEach(function (attribute) {
-            sql_1 += "INSERT INTO attributes (??, ??) VALUES (?, ?); ";
-            values_1.push("id", "attribute", attribute.id, attribute.attribute);
+            sql_1 += "INSERT INTO attributes (??, ??, ??) VALUES (?, ?, ?); ";
+            values_1.push("id", "attribute", "is_main", attribute.id, attribute.attribute, attribute.is_main);
         });
         var query = mysql.format(sql_1, values_1);
         connectionPool_1.connectionPool.query(query, function (error) {

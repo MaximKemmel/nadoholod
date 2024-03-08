@@ -7,6 +7,7 @@ $text_color: #043848
 $move_up_background_color: #F1F1F1
 $move_up_icon_color: #232731
 $focus_border_color: #11323D
+$disabled_color: #CFCFC7
 
 *
     padding: 0px
@@ -54,6 +55,10 @@ button
     &.wrong
         background-color: $wrong_color
 
+button:disabled,
+button[disabled]
+    background-color: $disabled_color
+
 input[type='text'],
 input[type='name'],
 input[type='phone'],
@@ -76,6 +81,9 @@ textarea
 
     &:focus
         border: 1px solid $focus_border_color
+
+    &.wrong
+        border: 1px solid $wrong_color
 
 input[type='text'],
 input[type='name'],
@@ -158,6 +166,11 @@ p
         &.wrong
             &:hover
                 background-color: $gray_wrong_color
+
+    button:disabled,
+    button[disabled]
+        &:hover
+            background-color: $disabled_color
 
 @media (max-width: 1024px)
     button

@@ -1,34 +1,72 @@
 import { useEffect, useState } from "react";
+import InputMask from "react-input-mask";
 
 import { useTypedSelector } from "../../hooks/useTypedSeletor";
 import { useActions } from "../../hooks/useActions";
 
+import appStyles from "../../App.module.sass";
 import styles from "./ContactUs.module.sass";
 
 import MessageModal from "../Modal/MessageModal";
-import OrderModal from "../Modal/OrderModal";
+
+import { ServerStatusType } from "../../enums/serverStatusType";
+import { initServerStatus } from "../../types/main/serverStatus";
 
 import SnowImage from "../../assets/images/snow.png";
 import { Close as CloseIcon } from "../../assets/svg/Close";
 
 const ContactUs = () => {
-  const { setIsNoScroll } = useActions();
-  const [symbolsCount, setSymbolsCount] = useState(0);
-  const [isMessageVisible, setIsMessageVisible] = useState(false);
+  const { setIsNoScroll, sendMail, setSendMailStatus } = useActions();
   const windowSize = useTypedSelector((state) => state.mainReducer.windowSize);
+  const mailStatus = useTypedSelector((state) => state.mailReducer.sendMailStatus);
+  const [checkFields, setCheckFields] = useState(false);
+  const [isMessageVisible, setIsMessageVisible] = useState(false);
   const [isMessageShow, setIsMessageShow] = useState(false);
-  const [isOrderShow, setIsOrderShow] = useState(false);
+  const [messageTitle, setMessageTitle] = useState("");
+  const [messageText, setMessageText] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
-    setIsNoScroll(isMessageShow || isOrderShow);
-  }, [isMessageShow, isOrderShow]);
+    setIsNoScroll(isMessageShow);
+  }, [isMessageShow]);
+
+  useEffect(() => {
+    if (name.trim() !== "") {
+      if (mailStatus.status === ServerStatusType.Success) {
+        setName("");
+        setPhone("");
+        setComment("");
+        setCheckFields(false);
+        setSendMailStatus(initServerStatus());
+        if (windowSize.innerWidth > 1024) {
+          setIsMessageVisible(true);
+        } else {
+          setMessageTitle("Заявка успешно отправлена!");
+          setMessageText("Наш специалист свяжется с вами и уточнит детали заказа");
+          setIsMessageShow(true);
+        }
+      }
+      if (mailStatus.status === ServerStatusType.Error) {
+        setMessageTitle("Ошибка!");
+        setMessageText("При отправке письма возникла ошибка. Попробуйте еще раз");
+        setIsMessageShow(true);
+      }
+    }
+  }, [mailStatus]);
 
   const handleOnSubmit = async (event) => {
     event.preventDefault();
-    if (windowSize.innerWidth > 1024) {
-      setIsMessageVisible(true);
+    if (!checkFields) {
+      setCheckFields(true);
+    }
+    if (name.trim() !== "" && phone.length === 18) {
+      sendMail({ name: name, phone: phone, message: comment, description: "Заявка с сайта" });
     } else {
-      setIsOrderShow(true);
+      setMessageTitle("Внимание!");
+      setMessageText("Заполните все поля");
+      setIsMessageShow(true);
     }
   };
 
@@ -53,17 +91,37 @@ const ContactUs = () => {
         <div className={styles.form}>
           <h5>Мы на связи!</h5>
           <form onSubmit={handleOnSubmit}>
-            <input type="name" placeholder="Ваше имя" />
-            <input type="phone" placeholder="+7 (___) ___-__-__" />
+            <input
+              type="name"
+              placeholder="Ваше имя"
+              className={checkFields && name.trim() === "" ? appStyles.wrong : ""}
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              required
+            />
+            <InputMask
+              className={checkFields && phone.length < 18 ? appStyles.wrong : ""}
+              placeholder="+7 (___) ___-__-__"
+              type="text"
+              mask="+7 (999) 999-99-99"
+              maskPlaceholder="0"
+              maskChar={""}
+              onChange={(event) => setPhone(event.target.value.trim())}
+              value={phone}
+              required
+            />
             <div className={styles.textarea_field}>
               <textarea
                 placeholder="Комментарий к заказу"
                 maxLength={100}
-                onChange={(event) => setSymbolsCount(event.target.value.length)}
+                value={comment}
+                onChange={(event) => setComment(event.target.value)}
               />
-              <div className={styles.count}>{`${symbolsCount}/100`}</div>
+              <div className={styles.count}>{`${comment.length}/100`}</div>
             </div>
-            <button type="submit">Оставить заявку</button>
+            <button type="submit" disabled={mailStatus.status !== ServerStatusType.None}>
+              Оставить заявку
+            </button>
             <div className={styles.agreement}>
               Продолжая, вы соглашаетесь{" "}
               <span>со сбором и обработкой персональных данных и пользовательским соглашением</span>
@@ -83,13 +141,7 @@ const ContactUs = () => {
           <div className={styles.description}>Наши менеджеры свяжутся с вами в ближайшее время</div>
         </div>
       </div>
-      <MessageModal
-        isShow={isMessageShow}
-        setIsShow={setIsMessageShow}
-        title="Заявка успешно отправлена!"
-        message="Наш специалист свяжется с вами и уточнит детали заказа"
-      />
-      <OrderModal isShow={isOrderShow} setIsShow={setIsOrderShow} onSubmit={() => setIsMessageShow(true)} />
+      <MessageModal isShow={isMessageShow} setIsShow={setIsMessageShow} title={messageTitle} message={messageText} />
     </div>
   );
 };

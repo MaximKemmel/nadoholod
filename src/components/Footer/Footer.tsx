@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSeletor";
 
 import styles from "./Footer.module.sass";
@@ -14,17 +12,9 @@ import { WhatsApp as WhatsAppIcon } from "../../assets/svg/WhatsApp";
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 
 const Footer = () => {
-  const { setCurrentContainer } = useActions();
   const navigate = useNavigate();
   const isHomePage = useTypedSelector((state) => state.mainReducer.isHomePage);
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
-  const currentContainer = useTypedSelector((state) => state.mainReducer.currentContainer);
-
-  useEffect(() => {
-    if (currentContainer !== "") {
-      navigate("/");
-    }
-  }, [currentContainer]);
 
   const handleLinkOnClick = (link: string) => {
     if (isHomePage) {
@@ -35,7 +25,7 @@ const Footer = () => {
         });
       }
     } else {
-      setCurrentContainer(link);
+      navigate("/", { state: { currentContainer: link } });
     }
   };
 

@@ -3,19 +3,19 @@ import * as nodemailer from "nodemailer";
 const sendMail = async (request, response) => {
   try {
     const mailOptions = {
-      from: "sexavenuex@gmail.com",
-      to: "sexavenuex@gmail.com",
-      subject: request.body.params.emailSubject,
-      html: request.body.params.html,
+      from: "kemmel7007@mail.ru",
+      to: "maximkemmel@yandex.ru",
+      subject: request.body.params.description,
+      html: `<b>${request.body.params.description}</b><br/><br/><b>Имя</b>: ${request.body.params.name}<br/><b>Номер телефона</b>: ${request.body.params.phone}<br/><b>Сообщение</b>: ${request.body.params.message}`,
     };
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.ru",
-      port: 587,
-      secure: false,
-      service: "gmail",
+      host: "smtp.mail.ru",
+      port: 465,
+      secure: true,
+      service: "Mail",
       auth: {
-        user: "sexavenuex@gmail.com",
-        pass: "hfqarnmrocxwvxpp",
+        user: "kemmel7007@mail.ru",
+        pass: "vpHufVRShcJP0gbiW27C",
       },
     });
     transporter.sendMail(mailOptions, (error, _info) => {

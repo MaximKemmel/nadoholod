@@ -161,6 +161,10 @@ $button_hover_color: #7EA4B3
             button
                 background-color: $dark_button_color
 
+            button:disabled,
+            button[disabled]
+                background-color: $gray_color
+
             .head
                 width: 520px
                 display: flex
@@ -213,6 +217,70 @@ $button_hover_color: #7EA4B3
                     color: $background_color
                     font-size: 18px
 
+@media (max-width: 1024px)
+    .modal
+        .modal_content
+            &.product_order
+                .head
+                    width: 430px
+
+                    .title
+                        font-size: 24px
+                        font-family: "Russo One"
+
+                    .description
+                        font-size: 15px
+                        line-height: 21.6px
+
+@media (max-width: 920px)
+    .modal
+        .modal_content
+            &.product_order
+                flex-direction: column
+                gap: 15px
+                padding: 25px
+
+                .head
+                    width: 320px
+                    text-align: center
+
+@media (max-width: 640px)
+    .modal
+        .modal_content
+            &.product_message
+                padding: 25px
+
+                .content
+                    margin-top: 25px
+                    width: 240px
+
+                    .title
+                        font-size: 20px
+
+                    .message
+                        font-size: 14px
+
+@media (max-width: 430px)
+    .modal
+        .modal_content
+            &.product_order
+                gap: 0px
+                padding: 15px
+
+                .head
+                    margin-top: 35px
+
+                    .title
+                        font-size: 20px
+
+                    .description
+                        font-size: 14px
+                        line-height: 20px
+
+                .content,
+                .head
+                    width: calc(100vw - 40px)
+
 @media (max-width: 360px)
     .modal
         .modal_content
@@ -242,3 +310,7 @@ $button_hover_color: #7EA4B3
                 button
                     &:hover
                         background-color: $button_hover_color
+                button:disabled,
+                button[disabled]
+                    &:hover
+                        background-color: $gray_color

@@ -30,8 +30,8 @@ const addAttributes = (request, response) => {
     let sql = "DELETE FROM attributes;";
     const values = [] as string[];
     request.body.params.attributes.forEach((attribute) => {
-      sql += "INSERT INTO attributes (??, ??) VALUES (?, ?); ";
-      values.push("id", "attribute", attribute.id, attribute.attribute);
+      sql += "INSERT INTO attributes (??, ??, ??) VALUES (?, ?, ?); ";
+      values.push("id", "attribute", "is_main", attribute.id, attribute.attribute, attribute.is_main);
     });
     const query = mysql.format(sql, values);
     connectionPool.query(query, (error) => {

@@ -44,8 +44,13 @@ var getFilters = function (_request, response) {
 exports.getFilters = getFilters;
 var addFilter = function (request, response) {
     try {
-        var sql = "INSERT INTO filters (??) VALUES (?);";
-        var query = mysql.format(sql, ["filter", request.body.params.filter.filter]);
+        var sql = "INSERT INTO filters (??, ??) VALUES (?, ?);";
+        var query = mysql.format(sql, [
+            "filter",
+            "is_main",
+            request.body.params.filter.filter,
+            request.body.params.filter.is_main,
+        ]);
         connectionPool_1.connectionPool.query(query, function (error, data) {
             if (error) {
                 return response.status(404).json({

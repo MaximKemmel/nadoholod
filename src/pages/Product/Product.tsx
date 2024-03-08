@@ -11,6 +11,7 @@ import ProductMessageModal from "../../components/Modal/ProductMessageModal";
 import ProductOrderModal from "../../components/Modal/ProductOrderModal";
 
 import { IProduct } from "../../types/product/product";
+import { initProduct } from "../../types/product/initProduct";
 
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 import CarIcon from "../../assets/images/car.png";
@@ -20,10 +21,11 @@ import PdfIcon from "../../assets/images/pdf_icon.png";
 const Product = () => {
   const { setIsNoScroll } = useActions();
   const products = useTypedSelector((state) => state.productReducer.products);
+  const [product, setProduct] = useState(initProduct());
   const [mainPhoto, setMainPhoto] = useState("/uploads/products/product.png");
   const [activeTab, setActiveTab] = useState(0);
   const [isMessageShow, setIsMessageShow] = useState(false);
-  const [isOrderShow, setIsOrderShow] = useState(false);
+  const [isOrderShow, setIsOrderShow] = useState(true);
   const slider = useRef(null as Slider);
 
   const settings = {
@@ -58,6 +60,7 @@ const Product = () => {
   useEffect(() => {
     document.title = "Страница товара";
     window.scrollTo({ top: 0, behavior: "smooth" });
+    setProduct({ ...product, name: "товар" });
   }, []);
 
   useEffect(() => {
@@ -211,12 +214,14 @@ const Product = () => {
               </div>
             ) : null}
           </div>
-          {Array.isArray(products) && products !== undefined && products.length > 0 ? (
+          {Array.isArray(products) &&
+          products !== undefined &&
+          products.filter((product: IProduct) => product.is_recomendated).length > 0 ? (
             <div className={styles.recommended_products}>
               <h4>Возможно вас заинтересует</h4>
               <div className={styles.recommended_products_list}>
-                {Array(4)
-                  .fill(products[0])
+                {products
+                  .filter((product: IProduct) => product.is_recomendated)
                   .map((product: IProduct) => (
                     <div className={styles.card}>
                       <ProductCard product={product} viewType={0} />
@@ -225,8 +230,8 @@ const Product = () => {
               </div>
               <div className={styles.slider}>
                 <Slider ref={slider} {...settings}>
-                  {Array(4)
-                    .fill(products[0])
+                  {products
+                    .filter((product: IProduct) => product.is_recomendated)
                     .map((product: IProduct) => (
                       <div>
                         <div className={styles.card}>
@@ -246,7 +251,7 @@ const Product = () => {
         title="Спасибо за заявку!"
         message="Наш специалист свяжется с вами и уточнит детали заказа"
       />
-      <ProductOrderModal isShow={isOrderShow} setIsShow={setIsOrderShow} onSubmit={() => setIsMessageShow(true)} />
+      <ProductOrderModal isShow={isOrderShow} setIsShow={setIsOrderShow} productName={product.name} />
     </div>
   );
 };

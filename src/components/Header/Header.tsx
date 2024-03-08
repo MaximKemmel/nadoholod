@@ -6,7 +6,6 @@ import { useTypedSelector } from "../../hooks/useTypedSeletor";
 
 import styles from "./Header.module.sass";
 
-import MessageModal from "../Modal/MessageModal";
 import OrderModal from "../Modal/OrderModal";
 
 import { ICategory } from "../../types/category/category";
@@ -19,12 +18,10 @@ import { Menu as MenuIcon } from "../../assets/svg/Menu";
 import { Close as CloseIcon } from "../../assets/svg/Close";
 
 const Header = () => {
-  const { setIsNoScroll, setCurrentContainer } = useActions();
+  const { setIsNoScroll } = useActions();
   const navigate = useNavigate();
   const isHomePage = useTypedSelector((state) => state.mainReducer.isHomePage);
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
-  const currentContainer = useTypedSelector((state) => state.mainReducer.currentContainer);
-  const [isMessageShow, setIsMessageShow] = useState(false);
   const [isOrderShow, setIsOrderShow] = useState(false);
   const [isNavActive, setIsNavActive] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -32,12 +29,12 @@ const Header = () => {
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    setIsNoScroll(isMessageShow || isOrderShow || isNavActive);
-    if (isOrderShow || isMessageShow) {
+    setIsNoScroll(isOrderShow || isNavActive);
+    if (isOrderShow) {
       setIsNavActive(false);
     }
     setIsSubNavActive(false);
-  }, [isMessageShow, isOrderShow, isNavActive]);
+  }, [isOrderShow, isNavActive]);
 
   useEffect(() => {
     if (isSearchActive) {
@@ -46,12 +43,6 @@ const Header = () => {
     }
     setSearchValue("");
   }, [isSearchActive]);
-
-  useEffect(() => {
-    if (currentContainer !== "") {
-      navigate("/");
-    }
-  }, [currentContainer]);
 
   const handleLinkOnClick = (link: string) => {
     setIsNavActive(false);
@@ -63,7 +54,7 @@ const Header = () => {
         });
       }
     } else {
-      setCurrentContainer(link);
+      navigate("/", { state: { currentContainer: link } });
     }
   };
 
@@ -192,7 +183,6 @@ const Header = () => {
             <div className={styles.close_button} onClick={() => setIsNavActive(false)}>
               <CloseIcon />
             </div>
-
             <li className={styles.reverse} onClick={() => setIsSubNavActive(false)}>
               <ArrowIcon />
               Продукция
@@ -217,13 +207,7 @@ const Header = () => {
           </ul>
         </nav>
       </div>
-      <MessageModal
-        isShow={isMessageShow}
-        setIsShow={setIsMessageShow}
-        title="Заявка успешно отправлена!"
-        message="Наш специалист свяжется с вами и уточнит детали заказа"
-      />
-      <OrderModal isShow={isOrderShow} setIsShow={setIsOrderShow} onSubmit={() => setIsMessageShow(true)} />
+      <OrderModal isShow={isOrderShow} setIsShow={setIsOrderShow} />
     </div>
   );
 };

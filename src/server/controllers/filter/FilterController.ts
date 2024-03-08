@@ -36,8 +36,13 @@ const getFilters = (_request, response) => {
 
 const addFilter = (request, response) => {
   try {
-    const sql = "INSERT INTO filters (??) VALUES (?);";
-    const query = mysql.format(sql, ["filter", request.body.params.filter.filter]);
+    const sql = "INSERT INTO filters (??, ??) VALUES (?, ?);";
+    const query = mysql.format(sql, [
+      "filter",
+      "is_main",
+      request.body.params.filter.filter,
+      request.body.params.filter.is_main,
+    ]);
     connectionPool.query(query, (error, data) => {
       if (error) {
         return response.status(404).json({

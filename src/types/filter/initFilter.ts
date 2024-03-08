@@ -5,6 +5,7 @@ export function initFilter(): IFilter {
   const defaults = {
     id: -1,
     filter: "",
+    is_main: false,
     items: [] as IFilterItem[],
   };
 

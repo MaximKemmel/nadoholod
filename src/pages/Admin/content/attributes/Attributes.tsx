@@ -39,6 +39,7 @@ const Attributes = () => {
       setTitleMessage("Успех!");
       setInfoMessage("Аттрибуты изменены");
       setIsMessageShow(true);
+      setIsCheckFields(false);
       setAddAttributesStatus(initServerStatus());
     }
     if (addAttributesStatus.status === ServerStatusType.Error) {
@@ -60,6 +61,7 @@ const Attributes = () => {
               : tmpAttributes[tmpAttributes.length - 1].id + 1
             : attributes[attributes.length - 1].id + 1,
         attribute: "",
+        is_main: false,
       } as IAttribute,
     ]);
   };
@@ -92,42 +94,44 @@ const Attributes = () => {
     <div className={pageStyles.container}>
       <div className={pageStyles.head}>
         <div className={pageStyles.title}>Аттрибуты товара</div>
+        <button className={pageStyles.add_button} type="button" onClick={handleAddOnClick}>
+          <PlusIcon />
+        </button>
       </div>
       <div className={pageStyles.content}>
         <form className={`${pageStyles.form} ${pageStyles.secondary_form}`} onSubmit={handleOnSubmit}>
-          <button className={pageStyles.add_button} type="button" onClick={handleAddOnClick}>
-            <PlusIcon />
-          </button>
           {Array.isArray(tmpAttributes) && tmpAttributes.length > 0 ? (
             <>
               <div className={pageStyles.row}>
                 <div className={pageStyles.fields}>
-                  {tmpAttributes.map((attribute: IAttribute) => (
-                    <div className={pageStyles.input_field}>
-                      <div className={pageStyles.label}>Аттрибут</div>
-                      <input
-                        className={attribute.attribute.trim().length === 0 && isCheckFields ? pageStyles.wrong : ""}
-                        type="text"
-                        placeholder="Аттрибут"
-                        value={attribute.attribute}
-                        onChange={(event) =>
-                          setTmpAttributes(
-                            tmpAttributes.map((attributeTmp: IAttribute) => {
-                              if (attributeTmp.id === attribute.id) {
-                                return {
-                                  ...attributeTmp,
-                                  attribute: event.target.value,
-                                };
-                              } else return attributeTmp;
-                            })
-                          )
-                        }
-                      />
-                      <button type="button" className={appStyles.wrong} onClick={() => handleDeleteOnClick(attribute)}>
-                        <DeleteIcon />
-                      </button>
-                    </div>
-                  ))}
+                  {tmpAttributes
+                    .filter((attribute: IAttribute) => !attribute.is_main)
+                    .map((attribute: IAttribute) => (
+                      <div className={pageStyles.input_field}>
+                        <div className={pageStyles.label}>Аттрибут</div>
+                        <input
+                          className={attribute.attribute.trim().length === 0 && isCheckFields ? pageStyles.wrong : ""}
+                          type="text"
+                          placeholder="Аттрибут"
+                          value={attribute.attribute}
+                          onChange={(event) =>
+                            setTmpAttributes(
+                              tmpAttributes.map((attributeTmp: IAttribute) => {
+                                if (attributeTmp.id === attribute.id) {
+                                  return {
+                                    ...attributeTmp,
+                                    attribute: event.target.value,
+                                  };
+                                } else return attributeTmp;
+                              })
+                            )
+                          }
+                        />
+                        <button type="button" className={appStyles.wrong} onClick={() => handleDeleteOnClick(attribute)}>
+                          <DeleteIcon />
+                        </button>
+                      </div>
+                    ))}
                 </div>
               </div>
             </>
