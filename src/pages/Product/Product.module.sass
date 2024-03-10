@@ -26,6 +26,10 @@ $active_color: #01AAC1
             .element
                 opacity: 0.5
 
+            .link
+                cursor: pointer
+                transition: all .2s ease-out
+
             svg
                 width: 15px
                 height: auto
@@ -163,17 +167,18 @@ $active_color: #01AAC1
 
                     .description_list
                         display: flex
-                        gap: 50px
+                        flex-direction: column
+                        gap: 20px
+                        width: 500px
 
-                        .labels,
-                        .values
+                        .attribute
                             display: flex
-                            flex-direction: column
-                            gap: 20px
+                            align-items: center
+                            font-size: 16px
+                            justify-content: space-between
 
-                            .label,
-                            .value
-                                font-size: 16px
+                            .label
+                                width: 350px
 
                     .link
                         display: flex
@@ -181,6 +186,10 @@ $active_color: #01AAC1
                         align-items: center
                         color: $active_color
                         cursor: pointer
+
+                        a
+                            color: $active_color
+                            text-decoration: none
 
                         img
                             height: 25px
@@ -207,6 +216,11 @@ $active_color: #01AAC1
 @media (min-width: 1024px)
     .wrapper
         .container
+            .breadcumbs
+                .link
+                    &:hover
+                        color: $active_color
+
             .content
                 .main_container
                     .photos_container
@@ -384,16 +398,20 @@ $active_color: #01AAC1
                             margin-top: 10px
 
                         .description_list
-                            gap: 25px
+                            width: 100%
+                            gap: 15px
 
-                            .labels,
-                            .values
-                                gap: 10px
+                            .attribute
+                                .label
+                                    width: auto
+                                    flex-grow: 1
+
+                                .value
+                                    width: 75px
 
                                 .label,
                                 .value
                                     font-size: 14px
-                                    height: 41px
 
 @media (max-width: 360px)
     .wrapper
@@ -417,14 +435,3 @@ $active_color: #01AAC1
                     .tab_view
                         p
                             margin-top: 10px
-
-                        .description_list
-                            gap: 25px
-
-                            .labels,
-                            .values
-                                gap: 15px
-
-                                .label,
-                                .value
-                                    font-size: 14px

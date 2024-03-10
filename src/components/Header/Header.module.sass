@@ -8,6 +8,8 @@ $submenu_border_color: #CFCFC7
 $sumbenu_action_hover_color: #01879A
 $last_submenu_background_color: #0B6886
 $last_submenu_hover_color: #0A4C62
+$border_color: #7EA4B3
+$hover_color: #49AEC833
 
 .wrapper
     position: relative
@@ -87,6 +89,32 @@ $last_submenu_hover_color: #0A4C62
                 padding-left: 50px
                 transition: all .2s ease-out
 
+            .search_values
+                position: absolute
+                z-index: 1
+                top: 56px
+                left: 0
+                max-height: 335px
+                overflow-x: hidden
+                overflow-y: auto
+                width: 100%
+                background-color: $text_color
+                border-radius: 5px
+                border: 1px solid $border_color
+                border-top: none
+                box-shadow: 0px 4px 8px 0px #8E8DD029
+                display: flex
+                flex-direction: column
+
+                .value
+                    color: $input_text_color
+                    font-size: 14px
+                    padding: 10px 15px
+                    font-weight: 500
+                    cursor: pointer
+                    transition: all .2s ease-out
+                    background-color: $text_color
+
         .head
             display: flex
             align-items: center
@@ -100,6 +128,7 @@ $last_submenu_hover_color: #0A4C62
                 img
                     height: 140px
                     width: auto
+                    cursor: pointer
 
                 .company_content
                     display: flex
@@ -238,6 +267,11 @@ $last_submenu_hover_color: #0A4C62
 @media (min-width: 768px)
     .wrapper
         .container
+            .input_container
+                .search_values
+                    .value
+                        &:hover
+                            background-color: $hover_color
             nav
                 .main_menu
                     li
@@ -383,7 +417,7 @@ $last_submenu_hover_color: #0A4C62
                 .input_container
                     width: calc(100% - 80px)
 
-                .search_button,
+                .mob_search_container,
                 .logo
                     display: none
 
@@ -440,6 +474,10 @@ $last_submenu_hover_color: #0A4C62
 
                             li
                                 font-size: 14px
+
+                                &.reverse
+                                    font-size: 16px
+                                    font-weight: 500
 
                     .close_button
                         margin: 5px 15px 10px 15px
@@ -539,6 +577,11 @@ $last_submenu_hover_color: #0A4C62
                         *
                             stroke: $input_text_color
 
+                    &.close
+                        svg
+                            *
+                                fill: $input_text_color
+
                 .mob_search_container
                     display: flex
                     gap: 10px
@@ -558,3 +601,13 @@ $last_submenu_hover_color: #0A4C62
 
                         input
                             height: 18px
+                            background-color: $text_color
+
+        &.home
+            .container
+                .mobile_head
+                    .search_button
+                        &.close
+                            svg
+                                *
+                                    fill: $text_color

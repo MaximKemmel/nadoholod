@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSeletor";
@@ -16,12 +16,15 @@ import { Search as SearchIcon } from "../../assets/svg/Search";
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 import { Menu as MenuIcon } from "../../assets/svg/Menu";
 import { Close as CloseIcon } from "../../assets/svg/Close";
+import { IProduct } from "src/types/product/product";
 
 const Header = () => {
   const { setIsNoScroll } = useActions();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const isHomePage = useTypedSelector((state) => state.mainReducer.isHomePage);
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
+  const products = useTypedSelector((state) => state.productReducer.products);
   const [isOrderShow, setIsOrderShow] = useState(false);
   const [isNavActive, setIsNavActive] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -44,6 +47,11 @@ const Header = () => {
     setSearchValue("");
   }, [isSearchActive]);
 
+  useEffect(() => {
+    setSearchValue("");
+    setIsSearchActive(false);
+  }, [pathname]);
+
   const handleLinkOnClick = (link: string) => {
     setIsNavActive(false);
     if (isHomePage) {
@@ -56,6 +64,11 @@ const Header = () => {
     } else {
       navigate("/", { state: { currentContainer: link } });
     }
+  };
+
+  const unselectSearch = () => {
+    setSearchValue("");
+    setIsSearchActive(false);
   };
 
   return (
@@ -79,9 +92,34 @@ const Header = () => {
               </button>
               <div className={styles.empty} />
             </div>
-            <div className={styles.input_container}>
-              <input type="text" placeholder="Найти..." />
+            <div className={styles.input_container} onBlur={() => setTimeout(unselectSearch, 100)}>
+              <input
+                type="text"
+                placeholder="Найти..."
+                value={searchValue}
+                onChange={(event) => setSearchValue(event.target.value)}
+              />
               <SearchIcon />
+              {searchValue.trim() !== "" &&
+              Array.isArray(products) &&
+              products !== undefined &&
+              products.filter((product: IProduct) => product.name.toLowerCase().includes(searchValue.toLowerCase().trim()))
+                .length > 0 ? (
+                <div className={styles.search_values}>
+                  {products
+                    .filter((product: IProduct) => product.name.toLowerCase().includes(searchValue.toLowerCase().trim()))
+                    .map((product: IProduct) => (
+                      <div
+                        className={styles.value}
+                        onClick={() => {
+                          navigate(`/product/${product.id}`);
+                        }}
+                      >
+                        {product.name}
+                      </div>
+                    ))}
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
@@ -89,7 +127,7 @@ const Header = () => {
           <div className={styles.menu_button} onClick={() => setIsNavActive(true)}>
             <MenuIcon />
           </div>
-          <div className={styles.input_container}>
+          <div className={styles.input_container} onBlur={() => setTimeout(unselectSearch, 100)}>
             <input
               type="text"
               placeholder="Найти..."
@@ -98,23 +136,65 @@ const Header = () => {
               onChange={(event) => setSearchValue(event.target.value)}
             />
             <SearchIcon />
+            {searchValue.trim() !== "" &&
+            Array.isArray(products) &&
+            products !== undefined &&
+            products.filter((product: IProduct) => product.name.toLowerCase().includes(searchValue.toLowerCase().trim()))
+              .length > 0 ? (
+              <div className={styles.search_values}>
+                {products
+                  .filter((product: IProduct) => product.name.toLowerCase().includes(searchValue.toLowerCase().trim()))
+                  .map((product: IProduct) => (
+                    <div
+                      className={styles.value}
+                      onClick={() => {
+                        navigate(`/product/${product.id}`);
+                      }}
+                    >
+                      {product.name}
+                    </div>
+                  ))}
+              </div>
+            ) : null}
           </div>
           <div className={styles.logo} onClick={() => navigate("/")}>
             <img src={isHomePage ? Logo : LogoBlue} alt="" />
           </div>
-          <div className={styles.mob_search_container}>
+          <div className={styles.mob_search_container} onBlur={() => setTimeout(unselectSearch, 100)}>
             <div className={`${styles.input_container} ${isSearchActive ? styles.active : ""}`}>
               <input
                 type="text"
                 placeholder="Найти..."
                 id="searchInput"
-                onBlur={() => setIsSearchActive(false)}
                 value={searchValue}
                 onChange={(event) => setSearchValue(event.target.value)}
               />
               <SearchIcon />
+              {searchValue.trim() !== "" &&
+              Array.isArray(products) &&
+              products !== undefined &&
+              products.filter((product: IProduct) => product.name.toLowerCase().includes(searchValue.toLowerCase().trim()))
+                .length > 0 ? (
+                <div className={styles.search_values}>
+                  {products
+                    .filter((product: IProduct) => product.name.toLowerCase().includes(searchValue.toLowerCase().trim()))
+                    .map((product: IProduct) => (
+                      <div
+                        className={styles.value}
+                        onClick={() => {
+                          navigate(`/product/${product.id}`);
+                        }}
+                      >
+                        {product.name}
+                      </div>
+                    ))}
+                </div>
+              ) : null}
             </div>
-            <div className={styles.search_button} onClick={() => setIsSearchActive(!isSearchActive)}>
+            <div
+              className={`${styles.search_button} ${isSearchActive ? styles.close : ""}`}
+              onClick={() => setIsSearchActive(!isSearchActive)}
+            >
               {isSearchActive ? <CloseIcon /> : <SearchIcon />}
             </div>
           </div>

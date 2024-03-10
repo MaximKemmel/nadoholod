@@ -20,7 +20,7 @@ const Home = () => {
   useLayoutEffect(() => {
     document.title = "Главная";
     if (state !== undefined && currentContainer !== undefined && currentContainer !== "") {
-      setTimeout(scrollToContainer, 200);
+      setTimeout(scrollToContainer, 500);
     } else {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }

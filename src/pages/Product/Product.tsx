@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
+import parse from "html-react-parser";
 
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSeletor";
@@ -17,15 +19,23 @@ import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 import CarIcon from "../../assets/images/car.png";
 import TimeIcon from "../../assets/images/time.png";
 import PdfIcon from "../../assets/images/pdf_icon.png";
+import { IProductImage } from "src/types/product/productImage";
+import { IManufacturer } from "src/types/manufacturer/manufacturer";
+import { IProductAttribute } from "src/types/product/productAttribute";
+import { IAttribute } from "src/types/attribute/attribute";
 
 const Product = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const { setIsNoScroll } = useActions();
   const products = useTypedSelector((state) => state.productReducer.products);
+  const manufacturers = useTypedSelector((state) => state.manufacturerReducer.manufacturers);
+  const attributes = useTypedSelector((state) => state.attributeReducer.attributes);
   const [product, setProduct] = useState(initProduct());
   const [mainPhoto, setMainPhoto] = useState("/uploads/products/product.png");
   const [activeTab, setActiveTab] = useState(0);
   const [isMessageShow, setIsMessageShow] = useState(false);
-  const [isOrderShow, setIsOrderShow] = useState(true);
+  const [isOrderShow, setIsOrderShow] = useState(false);
   const slider = useRef(null as Slider);
 
   const settings = {
@@ -60,8 +70,21 @@ const Product = () => {
   useEffect(() => {
     document.title = "Страница товара";
     window.scrollTo({ top: 0, behavior: "smooth" });
-    setProduct({ ...product, name: "товар" });
   }, []);
+
+  useEffect(() => {
+    if (id !== undefined && products !== undefined && Array.isArray(products) && products.length > 0) {
+      if (
+        !Number.isNaN(id) &&
+        [products].length > 0 &&
+        products.filter((tmpProduct: IProduct) => tmpProduct.id === Number(id)).length > 0
+      ) {
+        setProduct(products.find((tmpProduct: IProduct) => tmpProduct.id === Number(id))!);
+      } else {
+        navigate("/");
+      }
+    }
+  }, [id, products]);
 
   useEffect(() => {
     setIsNoScroll(isMessageShow || isOrderShow);
@@ -71,179 +94,201 @@ const Product = () => {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.breadcumbs}>
-          <div className={styles.breadcumb}>Главная</div>
+          <div className={styles.link} onClick={() => navigate("/")}>
+            Главная
+          </div>
           <ArrowIcon />
-          <div className={styles.breadcumb}>Каталог</div>
+          <div className={styles.link} onClick={() => navigate("/catalog/0")}>
+            Каталог
+          </div>
           <ArrowIcon />
-          <div className={styles.element}>Холодильная камера 2.9</div>
+          <div className={styles.element}>{product.name}</div>
         </div>
-        <div className={styles.content}>
-          <h3>Среднетемпературные ХК</h3>
-          <div className={styles.main_container}>
-            <div className={styles.photos_container}>
-              <div className={styles.photos_list}>
-                <img
-                  src="/uploads/products/product_one.png"
-                  alt=""
-                  onClick={() => setMainPhoto("/uploads/products/product_one.png")}
-                />
-                <img
-                  src="/uploads/products/product_two.png"
-                  alt=""
-                  onClick={() => setMainPhoto("/uploads/products/product_two.png")}
-                />
-                <img
-                  src="/uploads/products/product.png"
-                  alt=""
-                  onClick={() => setMainPhoto("/uploads/products/product.png")}
-                />
-              </div>
-              <img className={styles.main_photo} src={mainPhoto} alt="" />
-            </div>
-            <div className={styles.info_container}>
-              <h5>Холодильная камера 2.9</h5>
-              {/*<img src={PolairImage} alt="" width={74} />*/}
-              <div className={styles.description}>
-                Камера предназначена для хранения продуктов, которым требуется умеренно низкая температура. Поддерживает
-                температуру от 0-8 °С
-              </div>
-              <div className={styles.price_container}>
-                <div className={styles.price}>{`${Number(106070).toLocaleString()}₽`}</div>
-                <button type="button" onClick={() => setIsOrderShow(true)}>
-                  Заказать товар
-                </button>
-                <div className={styles.warning}>*Актуальную цену можно уточнить у менеджера</div>
-              </div>
-              <div className={styles.advantages_list}>
-                <div className={styles.advantage}>
-                  <div className={styles.image}>
-                    <img src={CarIcon} alt="" />
+        {product.name !== "" ? (
+          <div className={styles.content}>
+            <h3>{product.name}</h3>
+            <div className={styles.main_container}>
+              <div className={styles.photos_container}>
+                {product.images.length > 0 ? (
+                  <div className={styles.photos_list}>
+                    <img
+                      src={`/uploads/${product.images.find((image: IProductImage) => image.is_main)!.path}`}
+                      alt=""
+                      onClick={() =>
+                        setMainPhoto(`/uploads/${product.images.find((image: IProductImage) => image.is_main)!.path}`)
+                      }
+                    />
+                    {product.images.filter((image: IProductImage) => !image.is_main).length > 0 ? (
+                      <>
+                        {product.images
+                          .filter((image: IProductImage) => !image.is_main)
+                          .map((image: IProductImage) => (
+                            <img
+                              src={`/uploads/${image.path}`}
+                              alt=""
+                              onClick={() => setMainPhoto(`/uploads/${image.path}`)}
+                            />
+                          ))}
+                      </>
+                    ) : null}
                   </div>
-                  Доставка по всей России
+                ) : null}
+                <img className={styles.main_photo} src={mainPhoto} alt="" />
+              </div>
+              <div className={styles.info_container}>
+                <h5>{product.name}</h5>
+                {product.manufacturer_id > -1 &&
+                manufacturers !== undefined &&
+                manufacturers.length > 0 &&
+                manufacturers.filter((manufacturer: IManufacturer) => manufacturer.id === product.manufacturer_id).length >
+                  0 ? (
+                  <img
+                    src={`/uploads/${
+                      manufacturers.find((manufacturer: IManufacturer) => manufacturer.id === product.manufacturer_id)!
+                        .image_path
+                    }`}
+                    alt=""
+                    width={74}
+                  />
+                ) : null}
+                <div className={styles.description}>{parse(product.description)}</div>
+                <div className={styles.price_container}>
+                  <div className={styles.price}>{`${product.price.toLocaleString()}₽`}</div>
+                  <button type="button" onClick={() => setIsOrderShow(true)}>
+                    Заказать товар
+                  </button>
+                  <div className={styles.warning}>*Актуальную цену можно уточнить у менеджера</div>
                 </div>
-                <div className={styles.advantage}>
-                  <div className={styles.image}>
-                    <img src={TimeIcon} alt="" />
-                  </div>
-                  Изгоовление 2 недели
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.tabs_container}>
-            <div className={styles.tabs_list}>
-              <div className={`${styles.tab} ${activeTab === 0 ? styles.active : ""}`} onClick={() => setActiveTab(0)}>
-                Описание
-              </div>
-              <div className={`${styles.tab} ${activeTab === 1 ? styles.active : ""}`} onClick={() => setActiveTab(1)}>
-                Характеристики
-              </div>
-              <div className={`${styles.tab} ${activeTab === 2 ? styles.active : ""}`} onClick={() => setActiveTab(2)}>
-                Доставка
-              </div>
-              <div className={`${styles.tab} ${activeTab === 3 ? styles.active : ""}`} onClick={() => setActiveTab(3)}>
-                Инструкция
-              </div>
-            </div>
-            {activeTab === 0 ? (
-              <div className={styles.tab_view}>
-                <p>
-                  Холодильные камеры марки «СЕВЕР» обеспечивают хранение продуктов при средних и низких температурах.
-                  Применяются в торгово-складских помещениях, продовольственных рынках, в столовых, барах, ресторанах,
-                  аптеках, на пищевых производствах, используются для хранения цветов и т.д.
-                </p>
-                <p>
-                  Сборка камер не требует специальных инструментов. Камеры без труда собираются из готовых панелей за счет
-                  пластиковых боковых профилей типа «шип-паз».
-                </p>
-                <p>
-                  Модульная конструкция позволяет в дальнейшем изменять объём и форму камеры путем добавления типовых
-                  панелей, что обеспечивает широкий ряд типоразмеров камер.
-                </p>
-                <p>
-                  В стандартной комплектации панели состоят из слоя заливной теплоизоляции (пенополиуретан HUNTSMAN),
-                  покрытого с двух сторон оцинкованным стальным листом, толщиной 0,45-0,5, с полимерным покрытием RAL 9003 и
-                  защитной пленкой, удаляемой после монтажа. По желанию заказчика цвет исполнения камеры может быть изменен.
-                  Также покрытие может быть выполнено из пищевой нержавеющей стали.
-                </p>
-              </div>
-            ) : null}
-            {activeTab === 1 ? (
-              <div className={styles.tab_view}>
-                <div className={styles.description_list}>
-                  <div className={styles.labels}>
-                    <div className={styles.label}>Длина</div>
-                    <div className={styles.label}>Ширина</div>
-                    <div className={styles.label}>Высота</div>
-                    <div className={styles.label}>Объем</div>
-                    <div className={styles.label}>Объём холодильной камеры (куб.м)</div>
-                  </div>
-                  <div className={styles.values}>
-                    <div className={styles.value}>1360 мм</div>
-                    <div className={styles.value}>1360 мм</div>
-                    <div className={styles.value}>2200 мм</div>
-                    <div className={styles.value}>2,9 м²</div>
-                    <div className={styles.value}>1,44</div>
-                  </div>
-                </div>
-              </div>
-            ) : null}
-            {activeTab === 2 ? (
-              <div className={styles.tab_view}>
-                <p>
-                  Для наших клиентов мы транспортируем торговое оборудование в любые города России через транспортные
-                  компании-партнёры.
-                </p>
-                <p>
-                  Доставка стеллажей и торгового оборудования производится по тарифам транспортных компаний-партнёров на день
-                  отгрузки.
-                </p>
-                <p>
-                  Стоимость доставки зависит от местоположения Заказчика, количества, веса и объёма заказанного товара.
-                  Услуга по доставке товара со склада включает в себя доставку торгового оборудования до подъезда(склада)
-                  Заказчика.
-                </p>
-              </div>
-            ) : null}
-            {activeTab === 3 ? (
-              <div className={styles.tab_view}>
-                <div className={styles.link}>
-                  <img src={PdfIcon} alt="" />
-                  Холодильная камера 2.9 среднетемпературная
-                </div>
-              </div>
-            ) : null}
-          </div>
-          {Array.isArray(products) &&
-          products !== undefined &&
-          products.filter((product: IProduct) => product.is_recomendated).length > 0 ? (
-            <div className={styles.recommended_products}>
-              <h4>Возможно вас заинтересует</h4>
-              <div className={styles.recommended_products_list}>
-                {products
-                  .filter((product: IProduct) => product.is_recomendated)
-                  .map((product: IProduct) => (
-                    <div className={styles.card}>
-                      <ProductCard product={product} viewType={0} />
+                <div className={styles.advantages_list}>
+                  <div className={styles.advantage}>
+                    <div className={styles.image}>
+                      <img src={CarIcon} alt="" />
                     </div>
-                  ))}
+                    Доставка по всей России
+                  </div>
+                  <div className={styles.advantage}>
+                    <div className={styles.image}>
+                      <img src={TimeIcon} alt="" />
+                    </div>
+                    Изготовление 2 недели
+                  </div>
+                </div>
               </div>
-              <div className={styles.slider}>
-                <Slider ref={slider} {...settings}>
+            </div>
+            <div className={styles.tabs_container}>
+              <div className={styles.tabs_list}>
+                <div className={`${styles.tab} ${activeTab === 0 ? styles.active : ""}`} onClick={() => setActiveTab(0)}>
+                  Описание
+                </div>
+                <div className={`${styles.tab} ${activeTab === 1 ? styles.active : ""}`} onClick={() => setActiveTab(1)}>
+                  Характеристики
+                </div>
+                <div className={`${styles.tab} ${activeTab === 2 ? styles.active : ""}`} onClick={() => setActiveTab(2)}>
+                  Доставка
+                </div>
+                <div className={`${styles.tab} ${activeTab === 3 ? styles.active : ""}`} onClick={() => setActiveTab(3)}>
+                  Инструкция
+                </div>
+              </div>
+              {activeTab === 0 ? <div className={styles.tab_view}>{parse(product.full_description)}</div> : null}
+              {activeTab === 1 ? (
+                <div className={styles.tab_view}>
+                  {product.attributes.filter((attribute: IProductAttribute) => attribute.attribute_id > 0).length > 0 &&
+                  attributes.length > 0 ? (
+                    <div className={styles.description_list}>
+                      {product.attributes.filter((attribute: IProductAttribute) => attribute.attribute_id === 1).length >
+                        0 && attributes.filter((attribute: IAttribute) => attribute.id === 1).length > 0 ? (
+                        <div className={styles.attribute}>
+                          <div className={styles.label}>
+                            {attributes.find((attribute: IAttribute) => attribute.id === 1)?.attribute}
+                          </div>
+                          <div className={styles.value}>
+                            {Number(product.volume).toLocaleString()}
+                            м²
+                          </div>
+                        </div>
+                      ) : null}
+                      {product.attributes.filter((attribute: IProductAttribute) => attribute.attribute_id > 1).length > 0 ? (
+                        <>
+                          {product.attributes
+                            .filter((attribute: IProductAttribute) => attribute.attribute_id > 1)
+                            .map((productAttribute: IProductAttribute) => (
+                              <>
+                                {attributes.filter((attribute: IAttribute) => attribute.id === productAttribute.attribute_id)
+                                  .length > 0 ? (
+                                  <div className={styles.attribute}>
+                                    <div className={styles.label}>
+                                      {
+                                        attributes.find(
+                                          (attribute: IAttribute) => attribute.id === productAttribute.attribute_id
+                                        )?.attribute
+                                      }
+                                    </div>
+                                    <div className={styles.value}>{productAttribute.value}</div>
+                                  </div>
+                                ) : null}
+                              </>
+                            ))}
+                        </>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
+              {activeTab === 2 ? <div className={styles.tab_view}>{parse(product.delivery_info)}</div> : null}
+              {activeTab === 3 ? (
+                <div className={styles.tab_view}>
+                  {product.instruction_path !== "" ? (
+                    <div className={styles.link}>
+                      <img src={PdfIcon} alt="" />
+                      <a href={`/uploads/${product.instruction_path}`} target="blank">
+                        {product.instruction_path.split("/")[2]}
+                      </a>
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
+            </div>
+            {Array.isArray(products) &&
+            products !== undefined &&
+            products.filter((product: IProduct) => product.is_recomendated).length > 0 ? (
+              <div className={styles.recommended_products}>
+                <h4>Возможно вас заинтересует</h4>
+                <div className={styles.recommended_products_list}>
                   {products
                     .filter((product: IProduct) => product.is_recomendated)
                     .map((product: IProduct) => (
-                      <div>
-                        <div className={styles.card}>
-                          <ProductCard product={product} viewType={0} />
-                        </div>
+                      <div className={styles.card}>
+                        <ProductCard product={product} viewType={0} />
                       </div>
                     ))}
-                </Slider>
+                </div>
+                <div className={styles.slider}>
+                  {products.filter((product: IProduct) => product.is_recomendated).length === 1 ? (
+                    <div className={styles.card}>
+                      <ProductCard
+                        product={products.filter((product: IProduct) => product.is_recomendated)[0]}
+                        viewType={0}
+                      />
+                    </div>
+                  ) : (
+                    <Slider ref={slider} {...settings}>
+                      {products
+                        .filter((product: IProduct) => product.is_recomendated)
+                        .map((product: IProduct) => (
+                          <div>
+                            <div className={styles.card}>
+                              <ProductCard product={product} viewType={0} />
+                            </div>
+                          </div>
+                        ))}
+                    </Slider>
+                  )}
+                </div>
               </div>
-            </div>
-          ) : null}
-        </div>
+            ) : null}
+          </div>
+        ) : null}
       </div>
       <ProductMessageModal
         isShow={isMessageShow}

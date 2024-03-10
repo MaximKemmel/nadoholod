@@ -10,7 +10,7 @@ const mysql = require("mysql");
 const getProducts = (_request, response) => {
   try {
     connectionPool.query(
-      "SELECT * FROM products; SELECT * FROM product_images; SELECT * FROM product_attributes; SELECT * FROM product_filters",
+      "SELECT * FROM products ORDER BY id DESC; SELECT * FROM product_images; SELECT * FROM product_attributes; SELECT * FROM product_filters",
       (error, data) => {
         if (error) {
           return response.status(404).json({
@@ -49,7 +49,7 @@ const getProducts = (_request, response) => {
 
 const addProduct = (request, response) => {
   try {
-    const sql = "INSERT INTO products (??, ??, ??, ??, ??, ??, ??, ??, ??) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    const sql = "INSERT INTO products (??, ??, ??, ??, ??, ??, ??, ??, ??, ??) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     const query = mysql.format(sql, [
       "category_id",
       "name",
@@ -60,6 +60,7 @@ const addProduct = (request, response) => {
       "instruction_path",
       "manufacturer_id",
       "is_recomendated",
+      "volume",
       request.body.params.product.category_id,
       request.body.params.product.name,
       request.body.params.product.description,
@@ -69,6 +70,7 @@ const addProduct = (request, response) => {
       request.body.params.product.instruction_path,
       request.body.params.product.manufacturer_id,
       request.body.params.product.is_recomendated,
+      request.body.params.product.volume,
     ]);
     connectionPool.query(query, (error, data) => {
       if (error) {
@@ -120,7 +122,8 @@ const addProduct = (request, response) => {
 
 const updateProduct = (request, response) => {
   try {
-    const sql = "UPDATE products SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?;";
+    const sql =
+      "UPDATE products SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?;";
     const query = mysql.format(sql, [
       "category_id",
       request.body.params.product.category_id,
@@ -140,6 +143,8 @@ const updateProduct = (request, response) => {
       request.body.params.product.manufacturer_id,
       "is_recomendated",
       request.body.params.product.is_recomendated,
+      "volume",
+      request.body.params.product.volume,
       "id",
       request.body.params.product.id,
     ]);

@@ -105,9 +105,15 @@ const Footer = () => {
             <div className={styles.contacts}>
               <div className={styles.head}>Контакты</div>
               <div className={styles.contacts_list}>
-                <div className={styles.phone}>+7 900 163-89-72</div>
-                <div className={styles.phone}>+7 913 234-97-54</div>
-                <div className={styles.address}>holodpro22@gmail.com</div>
+                <a className={styles.phone} href="tel:79001638972">
+                  +7 900 163-89-72
+                </a>
+                <a className={styles.phone} href="tel:79132349754">
+                  +7 913 234-97-54
+                </a>
+                <a className={styles.address} href="mailto:holodpro22@gmail.com">
+                  holodpro22@gmail.com
+                </a>
                 <div className={styles.address}>г.Барнаул, ул.Германа Титова 35а</div>
                 <div className={styles.socials_list}>
                   <a

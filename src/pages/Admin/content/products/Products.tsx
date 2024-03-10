@@ -35,6 +35,7 @@ import { List as ListIcon } from "../../../../assets/svg/List";
 import { Edit as EditIcon } from "../../../../assets/svg/Edit";
 import { Delete as DeleteIcon } from "../../../../assets/svg/Delete";
 import { Close as CloseIcon } from "../../../../assets/svg/Close";
+import { Search as SearchIcon } from "../../../../assets/svg/Search";
 import { Arrow as ArrowIcon } from "../../../../assets/svg/Arrow";
 import { Check as CheckIcon } from "../../../../assets/svg/Check";
 
@@ -53,6 +54,7 @@ const Products = () => {
     setUploadProductImageStatus,
   } = useActions();
   const products = useTypedSelector((state) => state.productReducer.products);
+  const [filteredProducts, setFilteredProducts] = useState(products);
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
   const [categoryFilters, setCategoryFilters] = useState([] as IFilter[]);
   const attributes = useTypedSelector((state) => state.attributeReducer.attributes);
@@ -68,6 +70,7 @@ const Products = () => {
   const [description, setDescription] = useState("");
   const [fullDescription, setFullDescription] = useState("");
   const [deliveryInfo, setDeliveryInfo] = useState("");
+  const [volumeStr, setVolumeStr] = useState("");
   const [viewType, setViewType] = useState(0);
   const [isCheckFields, setIsCheckFields] = useState(false);
   const quillRefDescription = useRef<ReactQuill>(null);
@@ -82,6 +85,7 @@ const Products = () => {
   const [isConfirmShow, setIsConfirmShow] = useState(false);
   const [titleMessage, setTitleMessage] = useState("");
   const [infoMessage, setInfoMessage] = useState("");
+  const [searchValue, setSearchValue] = useState("");
 
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],
@@ -90,6 +94,16 @@ const Products = () => {
     [{ indent: "-1" }, { indent: "+1" }],
     ["clean"],
   ];
+
+  useEffect(() => {
+    if (searchValue.trim().length === 0) {
+      setFilteredProducts(products);
+    } else {
+      setFilteredProducts(
+        products.filter((product: IProduct) => product.name.toLowerCase().includes(searchValue.toLowerCase()))
+      );
+    }
+  }, [searchValue, products]);
 
   useEffect(() => {
     if (selectedProduct.category_id === -1) {
@@ -105,7 +119,15 @@ const Products = () => {
               id: categoryAttribute.attribute_id,
               product_id: selectedProduct.id,
               attribute_id: categoryAttribute.attribute_id,
-              value: "",
+              value:
+                selectedProduct.attributes.filter(
+                  (productAttribute: IProductAttribute) => productAttribute.attribute_id === categoryAttribute.attribute_id
+                ).length > 0
+                  ? selectedProduct.attributes.find(
+                      (productAttribute: IProductAttribute) =>
+                        productAttribute.attribute_id === categoryAttribute.attribute_id
+                    )!.value
+                  : "",
             } as IProductAttribute);
           }
         });
@@ -115,7 +137,7 @@ const Products = () => {
         var category = categories.find((category: ICategory) => category.id === selectedProduct.category_id);
         var tmpFilters = [] as IFilter[];
         category?.filters.forEach((categoryFilter: ICategoryFilter) => {
-          if (filters.filter((filter: IFilter) => filter.id === categoryFilter.filter_id).length > 0) {
+          if (filters.filter((filter: IFilter) => filter.id === categoryFilter.filter_id && filter.id > 1).length > 0) {
             tmpFilters.push(filters.find((filter: IFilter) => filter.id === categoryFilter.filter_id)!);
           }
         });
@@ -150,6 +172,7 @@ const Products = () => {
       setDescription("");
       setFullDescription("");
       setDeliveryInfo("");
+      setVolumeStr("");
       setViewType(0);
       setAddProductStatus(initServerStatus());
       setActiveComponent(DropdownType.None);
@@ -173,6 +196,7 @@ const Products = () => {
       setDescription("");
       setFullDescription("");
       setDeliveryInfo("");
+      setVolumeStr("");
       setViewType(0);
       setUpdateProductStatus(initServerStatus());
       setActiveComponent(DropdownType.None);
@@ -248,6 +272,7 @@ const Products = () => {
     setDescription("");
     setFullDescription("");
     setDeliveryInfo("");
+    setVolumeStr("");
     setActiveComponent(DropdownType.None);
     setIsCheckFields(false);
     setViewType(viewType === 0 ? 1 : 0);
@@ -258,6 +283,7 @@ const Products = () => {
     setDescription(product.description);
     setFullDescription(product.full_description);
     setDeliveryInfo(product.delivery_info);
+    setVolumeStr(product.volume.toString());
     setActiveComponent(DropdownType.None);
     setIsCheckFields(false);
     setViewType(1);
@@ -268,6 +294,7 @@ const Products = () => {
     setDescription("");
     setFullDescription("");
     setDeliveryInfo("");
+    setVolumeStr("");
     setActiveComponent(DropdownType.None);
     setIsCheckFields(false);
     setViewType(0);
@@ -278,30 +305,42 @@ const Products = () => {
     if (!isCheckFields) {
       setIsCheckFields(true);
     }
-    if (selectedProduct.name.trim().length > 0 && selectedProduct.category_id !== -1 && selectedProduct.price > 0) {
-      if (selectedProduct.id === -1) {
-        addProduct({
-          product: {
-            ...selectedProduct,
-            description: description,
-            full_description: fullDescription,
-            delivery_info: deliveryInfo,
-          },
-        });
-      } else {
-        updateProduct({
-          product: {
-            ...selectedProduct,
-            description: description,
-            full_description: fullDescription,
-            delivery_info: deliveryInfo,
-          },
-        });
-      }
-    } else {
+    if (
+      (selectedProduct.attributes.filter((attribute: IProductAttribute) => attribute.attribute_id === 1).length > 0 &&
+        Number.isNaN(Number(volumeStr))) ||
+      Number(volumeStr) < 0
+    ) {
       setTitleMessage("Внимание");
-      setInfoMessage("Не все поля заполнены");
+      setInfoMessage("Объем должен быть положительным числом");
       setIsMessageShow(true);
+    } else {
+      if (selectedProduct.name.trim().length > 0 && selectedProduct.category_id !== -1 && selectedProduct.price > 0) {
+        if (selectedProduct.id === -1) {
+          addProduct({
+            product: {
+              ...selectedProduct,
+              description: description,
+              full_description: fullDescription,
+              delivery_info: deliveryInfo,
+              volume: Number(volumeStr),
+            },
+          });
+        } else {
+          updateProduct({
+            product: {
+              ...selectedProduct,
+              description: description,
+              full_description: fullDescription,
+              delivery_info: deliveryInfo,
+              volume: Number(volumeStr),
+            },
+          });
+        }
+      } else {
+        setTitleMessage("Внимание");
+        setInfoMessage("Не все поля заполнены");
+        setIsMessageShow(true);
+      }
     }
   };
 
@@ -357,43 +396,59 @@ const Products = () => {
         </button>
       </div>
       {Array.isArray(products) && products.length > 0 && viewType === 0 ? (
-        <div className={pageStyles.table}>
-          <div className={pageStyles.table_head}>
-            <div className={`${pageStyles.part} ${pageStyles.image}`}>Изображение</div>
-            <div className={`${pageStyles.part} ${pageStyles.category}`}>Категория</div>
-            <div className={`${pageStyles.part} ${pageStyles.main}`}>Название</div>
-            <div className={`${pageStyles.part} ${pageStyles.actions}`}>Действия</div>
-          </div>
-          <div className={pageStyles.table_list}>
-            {products.map((product: IProduct) => (
-              <div className={pageStyles.table_item}>
-                <div className={`${pageStyles.part} ${pageStyles.image}`}>
-                  {Array.isArray(product.images) &&
-                  product.images !== undefined &&
-                  product.images.length > 0 &&
-                  product.images.filter((productImage: IProductImage) => productImage.is_main).length > 0 ? (
-                    <img
-                      src={`/uploads/${product.images.find((productImage: IProductImage) => productImage.is_main)!.path}`}
-                      alt=""
-                    />
-                  ) : null}
-                </div>
-                <div className={`${pageStyles.part} ${pageStyles.category}`}>
-                  {categories.find((category: ICategory) => category.id === product.category_id)!.category}
-                </div>
-                <div className={`${pageStyles.part} ${pageStyles.main}`}>{product.name}</div>
-                <div className={`${pageStyles.part} ${pageStyles.actions}`}>
-                  <button type="button" onClick={() => handleEditOnClick(product)}>
-                    <EditIcon />
-                  </button>
-                  <button type="button" className={appStyles.wrong} onClick={() => handleDeleteOnClick(product)}>
-                    <DeleteIcon />
-                  </button>
-                </div>
+        <>
+          <div className={pageStyles.input_container}>
+            <input
+              type="text"
+              placeholder="Поиск по названию"
+              value={searchValue}
+              onChange={(event) => setSearchValue(event.target.value)}
+            />
+            <SearchIcon />
+            {searchValue.trim() !== "" ? (
+              <div className={pageStyles.close} onClick={() => setSearchValue("")}>
+                <CloseIcon />
               </div>
-            ))}
+            ) : null}
           </div>
-        </div>
+          <div className={pageStyles.table}>
+            <div className={pageStyles.table_head}>
+              <div className={`${pageStyles.part} ${pageStyles.image}`}>Изображение</div>
+              <div className={`${pageStyles.part} ${pageStyles.category}`}>Категория</div>
+              <div className={`${pageStyles.part} ${pageStyles.main}`}>Название</div>
+              <div className={`${pageStyles.part} ${pageStyles.actions}`}>Действия</div>
+            </div>
+            <div className={pageStyles.table_list}>
+              {filteredProducts.map((product: IProduct) => (
+                <div className={pageStyles.table_item}>
+                  <div className={`${pageStyles.part} ${pageStyles.image}`}>
+                    {Array.isArray(product.images) &&
+                    product.images !== undefined &&
+                    product.images.length > 0 &&
+                    product.images.filter((productImage: IProductImage) => productImage.is_main).length > 0 ? (
+                      <img
+                        src={`/uploads/${product.images.find((productImage: IProductImage) => productImage.is_main)!.path}`}
+                        alt=""
+                      />
+                    ) : null}
+                  </div>
+                  <div className={`${pageStyles.part} ${pageStyles.category}`}>
+                    {categories.find((category: ICategory) => category.id === product.category_id)!.category}
+                  </div>
+                  <div className={`${pageStyles.part} ${pageStyles.main}`}>{product.name}</div>
+                  <div className={`${pageStyles.part} ${pageStyles.actions}`}>
+                    <button type="button" onClick={() => handleEditOnClick(product)}>
+                      <EditIcon />
+                    </button>
+                    <button type="button" className={appStyles.wrong} onClick={() => handleDeleteOnClick(product)}>
+                      <DeleteIcon />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
       ) : null}
       {viewType === 1 ? (
         <div className={pageStyles.content}>
@@ -448,7 +503,7 @@ const Products = () => {
                 <div className={pageStyles.input_field}>
                   <div className={pageStyles.label}>Цена, ₽</div>
                   <input
-                    className={selectedProduct.name.trim().length === 0 && isCheckFields ? pageStyles.wrong : ""}
+                    className={selectedProduct.price === 0 && isCheckFields ? pageStyles.wrong : ""}
                     type="text"
                     placeholder="Цена"
                     value={selectedProduct.price}
@@ -464,6 +519,48 @@ const Products = () => {
                     onClick={() => setActiveComponent(DropdownType.None)}
                   />
                 </div>
+                {selectedProduct.attributes.filter((attribute: IProductAttribute) => attribute.attribute_id === 0).length >
+                0 ? (
+                  <div className={pageStyles.input_field}>
+                    <div className={pageStyles.label}>Производитель</div>
+                    <Dropdown
+                      activeComponent={activeComponent}
+                      setActiveComponent={setActiveComponent}
+                      dropdownType={DropdownType.ManufacturerSelector}
+                      items={[
+                        {
+                          id: -1,
+                          text: "Не указан",
+                          is_selected: selectedProduct.manufacturer_id === -1,
+                        } as IDropdownItem,
+                        ...(manufacturers.map((manufacturer: IManufacturer) => {
+                          return {
+                            id: manufacturer.id,
+                            text: manufacturer.manufacturer,
+                            is_selected: selectedProduct.manufacturer_id === manufacturer.id,
+                          } as IDropdownItem;
+                        }) as IDropdownItem[]),
+                      ]}
+                      onItemSelect={(item: IDropdownItem) => {
+                        setSelectedProduct({ ...selectedProduct, manufacturer_id: item.id });
+                        setActiveComponent(DropdownType.None);
+                      }}
+                    />
+                  </div>
+                ) : null}
+                {selectedProduct.attributes.filter((attribute: IProductAttribute) => attribute.attribute_id === 1).length >
+                0 ? (
+                  <div className={pageStyles.input_field}>
+                    <div className={pageStyles.label}>Объем, м²</div>
+                    <input
+                      type="text"
+                      placeholder="Объем"
+                      value={volumeStr}
+                      onChange={(event) => setVolumeStr(event.target.value)}
+                      onClick={() => setActiveComponent(DropdownType.None)}
+                    />
+                  </div>
+                ) : null}
                 <div className={pageStyles.input_field}>
                   <label className={pageStyles.checkbox}>
                     <div className={pageStyles.text}>Рекомендованный</div>
@@ -479,92 +576,44 @@ const Products = () => {
                     </span>
                   </label>
                 </div>
-                <div className={pageStyles.input_field} onClick={() => setActiveComponent(DropdownType.None)}>
-                  <div className={pageStyles.label}>Краткое описание</div>
-                  <ReactQuill
-                    ref={quillRefDescription}
-                    className={`${pageStyles.quill}`}
-                    theme="snow"
-                    value={description}
-                    onChange={setDescription}
-                    modules={{ toolbar: toolbarOptions }}
-                    onKeyUp={() => setDescription(`${quillRefDescription.current?.getEditorContents()}`)}
-                  />
-                </div>
-                <div className={pageStyles.input_field} onClick={() => setActiveComponent(DropdownType.None)}>
-                  <div className={pageStyles.label}>Полное описание</div>
-                  <ReactQuill
-                    ref={quillRefFullDescription}
-                    className={`${pageStyles.quill}`}
-                    theme="snow"
-                    value={fullDescription}
-                    onChange={setFullDescription}
-                    modules={{ toolbar: toolbarOptions }}
-                    onKeyUp={() => setFullDescription(`${quillRefFullDescription.current?.getEditorContents()}`)}
-                  />
-                </div>
-                <div className={pageStyles.input_field}>
-                  <div className={pageStyles.label}>Производитель</div>
-                  <Dropdown
-                    activeComponent={activeComponent}
-                    setActiveComponent={setActiveComponent}
-                    dropdownType={DropdownType.ManufacturerSelector}
-                    items={[
-                      {
-                        id: -1,
-                        text: "Не указан",
-                        is_selected: selectedProduct.manufacturer_id === -1,
-                      } as IDropdownItem,
-                      ...(manufacturers.map((manufacturer: IManufacturer) => {
-                        return {
-                          id: manufacturer.id,
-                          text: manufacturer.manufacturer,
-                          is_selected: selectedProduct.manufacturer_id === manufacturer.id,
-                        } as IDropdownItem;
-                      }) as IDropdownItem[]),
-                    ]}
-                    onItemSelect={(item: IDropdownItem) => {
-                      setSelectedProduct({ ...selectedProduct, manufacturer_id: item.id });
-                      setActiveComponent(DropdownType.None);
-                    }}
-                  />
-                </div>
-                {selectedProduct.attributes.length > 0 ? (
+                {selectedProduct.attributes.filter((attribute: IProductAttribute) => attribute.attribute_id > 1).length >
+                0 ? (
                   <>
                     <div className={pageStyles.text_field}>Аттрибуты товара</div>
-                    {selectedProduct.attributes.map((productAttribute: IProductAttribute) => (
-                      <div className={pageStyles.input_field}>
-                        <div className={pageStyles.label}>
-                          {
-                            attributes.find((attribute: IAttribute) => attribute.id === productAttribute.attribute_id)
-                              ?.attribute
-                          }
+                    {selectedProduct.attributes
+                      .filter((attribute: IProductAttribute) => attribute.attribute_id > 1)
+                      .map((productAttribute: IProductAttribute) => (
+                        <div className={pageStyles.input_field}>
+                          <div className={pageStyles.label}>
+                            {
+                              attributes.find((attribute: IAttribute) => attribute.id === productAttribute.attribute_id)
+                                ?.attribute
+                            }
+                          </div>
+                          <input
+                            type="text"
+                            placeholder={
+                              attributes.find((attribute: IAttribute) => attribute.id === productAttribute.attribute_id)
+                                ?.attribute
+                            }
+                            value={productAttribute.value}
+                            onChange={(event) =>
+                              setSelectedProduct({
+                                ...selectedProduct,
+                                attributes: selectedProduct.attributes.map((attributeTmp: IProductAttribute) => {
+                                  if (attributeTmp.id === productAttribute.id) {
+                                    return {
+                                      ...attributeTmp,
+                                      value: event.target.value,
+                                    };
+                                  } else return attributeTmp;
+                                }),
+                              })
+                            }
+                            onClick={() => setActiveComponent(DropdownType.None)}
+                          />
                         </div>
-                        <input
-                          type="text"
-                          placeholder={
-                            attributes.find((attribute: IAttribute) => attribute.id === productAttribute.attribute_id)
-                              ?.attribute
-                          }
-                          value={productAttribute.value}
-                          onChange={(event) =>
-                            setSelectedProduct({
-                              ...selectedProduct,
-                              attributes: selectedProduct.attributes.map((attributeTmp: IProductAttribute) => {
-                                if (attributeTmp.id === productAttribute.id) {
-                                  return {
-                                    ...attributeTmp,
-                                    vaue: event.target.value,
-                                  };
-                                } else return attributeTmp;
-                              }),
-                            })
-                          }
-                          onClick={() => setActiveComponent(DropdownType.None)}
-                        />
-                      </div>
-                    ))}
-                    <div className={pageStyles.text_field} />
+                      ))}
                   </>
                 ) : null}
                 {categoryFilters.length > 0 ? (
@@ -629,9 +678,32 @@ const Products = () => {
                         />
                       </div>
                     ))}
-                    <div className={pageStyles.text_field} />
                   </>
                 ) : null}
+                <div className={pageStyles.input_field} onClick={() => setActiveComponent(DropdownType.None)}>
+                  <div className={pageStyles.label}>Краткое описание</div>
+                  <ReactQuill
+                    ref={quillRefDescription}
+                    className={`${pageStyles.quill}`}
+                    theme="snow"
+                    value={description}
+                    onChange={setDescription}
+                    modules={{ toolbar: toolbarOptions }}
+                    onKeyUp={() => setDescription(`${quillRefDescription.current?.getEditorContents()}`)}
+                  />
+                </div>
+                <div className={pageStyles.input_field} onClick={() => setActiveComponent(DropdownType.None)}>
+                  <div className={pageStyles.label}>Полное описание</div>
+                  <ReactQuill
+                    ref={quillRefFullDescription}
+                    className={`${pageStyles.quill}`}
+                    theme="snow"
+                    value={fullDescription}
+                    onChange={setFullDescription}
+                    modules={{ toolbar: toolbarOptions }}
+                    onKeyUp={() => setFullDescription(`${quillRefFullDescription.current?.getEditorContents()}`)}
+                  />
+                </div>
                 <div className={pageStyles.input_field} onClick={() => setActiveComponent(DropdownType.None)}>
                   <div className={pageStyles.label}>Доставка</div>
                   <ReactQuill

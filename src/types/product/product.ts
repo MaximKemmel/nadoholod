@@ -12,6 +12,7 @@ export interface IProduct {
   delivery_info: string;
   instruction_path: string;
   manufacturer_id: number;
+  volume: number;
   is_recomendated: boolean;
   images: IProductImage[];
   attributes: IProductAttribute[];

@@ -6,9 +6,10 @@ interface IInputSliderProps {
   max: number;
   label: string;
   unit: string;
+  onChange: Function;
 }
 
-const InputSlider: React.FC<IInputSliderProps> = ({ min, max, label, unit }) => {
+const InputSlider: React.FC<IInputSliderProps> = ({ min, max, label, unit, onChange }) => {
   const [value, setValue] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -49,6 +50,7 @@ const InputSlider: React.FC<IInputSliderProps> = ({ min, max, label, unit }) => 
                     }%, #01AAC133 0%)`;
                   }
                 }
+                onChange(Number(inputRef.current?.value));
               }}
             />
             <div className={styles.marks_list}>
