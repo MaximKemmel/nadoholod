@@ -21,14 +21,16 @@ import { IDropdownItem } from "../../../../types/main/dropdownItem";
 import { DropdownType } from "../../../../enums/dropdownType";
 import { IAttribute } from "../../../../types/attribute/attribute";
 import { ICategoryAttribute } from "../../../../types/category/categoryAttribute";
+import { IFilter } from "../../../../types/filter/filter";
+import { ICategoryFilter } from "../../../../types/category/categoryFilter";
+import { IProduct } from "../../../../types/product/product";
 
 import { Plus as PlusIcon } from "../../../../assets/svg/Plus";
 import { List as ListIcon } from "../../../../assets/svg/List";
 import { Edit as EditIcon } from "../../../../assets/svg/Edit";
 import { Delete as DeleteIcon } from "../../../../assets/svg/Delete";
 import { Arrow as ArrowIcon } from "../../../../assets/svg/Arrow";
-import { IFilter } from "src/types/filter/filter";
-import { ICategoryFilter } from "src/types/category/categoryFilter";
+import { Check as CheckIcon } from "../../../../assets/svg/Check";
 
 const Categories = () => {
   const {
@@ -43,6 +45,7 @@ const Categories = () => {
     getCategories,
   } = useActions();
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
+  const products = useTypedSelector((state) => state.productReducer.products);
   const attributes = useTypedSelector((state) => state.attributeReducer.attributes);
   const filters = useTypedSelector((state) => state.filterReducer.filters);
   const path = useTypedSelector((state) => state.fileReducer.path);
@@ -221,8 +224,14 @@ const Categories = () => {
   };
 
   const handleDeleteOnClick = (category: ICategory) => {
-    setSelectedCategory(category);
-    setIsConfirmShow(true);
+    if (products.length > 0 && products.filter((product: IProduct) => product.category_id === category.id).length > 0) {
+      setTitleMessage("Внимание");
+      setInfoMessage("Перед удалением категории необходимо отвязать ее от товаров");
+      setIsMessageShow(true);
+    } else {
+      setSelectedCategory(category);
+      setIsConfirmShow(true);
+    }
   };
 
   return (
@@ -285,6 +294,21 @@ const Categories = () => {
                     onChange={(event) => setSelectedCategory({ ...selectedCategory, category: event.target.value })}
                     onClick={() => setActiveComponent(DropdownType.None)}
                   />
+                </div>
+                <div className={pageStyles.input_field}>
+                  <label className={pageStyles.checkbox}>
+                    <div className={pageStyles.text}>Отображать в навигации</div>
+                    <input type="checkbox" />
+                    <span
+                      className={`${pageStyles.checkbox_mark} ${selectedCategory.show_in_nav ? pageStyles.active : ""}`}
+                      aria-hidden="true"
+                      onClick={() =>
+                        setSelectedCategory({ ...selectedCategory, show_in_nav: !selectedCategory.show_in_nav })
+                      }
+                    >
+                      {selectedCategory.show_in_nav ? <CheckIcon /> : null}
+                    </span>
+                  </label>
                 </div>
                 {!selectedCategory.is_main ? (
                   <div className={pageStyles.input_field}>

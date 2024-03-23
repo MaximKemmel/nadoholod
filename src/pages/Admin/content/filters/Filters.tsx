@@ -14,6 +14,8 @@ import { initFilter } from "../../../../types/filter/initFilter";
 import { IFilterItem } from "../../../../types/filter/filterItem";
 import { ServerStatusType } from "../../../../enums/serverStatusType";
 import { initServerStatus } from "../../../../types/main/serverStatus";
+import { ICategory } from "../../../../types/category/category";
+import { ICategoryFilter } from "../../../../types/category/categoryFilter";
 
 import { Plus as PlusIcon } from "../../../../assets/svg/Plus";
 import { List as ListIcon } from "../../../../assets/svg/List";
@@ -32,6 +34,7 @@ const Filters = () => {
     getFilters,
   } = useActions();
   const filters = useTypedSelector((state) => state.filterReducer.filters);
+  const categories = useTypedSelector((state) => state.categoryReducer.categories);
   const addFilterStatus = useTypedSelector((state) => state.filterReducer.addFilterStatus);
   const updateFilterStatus = useTypedSelector((state) => state.filterReducer.updateFilterStatus);
   const deleteFilterStatus = useTypedSelector((state) => state.filterReducer.deleteFilterStatus);
@@ -144,8 +147,20 @@ const Filters = () => {
   };
 
   const handleDeleteOnClick = (filter: IFilter) => {
-    setSelectedFilter(filter);
-    setIsConfirmShow(true);
+    if (
+      categories.length > 0 &&
+      categories.filter(
+        (category: ICategory) =>
+          category.filters.filter((categoryFilter: ICategoryFilter) => categoryFilter.filter_id === filter.id).length > 0
+      ).length > 0
+    ) {
+      setTitleMessage("Внимание");
+      setInfoMessage("Перед удалением фильтра необходимо отвязать его от категорий");
+      setIsMessageShow(true);
+    } else {
+      setSelectedFilter(filter);
+      setIsConfirmShow(true);
+    }
   };
 
   const handleDeleteOnConfirm = () => {

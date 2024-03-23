@@ -85,9 +85,12 @@ $filter_gray_color: #748491
                     gap: 20px
                     flex-wrap: wrap
 
+                    .filter
+                        width: calc((100% - 60px) / 4)
+
                     .main_filter
                         display: flex
-                        flex-direction: column
+                        flex-wrap: wrap
                         gap: 20px
                         flex-grow: 1
 
@@ -98,13 +101,17 @@ $filter_gray_color: #748491
                             font-weight: 300
                             font-size: 16px
 
-                            .inputs
-                                display: flex
-                                gap: 10px
+                            &.price
+                                width: calc(50% - 10px)
 
-                                input
-                                    width: 132px
-                                    height: 22px
+                                .inputs
+                                    display: flex
+                                    gap: 20px
+                                    width: 100%
+
+                                    input
+                                        width: calc(50% - 40px)
+                                        height: 22px
 
                 .products_list
                     display: flex
@@ -340,6 +347,20 @@ $filter_gray_color: #748491
                     width: auto
                     margin: 0 15px
 
+@media (max-width: 1300px)
+    .wrapper
+        .container
+            .content
+                .products_wrapper
+                    .filters
+                        .filter
+                            width: calc((100% - 40px) / 3)
+
+                        .main_filter
+                            .filter
+                                &.price
+                                    width: calc(((100% - 40px) / 3) * 2)
+
 @media (max-width: 1024px)
     .wrapper
         .container
@@ -358,6 +379,15 @@ $filter_gray_color: #748491
                         width: calc((100% - 20px) / 2 - 32px)
 
                 .products_wrapper
+                    .filters
+                        .filter
+                            width: calc((100% - 20px) / 2)
+
+                        .main_filter
+                            .filter
+                                &.price
+                                    width: 100%
+
                     .products_list
                         .card
                             width: calc((100% - 20px) / 2)

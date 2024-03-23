@@ -45,16 +45,18 @@ var getCategories = function (_request, response) {
 exports.getCategories = getCategories;
 var addCategory = function (request, response) {
     try {
-        var sql = "INSERT INTO categories (??, ??, ??, ??) VALUES (?, ?, ?, ?);";
+        var sql = "INSERT INTO categories (??, ??, ??, ??, ??) VALUES (?, ?, ?, ?, ?);";
         var query = mysql.format(sql, [
             "parent_id",
             "category",
             "description",
             "img_path",
+            "show_in_nav",
             request.body.params.category.parent_id,
             request.body.params.category.category,
             request.body.params.category.description,
             request.body.params.category.img_path,
+            request.body.params.category.show_in_nav,
         ]);
         connectionPool_1.connectionPool.query(query, function (error, data) {
             if (error) {
@@ -104,7 +106,7 @@ var addCategory = function (request, response) {
 exports.addCategory = addCategory;
 var updateCategory = function (request, response) {
     try {
-        var sql = "UPDATE categories SET ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?;";
+        var sql = "UPDATE categories SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?;";
         var query = mysql.format(sql, [
             "parent_id",
             request.body.params.category.parent_id,
@@ -114,6 +116,8 @@ var updateCategory = function (request, response) {
             request.body.params.category.description,
             "img_path",
             request.body.params.category.img_path,
+            "show_in_nav",
+            request.body.params.category.show_in_nav,
             "id",
             request.body.params.category.id,
         ]);

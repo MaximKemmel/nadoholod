@@ -7,6 +7,7 @@ import { actions as attributeActions } from "./attribute/attribute.slice";
 import * as attributeActionsDB from "./attribute/attribute.actions";
 import { actions as filterActions } from "./filter/filter.slice";
 import * as filterActionsDB from "./filter/filter.actions";
+import { actions as manufacturerActions } from "./manufacturer/manufacturer.slice";
 import * as manufacturerActionsDB from "./manufacturer/manufacturer.actions";
 import { actions as userActions } from "./user/user.slice";
 import * as userActionsDB from "./user/user.actions";
@@ -25,6 +26,7 @@ export const rootActions = {
   ...attributeActionsDB,
   ...filterActions,
   ...filterActionsDB,
+  ...manufacturerActions,
   ...manufacturerActionsDB,
   ...userActions,
   ...userActionsDB,

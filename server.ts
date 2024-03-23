@@ -70,6 +70,9 @@ app.post("/api/update_filter", checkAuth, FilterController.updateFilter);
 app.post("/api/delete_filter", checkAuth, FilterController.deleteFilter);
 
 app.get("/api/manufacturers", ManufacturerController.getManufacturers);
+app.post("/api/add_manufacturer", checkAuth, ManufacturerController.addManufacturer);
+app.post("/api/update_manufacturer", checkAuth, ManufacturerController.updateManufacturer);
+app.post("/api/delete_manufacturer", checkAuth, ManufacturerController.deleteManufacturer);
 
 app.post("/api/send_mail", MailController.sendMail);
 

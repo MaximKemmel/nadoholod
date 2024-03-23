@@ -12,6 +12,8 @@ import ConfirmModal from "../../../../components/Modal/ConfirmModal";
 import { IAttribute } from "../../../../types/attribute/attribute";
 import { ServerStatusType } from "../../../../enums/serverStatusType";
 import { initServerStatus } from "../../../../types/main/serverStatus";
+import { ICategory } from "../../../../types/category/category";
+import { ICategoryAttribute } from "../../../../types/category/categoryAttribute";
 
 import { Plus as PlusIcon } from "../../../../assets/svg/Plus";
 import { Delete as DeleteIcon } from "../../../../assets/svg/Delete";
@@ -19,6 +21,7 @@ import { Delete as DeleteIcon } from "../../../../assets/svg/Delete";
 const Attributes = () => {
   const { getAttributes, addAttributes, setAddAttributesStatus } = useActions();
   const attributes = useTypedSelector((state) => state.attributeReducer.attributes);
+  const categories = useTypedSelector((state) => state.categoryReducer.categories);
   const addAttributesStatus = useTypedSelector((state) => state.attributeReducer.addAttributesStatus);
   const [selectedAttribute, setSelectedAttribute] = useState({} as IAttribute);
   const [isCheckFields, setIsCheckFields] = useState(false);
@@ -81,8 +84,22 @@ const Attributes = () => {
   };
 
   const handleDeleteOnClick = (attribute: IAttribute) => {
-    setSelectedAttribute(attribute);
-    setIsConfirmShow(true);
+    if (
+      categories.length > 0 &&
+      categories.filter(
+        (category: ICategory) =>
+          category.attributes.filter(
+            (categoryAttribute: ICategoryAttribute) => categoryAttribute.attribute_id === attribute.id
+          ).length > 0
+      ).length > 0
+    ) {
+      setTitleMessage("Внимание");
+      setInfoMessage("Перед удалением аттрибута необходимо отвязать его от категорий");
+      setIsMessageShow(true);
+    } else {
+      setSelectedAttribute(attribute);
+      setIsConfirmShow(true);
+    }
   };
 
   const handleDeleteOnConfirm = () => {

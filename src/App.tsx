@@ -66,6 +66,9 @@ function App() {
 
   useEffect(() => {
     setIsHomePage(pathname === "/");
+    if (pathname !== "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }, [pathname]);
 
   useEffect(() => {

@@ -41,11 +41,17 @@ const Contacts = () => {
             </div>
             <div className={styles.contact}>
               <div className={styles.label}>Email:</div>
-              <div className={styles.value}>holodpro22@gmail.com</div>
+              <a className={styles.value} href="mailto:holodpro22@gmail.com">
+                holodpro22@gmail.com
+              </a>
             </div>
             <div className={styles.contact}>
-              <div className={styles.label}>+7 913 234-97-54</div>
-              <div className={styles.label}>+7 900 163-89-72</div>
+              <a className={styles.label} href="tel:79001638972">
+                +7 900 163-89-72
+              </a>
+              <a className={styles.label} href="tel:79132349754">
+                +7 913 234-97-54
+              </a>
             </div>
           </div>
           <div className={styles.map_container}>

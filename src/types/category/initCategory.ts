@@ -10,6 +10,7 @@ export function initCategory(): ICategory {
     parent_id: -1,
     img_path: "",
     is_main: false,
+    show_in_nav: false,
     attributes: [] as ICategoryAttribute[],
     filters: [] as ICategoryFilter[],
   };

@@ -12,9 +12,11 @@ import { initCategory } from "../../../../types/category/initCategory";
 
 import FaceImage from "../../../../assets/images/face_image.png";
 import { ButtonArrow as ArrowIcon } from "../../../../assets/svg/ButtonArrow";
+import { IProduct } from "src/types/product/product";
 
 const Face = () => {
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
+  const products = useTypedSelector((state) => state.productReducer.products);
   const [currentCategory, setCurrentCategory] = useState(initCategory());
   const [isTransition, setIsTransition] = useState(false);
   const windowSize = useTypedSelector((state) => state.mainReducer.windowSize);
@@ -157,9 +159,16 @@ const Face = () => {
                     {parse(currentCategory.description)}
                   </div>
                   <div className={styles.bottom}>
-                    <div
-                      className={`${styles.price} ${!isTransition ? styles.active : ""}`}
-                    >{`от ${"55555".toLocaleString()}₽`}</div>
+                    <div className={`${styles.price} ${!isTransition ? styles.active : ""}`}>{`от ${
+                      products.length > 0 &&
+                      products.filter((product: IProduct) => product.category_id === currentCategory.id).length > 0
+                        ? Math.min(
+                            ...products
+                              .filter((product: IProduct) => product.category_id === currentCategory.id)
+                              .map((product: IProduct) => product.price)
+                          ).toLocaleString()
+                        : 0
+                    }₽`}</div>
                     <button type="button" onClick={() => navigate(`/catalog/${currentCategory.id}`)}>
                       Перейти в каталог
                     </button>

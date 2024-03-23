@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
 
+import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSeletor";
 
 import appStyles from "../../App.module.sass";
@@ -18,6 +19,10 @@ import { DropdownType } from "../../enums/dropdownType";
 import { IDropdownItem } from "../../types/main/dropdownItem";
 import { initCatalogFilter } from "../../types/main/initCatalogFilter";
 import { ICategoryFilter } from "../../types/category/categoryFilter";
+import { IManufacturer } from "../../types/manufacturer/manufacturer";
+import { IFilter } from "../../types/filter/filter";
+import { IFilterItem } from "../../types/filter/filterItem";
+import { IProductFilter } from "../../types/product/productFilter";
 
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 import { Check as CheckIcon } from "../../assets/svg/Check";
@@ -26,13 +31,10 @@ import { Grid as GridIcon } from "../../assets/svg/Grid";
 import { Filter as FilterIcon } from "../../assets/svg/Filter";
 import { Close as CloseIcon } from "../../assets/svg/Close";
 import { ButtonArrow as ButtonArrowIcon } from "../../assets/svg/ButtonArrow";
-import { IManufacturer } from "src/types/manufacturer/manufacturer";
-import { IFilter } from "src/types/filter/filter";
-import { IFilterItem } from "src/types/filter/filterItem";
-import { IProductFilter } from "src/types/product/productFilter";
 
 const Catalog = () => {
   const { id } = useParams();
+  const { setIsNoScroll } = useActions();
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
   const products = useTypedSelector((state) => state.productReducer.products);
   const manufacturers = useTypedSelector((state) => state.manufacturerReducer.manufacturers);
@@ -193,6 +195,10 @@ const Catalog = () => {
     }
   }, [isSortSelected]);
 
+  useEffect(() => {
+    setIsNoScroll(isFiltersActive);
+  }, [isFiltersActive]);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -244,44 +250,46 @@ const Catalog = () => {
           {products.filter((product: IProduct) => product.category_id === category.id).length > 0 ? (
             <div className={styles.products_wrapper}>
               <div className={styles.filters}>
-                {category.filters.filter((filter: ICategoryFilter) => filter.filter_id === 0).length > 0 ? (
-                  <MultiDropdown
-                    dropdownType={DropdownType.ManufacturerSelector}
-                    activeComponent={activeDropdown}
-                    setActiveComponent={setActiveDropdown}
-                    label="Производитель"
-                    items={
-                      manufacturers.map((manufacturer: IManufacturer) => {
-                        return {
-                          id: manufacturer.id,
-                          text: manufacturer.manufacturer,
-                          is_selected: catalogFilter.manufacturers.includes(manufacturer.id),
-                        } as IDropdownItem;
-                      }) as IDropdownItem[]
-                    }
-                    isFullWidth={false}
-                    onItemSelect={(item: IDropdownItem) => {
-                      if (catalogFilter.manufacturers.includes(item.id)) {
-                        setCatalogFilter({
-                          ...catalogFilter,
-                          manufacturers: catalogFilter.manufacturers.filter((value: number) => value !== item.id),
-                        });
-                      } else {
-                        setCatalogFilter({
-                          ...catalogFilter,
-                          manufacturers: [...catalogFilter.manufacturers, item.id],
-                        });
+                <div className={styles.filter}>
+                  {category.filters.filter((filter: ICategoryFilter) => filter.filter_id === 0).length > 0 ? (
+                    <MultiDropdown
+                      dropdownType={DropdownType.ManufacturerSelector}
+                      activeComponent={activeDropdown}
+                      setActiveComponent={setActiveDropdown}
+                      label="Производитель"
+                      items={
+                        manufacturers.map((manufacturer: IManufacturer) => {
+                          return {
+                            id: manufacturer.id,
+                            text: manufacturer.manufacturer,
+                            is_selected: catalogFilter.manufacturers.includes(manufacturer.id),
+                          } as IDropdownItem;
+                        }) as IDropdownItem[]
                       }
-                      setActiveDropdown(DropdownType.None);
-                    }}
-                  />
-                ) : null}
+                      isFullWidth={true}
+                      onItemSelect={(item: IDropdownItem) => {
+                        if (catalogFilter.manufacturers.includes(item.id)) {
+                          setCatalogFilter({
+                            ...catalogFilter,
+                            manufacturers: catalogFilter.manufacturers.filter((value: number) => value !== item.id),
+                          });
+                        } else {
+                          setCatalogFilter({
+                            ...catalogFilter,
+                            manufacturers: [...catalogFilter.manufacturers, item.id],
+                          });
+                        }
+                        setActiveDropdown(DropdownType.None);
+                      }}
+                    />
+                  ) : null}
+                </div>
                 {category.filters.filter((filter: ICategoryFilter) => filter.filter_id > 1).length > 0 ? (
                   <>
                     {category.filters
                       .filter((filter: ICategoryFilter) => filter.filter_id > 1)
                       .map((categoryFilter: ICategoryFilter) => (
-                        <>
+                        <div className={styles.filter}>
                           {filters.filter((filter: IFilter) => filter.id === categoryFilter.filter_id).length > 0 ? (
                             <MultiDropdown
                               dropdownType={categoryFilter.id + 50}
@@ -299,7 +307,7 @@ const Catalog = () => {
                                     } as IDropdownItem;
                                   }) as IDropdownItem[]
                               }
-                              isFullWidth={false}
+                              isFullWidth={true}
                               onItemSelect={(item: IDropdownItem) => {
                                 if (catalogFilter.product_filters.includes(item.id)) {
                                   setCatalogFilter({
@@ -317,7 +325,7 @@ const Catalog = () => {
                               }}
                             />
                           ) : null}
-                        </>
+                        </div>
                       ))}
                   </>
                 ) : null}
@@ -333,7 +341,7 @@ const Catalog = () => {
                       />
                     </div>
                   ) : null}
-                  <div className={styles.filter}>
+                  <div className={`${styles.filter} ${styles.price}`}>
                     Цена, ₽
                     <div className={styles.inputs}>
                       <input
@@ -415,7 +423,7 @@ const Catalog = () => {
                   ))}
                 </div>
               ) : null}
-              {categoryProducts.length > 12 ? (
+              {/*categoryProducts.length > 12 ? (
                 <div className={styles.pagination}>
                   {Math.ceil(categoryProducts.length / 12) > 0 ? (
                     <>
@@ -442,6 +450,115 @@ const Catalog = () => {
                     </>
                   ) : null}
                 </div>
+                      ) : null*/}
+              {categoryProducts.length > 12 ? (
+                <>
+                  {currentPage !== 1 ? (
+                    <div className={styles.prev_button} onClick={() => setCurrentPage(currentPage - 1)}>
+                      <ArrowIcon />
+                    </div>
+                  ) : null}
+                  {Math.ceil(categoryProducts.length / 12) > 7 ? (
+                    <div className={styles.pagination}>
+                      <div
+                        className={`${styles.page} ${currentPage === 1 ? styles.active : ""}`}
+                        onClick={() => setCurrentPage(1)}
+                      >
+                        1
+                      </div>
+                      {currentPage < 4 ? (
+                        <div
+                          className={`${styles.page} ${currentPage === 2 ? styles.active : ""}`}
+                          onClick={() => setCurrentPage(2)}
+                        >
+                          2
+                        </div>
+                      ) : (
+                        <div className={styles.separator}>...</div>
+                      )}
+                      <>
+                        {currentPage < 4
+                          ? Array(3)
+                              .fill(1)
+                              .map((_value, index: number) => (
+                                <div
+                                  className={`${styles.page} ${currentPage === 3 + index ? styles.active : ""}`}
+                                  onClick={() => setCurrentPage(3 + index)}
+                                >
+                                  {3 + index}
+                                </div>
+                              ))
+                          : null}
+                        {currentPage > Math.ceil(categoryProducts.length / 12) - 3
+                          ? Array(3)
+                              .fill(1)
+                              .map((_value, index: number) => (
+                                <div
+                                  className={`${styles.page} ${
+                                    currentPage === Math.ceil(categoryProducts.length / 12) - 4 + index ? styles.active : ""
+                                  }`}
+                                  onClick={() => setCurrentPage(categoryProducts.length / 12 - 4 + index)}
+                                >
+                                  {categoryProducts.length / 12 - 4 + index}
+                                </div>
+                              ))
+                          : null}
+                        {currentPage > 3 && currentPage < Math.ceil(categoryProducts.length / 12) - 2
+                          ? Array(3)
+                              .fill(1)
+                              .map((_value, index: number) => (
+                                <div
+                                  className={`${styles.page} ${
+                                    currentPage === currentPage - 1 + index ? styles.active : ""
+                                  }`}
+                                  onClick={() => setCurrentPage(currentPage - 1 + index)}
+                                >
+                                  {currentPage - 1 + index}
+                                </div>
+                              ))
+                          : null}
+                      </>
+                      {currentPage > Math.ceil(categoryProducts.length / 12) - 3 ? (
+                        <div
+                          className={`${styles.page} ${
+                            currentPage === Math.ceil(categoryProducts.length / 12) - 1 ? styles.active : ""
+                          }`}
+                          onClick={() => setCurrentPage(categoryProducts.length / 12 - 1)}
+                        >
+                          {categoryProducts.length / 12 - 1}
+                        </div>
+                      ) : (
+                        <div className={styles.separator}>...</div>
+                      )}
+                      <div
+                        className={`${styles.page} ${
+                          currentPage === Math.ceil(categoryProducts.length / 12) ? styles.active : ""
+                        }`}
+                        onClick={() => setCurrentPage(categoryProducts.length / 12)}
+                      >
+                        {categoryProducts.length / 12}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className={styles.pagination}>
+                      {Array(Math.ceil(categoryProducts.length / 12))
+                        .fill(1)
+                        .map((_value, index: number) => (
+                          <div
+                            className={`${styles.page} ${currentPage === index + 1 ? styles.active : ""}`}
+                            onClick={() => setCurrentPage(index + 1)}
+                          >
+                            {index + 1}
+                          </div>
+                        ))}
+                    </div>
+                  )}
+                  {currentPage !== Math.ceil(categoryProducts.length / 12) ? (
+                    <div className={styles.next_button} onClick={() => setCurrentPage(currentPage + 1)}>
+                      <ArrowIcon />
+                    </div>
+                  ) : null}
+                </>
               ) : null}
             </div>
           ) : null}

@@ -8,6 +8,7 @@ export interface ICategory {
   parent_id: number;
   img_path: string;
   is_main: boolean;
+  show_in_nav: boolean;
   attributes: ICategoryAttribute[];
   filters: ICategoryFilter[];
 }

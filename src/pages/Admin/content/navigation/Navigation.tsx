@@ -44,6 +44,12 @@ const Navigation: React.FC<INavigationProps> = ({ activeComponent, setActiveComp
         >
           Фильтры
         </div>
+        <div
+          className={`${styles.navigation_item} ${activeComponent === 4 ? styles.active : ""}`}
+          onClick={() => setActiveComponent(4)}
+        >
+          Производители
+        </div>
       </div>
       <div className={styles.bottom_container}>
         <button type="button" onClick={() => logout()}>

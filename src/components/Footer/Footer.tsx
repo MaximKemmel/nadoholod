@@ -69,7 +69,7 @@ const Footer = () => {
               {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
                 <div className={styles.links}>
                   {categories
-                    .filter((category: ICategory) => category.is_main)
+                    .filter((category: ICategory) => category.show_in_nav)
                     .map((category: ICategory) => (
                       <div className={styles.link} onClick={() => navigate(`/catalog/${category.id}`)}>
                         <ArrowIcon />

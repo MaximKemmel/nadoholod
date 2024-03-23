@@ -40,3 +40,16 @@ export const uploadProductInstruction = createAsyncThunk(
       .then((response) => response.data);
   }
 );
+
+export const uploadManufacturerImage = createAsyncThunk(
+  "uploadManufacturerImage",
+  async ({ file, onUploadProgress }: { file: Blob; onUploadProgress: Function }) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    return await axios
+      .post("/upload/manufacturers", formData, {
+        onUploadProgress: (data) => onUploadProgress(data),
+      })
+      .then((response) => response.data);
+  }
+);

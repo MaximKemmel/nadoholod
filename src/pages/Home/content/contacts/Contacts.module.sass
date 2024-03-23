@@ -1,4 +1,5 @@
 $text_color: #043848
+$action_color: #01AAC1
 
 .content
     display: flex
@@ -23,10 +24,23 @@ $text_color: #043848
             .value
                 font-size: 16px
 
+            a
+                color: $text_color
+                text-decoration: none
+                transition: all .2s ease-out
+
     .map_container
         height: 380px
         width: 75%
         overflow: hidden
+
+@media (hover: hover)
+    .content
+        .contacts
+            .contact
+                a
+                    &:hover
+                        color: $action_color
 
 @media (max-width: 1380px)
     .content

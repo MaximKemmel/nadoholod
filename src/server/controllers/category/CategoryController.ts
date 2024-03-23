@@ -46,16 +46,18 @@ const getCategories = (_request, response) => {
 
 const addCategory = (request, response) => {
   try {
-    const sql = "INSERT INTO categories (??, ??, ??, ??) VALUES (?, ?, ?, ?);";
+    const sql = "INSERT INTO categories (??, ??, ??, ??, ??) VALUES (?, ?, ?, ?, ?);";
     const query = mysql.format(sql, [
       "parent_id",
       "category",
       "description",
       "img_path",
+      "show_in_nav",
       request.body.params.category.parent_id,
       request.body.params.category.category,
       request.body.params.category.description,
       request.body.params.category.img_path,
+      request.body.params.category.show_in_nav,
     ]);
     connectionPool.query(query, (error, data) => {
       if (error) {
@@ -102,7 +104,7 @@ const addCategory = (request, response) => {
 
 const updateCategory = (request, response) => {
   try {
-    const sql = "UPDATE categories SET ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?;";
+    const sql = "UPDATE categories SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?;";
     const query = mysql.format(sql, [
       "parent_id",
       request.body.params.category.parent_id,
@@ -112,6 +114,8 @@ const updateCategory = (request, response) => {
       request.body.params.category.description,
       "img_path",
       request.body.params.category.img_path,
+      "show_in_nav",
+      request.body.params.category.show_in_nav,
       "id",
       request.body.params.category.id,
     ]);
