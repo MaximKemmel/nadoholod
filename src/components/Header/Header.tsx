@@ -92,7 +92,7 @@ const Header = () => {
               </button>
               <div className={styles.empty} />
             </div>
-            <div className={styles.input_container} onBlur={() => setTimeout(unselectSearch, 100)}>
+            <div className={styles.input_container} onBlur={() => setTimeout(unselectSearch, 500)}>
               <input
                 type="text"
                 placeholder="Найти..."
@@ -119,7 +119,15 @@ const Header = () => {
                       </div>
                     ))}
                 </div>
-              ) : null}
+              ) : (
+                <>
+                  {searchValue.trim() !== "" ? (
+                    <div className={styles.search_values}>
+                      <div className={styles.not_found}>Ничего не найдено</div>
+                    </div>
+                  ) : null}
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -127,7 +135,7 @@ const Header = () => {
           <div className={styles.menu_button} onClick={() => setIsNavActive(true)}>
             <MenuIcon />
           </div>
-          <div className={styles.input_container} onBlur={() => setTimeout(unselectSearch, 100)}>
+          <div className={styles.input_container} onBlur={() => setTimeout(unselectSearch, 500)}>
             <input
               type="text"
               placeholder="Найти..."
@@ -155,12 +163,20 @@ const Header = () => {
                     </div>
                   ))}
               </div>
-            ) : null}
+            ) : (
+              <>
+                {searchValue.trim() !== "" ? (
+                  <div className={styles.search_values}>
+                    <div className={styles.not_found}>Ничего не найдено</div>
+                  </div>
+                ) : null}
+              </>
+            )}
           </div>
           <div className={styles.logo} onClick={() => navigate("/")}>
             <img src={isHomePage ? Logo : LogoBlue} alt="" />
           </div>
-          <div className={styles.mob_search_container} onBlur={() => setTimeout(unselectSearch, 100)}>
+          <div className={styles.mob_search_container} onBlur={() => setTimeout(unselectSearch, 500)}>
             <div className={`${styles.input_container} ${isSearchActive ? styles.active : ""}`}>
               <input
                 type="text"
@@ -189,7 +205,15 @@ const Header = () => {
                       </div>
                     ))}
                 </div>
-              ) : null}
+              ) : (
+                <>
+                  {searchValue.trim() !== "" ? (
+                    <div className={styles.search_values}>
+                      <div className={styles.not_found}>Ничего не найдено</div>
+                    </div>
+                  ) : null}
+                </>
+              )}
             </div>
             <div
               className={`${styles.search_button} ${isSearchActive ? styles.close : ""}`}

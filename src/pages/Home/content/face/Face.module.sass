@@ -224,11 +224,16 @@ $dark_color: #0A0C0D
                 .overlay
                     position: absolute
                     width: 100vw
-                    height: 10vh
+                    height: 15vh
                     top: 0
                     left: 0
-                    background: linear-gradient($dark_color, #00000000)
+                    background: linear-gradient($dark_color, #00000000 65%)
                     z-index: 1
+
+                    &.bottom
+                        bottom: 0
+                        top: auto
+                        background: linear-gradient(#00000000, $dark_color 90%)
 
                 &.vertical
                     display: block

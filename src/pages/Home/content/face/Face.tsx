@@ -30,7 +30,7 @@ const Face = () => {
     centerMode: true,
     infinite: true,
     autoplay: false,
-    centerPadding: "350px",
+    centerPadding: "275px",
     variableHeight: true,
     swipeToSlide: false,
     slidesToShow: 1,
@@ -196,6 +196,7 @@ const Face = () => {
                   ))}
               </Slider>
             ) : null}
+            <div className={`${styles.overlay} ${styles.bottom}`} />
           </div>
           <div className={`${styles.slider} ${styles.horizontal}`}>
             {Array.isArray(categories) && categories !== undefined && categories.length > 0 ? (
