@@ -551,7 +551,7 @@ const Products = () => {
                 {selectedProduct.attributes.filter((attribute: IProductAttribute) => attribute.attribute_id === 1).length >
                 0 ? (
                   <div className={pageStyles.input_field}>
-                    <div className={pageStyles.label}>Объем, м²</div>
+                    <div className={pageStyles.label}>Объем, м³</div>
                     <input
                       type="text"
                       placeholder="Объем"

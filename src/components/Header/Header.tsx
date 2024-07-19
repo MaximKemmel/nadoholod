@@ -80,7 +80,7 @@ const Header = () => {
             <div className={styles.company_content}>
               <div className={styles.name}>Холод PRO</div>
               <div className={styles.description}>
-                Компания по производству, монтажу и обслуживанию холодильного оборудования
+                Компания по производству, поставке и обслуживанию холодильного оборудования
               </div>
             </div>
           </div>

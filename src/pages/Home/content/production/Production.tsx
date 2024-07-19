@@ -33,7 +33,7 @@ const Production = () => {
           </div>
           <div className={styles.production_items}>
             <div className={styles.production_item}>
-              <h5>7 лет</h5>
+              <h5>{new Date().getFullYear() - 2016} лет</h5>
               <div className={styles.value}>На рынке производства холодильного оборудования</div>
             </div>
             <div className={styles.production_item}>
@@ -41,7 +41,7 @@ const Production = () => {
               <div className={styles.value}>По всей России</div>
             </div>
             <div className={styles.production_item}>
-              <h5>600 м²</h5>
+              <h5>600 м³</h5>
               <div className={styles.value}>собственного производства</div>
             </div>
           </div>

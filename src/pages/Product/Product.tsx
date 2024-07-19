@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import parse from "html-react-parser";
 
@@ -14,25 +14,25 @@ import ProductOrderModal from "../../components/Modal/ProductOrderModal";
 
 import { IProduct } from "../../types/product/product";
 import { initProduct } from "../../types/product/initProduct";
+import { IProductImage } from "../../types/product/productImage";
+import { IManufacturer } from "../../types/manufacturer/manufacturer";
+import { IProductAttribute } from "../../types/product/productAttribute";
+import { IAttribute } from "../../types/attribute/attribute";
 
 import { Arrow as ArrowIcon } from "../../assets/svg/Arrow";
 import CarIcon from "../../assets/images/car.png";
-import TimeIcon from "../../assets/images/time.png";
 import PdfIcon from "../../assets/images/pdf_icon.png";
-import { IProductImage } from "src/types/product/productImage";
-import { IManufacturer } from "src/types/manufacturer/manufacturer";
-import { IProductAttribute } from "src/types/product/productAttribute";
-import { IAttribute } from "src/types/attribute/attribute";
 
 const Product = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { setIsNoScroll } = useActions();
   const products = useTypedSelector((state) => state.productReducer.products);
   const manufacturers = useTypedSelector((state) => state.manufacturerReducer.manufacturers);
   const attributes = useTypedSelector((state) => state.attributeReducer.attributes);
   const [product, setProduct] = useState(initProduct());
-  const [mainPhoto, setMainPhoto] = useState("/uploads/products/product.png");
+  const [mainPhoto, setMainPhoto] = useState("");
   const [activeTab, setActiveTab] = useState(0);
   const [isMessageShow, setIsMessageShow] = useState(false);
   const [isOrderShow, setIsOrderShow] = useState(false);
@@ -79,12 +79,16 @@ const Product = () => {
         [products].length > 0 &&
         products.filter((tmpProduct: IProduct) => tmpProduct.id === Number(id)).length > 0
       ) {
-        setProduct(products.find((tmpProduct: IProduct) => tmpProduct.id === Number(id))!);
+        const tmpProduct = products.find((tmpProduct: IProduct) => tmpProduct.id === Number(id))!;
+        setProduct(tmpProduct);
+        if (tmpProduct.images.length > 0) {
+          setMainPhoto(`/uploads/${tmpProduct.images.find((image: IProductImage) => image.is_main)!.path}`);
+        }
       } else {
         navigate("/");
       }
     }
-  }, [id, products]);
+  }, [id, products, pathname]);
 
   useEffect(() => {
     setIsNoScroll(isMessageShow || isOrderShow);
@@ -133,7 +137,7 @@ const Product = () => {
                     ) : null}
                   </div>
                 ) : null}
-                <img className={styles.main_photo} src={mainPhoto} alt="" />
+                {mainPhoto !== "" ? <img className={styles.main_photo} src={mainPhoto} alt="" /> : null}
               </div>
               <div className={styles.info_container}>
                 <h5>{product.name}</h5>
@@ -157,7 +161,7 @@ const Product = () => {
                   <button type="button" onClick={() => setIsOrderShow(true)}>
                     Заказать товар
                   </button>
-                  <div className={styles.warning}>*Актуальную цену можно уточнить у менеджера</div>
+                  <div className={styles.warning}>*Актуальную цену и сроки поставки уточняйте у менеджера</div>
                 </div>
                 <div className={styles.advantages_list}>
                   <div className={styles.advantage}>
@@ -165,12 +169,6 @@ const Product = () => {
                       <img src={CarIcon} alt="" />
                     </div>
                     Доставка по всей России
-                  </div>
-                  <div className={styles.advantage}>
-                    <div className={styles.image}>
-                      <img src={TimeIcon} alt="" />
-                    </div>
-                    Изготовление 2 недели
                   </div>
                 </div>
               </div>
@@ -204,7 +202,7 @@ const Product = () => {
                           </div>
                           <div className={styles.value}>
                             {Number(product.volume).toLocaleString()}
-                            м²
+                            м³
                           </div>
                         </div>
                       ) : null}
