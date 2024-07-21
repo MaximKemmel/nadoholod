@@ -9,6 +9,7 @@ import { reducer as manufacturerReducer } from "./manufacturer/manufacturer.slic
 import { reducer as userReducer } from "./user/user.slice";
 import { reducer as fileReducer } from "./file/file.slice";
 import { reducer as mailReducer } from "./mail/mail.slice";
+import { reducer as secondaryInfoReducer } from "./secondaryInfo/secondaryInfo.slice";
 
 export const reducers = combineReducers({
   mainReducer,
@@ -20,4 +21,5 @@ export const reducers = combineReducers({
   userReducer,
   fileReducer,
   mailReducer,
+  secondaryInfoReducer,
 });

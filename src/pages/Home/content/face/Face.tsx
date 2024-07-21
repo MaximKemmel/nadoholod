@@ -15,6 +15,7 @@ import { ButtonArrow as ArrowIcon } from "../../../../assets/svg/ButtonArrow";
 import { IProduct } from "src/types/product/product";
 
 const Face = () => {
+  const secondaryInfo = useTypedSelector((state) => state.secondaryInfoReducer.secondaryInfo);
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
   const products = useTypedSelector((state) => state.productReducer.products);
   const [currentCategory, setCurrentCategory] = useState(initCategory());
@@ -121,9 +122,15 @@ const Face = () => {
           <div className={styles.about}>
             <h5>Изготовили и установили</h5>
             <div className={styles.about_list}>
-              <div className={styles.about_item}>2000 холодильных камер</div>
-              <div className={styles.about_item}>500 чиллеров</div>
-              <div className={styles.about_item}>1800 генераторов ледяной воды</div>
+              {secondaryInfo.cameras_count !== undefined ? (
+                <div className={styles.about_item}>{`${secondaryInfo.cameras_count} холодильных камер`}</div>
+              ) : null}
+              {secondaryInfo.chillers_count !== undefined ? (
+                <div className={styles.about_item}>{`${secondaryInfo.chillers_count} чиллеров`}</div>
+              ) : null}
+              {secondaryInfo.generators_count !== undefined ? (
+                <div className={styles.about_item}>{`${secondaryInfo.generators_count} генераторов ледяной воды`}</div>
+              ) : null}
             </div>
           </div>
           <img src={FaceImage} alt="" />

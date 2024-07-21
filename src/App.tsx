@@ -30,9 +30,11 @@ function App() {
     getAttributes,
     getFilters,
     getManufacturers,
+    getSecondaryInfo,
   } = useActions();
   const [isMoveUpActive, setIsMoveUpActive] = useState(false);
   const isNoScroll = useTypedSelector((state) => state.mainReducer.isNoScroll);
+  const secondaryInfo = useTypedSelector((state) => state.secondaryInfoReducer.secondaryInfo);
   const categroies = useTypedSelector((state) => state.categoryReducer.categories);
   const products = useTypedSelector((state) => state.productReducer.products);
   const attributes = useTypedSelector((state) => state.attributeReducer.attributes);
@@ -47,6 +49,9 @@ function App() {
 
   useEffect(() => {
     getWindowSize();
+    if (secondaryInfo === undefined || secondaryInfo.id !== -1) {
+      getSecondaryInfo();
+    }
     if (!Array.isArray(manufacturers) || manufacturers === undefined || manufacturers.length === 0) {
       getManufacturers();
     }

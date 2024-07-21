@@ -8,6 +8,7 @@ import {
   UserController,
   ManufacturerController,
   MailController,
+  SecondaryInfoController,
 } from "./src/server/index";
 
 const express = require("express");
@@ -75,6 +76,9 @@ app.post("/api/update_manufacturer", checkAuth, ManufacturerController.updateMan
 app.post("/api/delete_manufacturer", checkAuth, ManufacturerController.deleteManufacturer);
 
 app.post("/api/send_mail", MailController.sendMail);
+
+app.get("/api/secondary_info", SecondaryInfoController.getSecondaryInfo);
+app.post("/api/update_secondary_info", checkAuth, SecondaryInfoController.updateSecondaryInfo);
 
 app.use(express.static(path.join(__dirname, "dist")));
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));

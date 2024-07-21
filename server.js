@@ -54,6 +54,8 @@ app.post("/api/add_manufacturer", checkAuth_1.default, index_1.ManufacturerContr
 app.post("/api/update_manufacturer", checkAuth_1.default, index_1.ManufacturerController.updateManufacturer);
 app.post("/api/delete_manufacturer", checkAuth_1.default, index_1.ManufacturerController.deleteManufacturer);
 app.post("/api/send_mail", index_1.MailController.sendMail);
+app.get("/api/secondary_info", index_1.SecondaryInfoController.getSecondaryInfo);
+app.post("/api/update_secondary_info", checkAuth_1.default, index_1.SecondaryInfoController.updateSecondaryInfo);
 app.use(express.static(path.join(__dirname, "dist")));
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 app.get("*", function (request, response) {

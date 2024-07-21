@@ -117,7 +117,7 @@ const Footer = () => {
                 <div className={styles.address}>г.Барнаул, ул.Германа Титова 35а</div>
                 <div className={styles.socials_list}>
                   <a
-                    href={`https://t.me/+79132349754`}
+                    href={`https://t.me/+79001638972`}
                     target="_blank"
                     title={"Написать в Telegram"}
                     className={styles.link}
@@ -125,7 +125,7 @@ const Footer = () => {
                     <TelegramIcon />
                   </a>
                   <a
-                    href={`https://api.whatsapp.com/send/?phone=79132349754`}
+                    href={`https://api.whatsapp.com/send/?phone=79001638972`}
                     target="_blank"
                     title={"Написать в WhatsApp"}
                     className={styles.link}

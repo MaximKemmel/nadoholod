@@ -12,13 +12,21 @@ import Products from "./content/products/Products";
 import Attributes from "./content/attributes/Attributes";
 import Filters from "./content/filters/Filters";
 import Manufacturers from "./content/manufacturers/Manufacturers";
+import SecondaryInfo from "./content/secondaryInfo/SecondaryInfo";
 
 const Admin = () => {
   const navigate = useNavigate();
-  const { getCategories, getProducts, getAttributes, getFilters, getManufacturers } = useActions();
+  const { getCategories, getProducts, getAttributes, getFilters, getManufacturers, getSecondaryInfo } = useActions();
   const isAuth = useTypedSelector((state) => state.userReducer.isAuth);
   const [activeComponent, setActiveComponent] = useState(-1);
-  const pageSections = [<Categories />, <Products />, <Attributes />, <Filters />, <Manufacturers />] as JSX.Element[];
+  const pageSections = [
+    <Categories />,
+    <Products />,
+    <Attributes />,
+    <Filters />,
+    <Manufacturers />,
+    <SecondaryInfo />,
+  ] as JSX.Element[];
 
   useEffect(() => {
     document.title = "Панель управления";
@@ -35,6 +43,7 @@ const Admin = () => {
       getAttributes();
       getFilters();
       getManufacturers();
+      getSecondaryInfo();
     }
   }, [isAuth]);
 

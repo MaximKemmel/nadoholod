@@ -86,24 +86,23 @@ const About = () => {
               <div className={styles.stages}>
                 <div className={`${styles.stage} ${styles.half}`}>
                   <div className={styles.num}>04</div>
-                  <div className={styles.about}>Начало работы по производству и холодильных камер в Алтайском крае</div>
+                  <div className={styles.about}>Развитие отношений с крупными дистрибьюторами, по всей России</div>
                 </div>
                 <div className={`${styles.stage} ${styles.tripple}`}>
                   <div className={styles.num}>03</div>
-                  <div className={styles.about}>Начало работы по производству и холодильных камер в Алтайском крае</div>
+                  <div className={styles.about}>Выход на рынок торгового и пищевого холодильного оборудования</div>
                 </div>
                 <div className={`${styles.stage} ${styles.double}`}>
                   <div className={styles.num}>02</div>
-                  <div className={styles.about}>Начало работы по производству и холодильных камер в Алтайском крае</div>
+                  <div className={styles.about}>Налажены партнерские отношения с молочными производителями</div>
                 </div>
                 <div className={`${styles.stage} ${styles.first}`}>
                   <div className={styles.num}>01</div>
-                  <div className={styles.about}>Начало работы по производству и холодильных камер в Алтайском крае</div>
+                  <div className={styles.about}>В 2016 году, группой инженеров, была основана компания «Холод Про»</div>
                 </div>
               </div>
             </div>
             <div className={styles.competition}>
-              <div className={styles.description}>Первые по производству холодильных камер в Алтайском крае</div>
               <img src={CompetitionImage} alt="" />
             </div>
           </div>

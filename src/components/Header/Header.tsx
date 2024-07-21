@@ -86,7 +86,7 @@ const Header = () => {
           </div>
           <div className={styles.actions_container}>
             <div className={styles.call_container}>
-              <div className={styles.phone_number}>+7 913 234-97-54</div>
+              <div className={styles.phone_number}>+7 900 163-89-72</div>
               <button type="button" onClick={() => setIsOrderShow(true)}>
                 Заказать звонок
               </button>
@@ -277,7 +277,7 @@ const Header = () => {
             <li onClick={() => handleLinkOnClick("delivery_container")}>Доставка</li>
             <li onClick={() => handleLinkOnClick("contacts_container")}>Контакты</li>
             <div className={styles.contacts_block}>
-              <div className={styles.phone_number}>+7 913 234-97-54</div>
+              <div className={styles.phone_number}>+7 900 163-89-72</div>
               <button type="button" onClick={() => setIsOrderShow(true)}>
                 Заказать звонок
               </button>

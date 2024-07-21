@@ -556,7 +556,7 @@ const Products = () => {
                       type="text"
                       placeholder="Объем"
                       value={volumeStr}
-                      onChange={(event) => setVolumeStr(event.target.value)}
+                      onChange={(event) => setVolumeStr(event.target.value.replaceAll(',', '.'))}
                       onClick={() => setActiveComponent(DropdownType.None)}
                     />
                   </div>
