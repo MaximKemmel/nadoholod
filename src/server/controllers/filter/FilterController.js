@@ -11,12 +11,12 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteFilter = exports.updateFilter = exports.addFilter = exports.getFilters = void 0;
+exports.updateFilterPosition = exports.deleteFilter = exports.updateFilter = exports.addFilter = exports.getFilters = void 0;
 var connectionPool_1 = require("../../connectionPool");
 var mysql = require("mysql");
 var getFilters = function (_request, response) {
     try {
-        connectionPool_1.connectionPool.query("SELECT * FROM filters; SELECT * FROM filter_items;", function (error, data) {
+        connectionPool_1.connectionPool.query("SELECT * FROM filters ORDER BY position DESC; SELECT * FROM filter_items;", function (error, data) {
             if (error) {
                 return response.status(404).json({
                     message: "Фильтры не найдены",
@@ -44,12 +44,14 @@ var getFilters = function (_request, response) {
 exports.getFilters = getFilters;
 var addFilter = function (request, response) {
     try {
-        var sql = "INSERT INTO filters (??, ??) VALUES (?, ?);";
+        var sql = "INSERT INTO filters (??, ??, ??) VALUES (?, ?, ?);";
         var query = mysql.format(sql, [
             "filter",
             "is_main",
+            "position",
             request.body.params.filter.filter,
             request.body.params.filter.is_main,
+            request.body.params.filter.position,
         ]);
         connectionPool_1.connectionPool.query(query, function (error, data) {
             if (error) {
@@ -165,3 +167,38 @@ var deleteFilter = function (request, response) {
     }
 };
 exports.deleteFilter = deleteFilter;
+var updateFilterPosition = function (request, response) {
+    try {
+        var sql = "UPDATE filters SET ?? = ? WHERE ?? = ?; UPDATE filters SET ?? = ? WHERE ?? = ?;";
+        var query = mysql.format(sql, [
+            "position",
+            request.body.params.old_position,
+            "position",
+            request.body.params.filter.position,
+            "position",
+            request.body.params.filter.position,
+            "id",
+            request.body.params.filter.id,
+        ]);
+        connectionPool_1.connectionPool.query(query, function (error) {
+            if (error) {
+                return response.status(404).json({
+                    success: false,
+                    message: "Не удалось обновить позицию фильтра",
+                    error: error,
+                });
+            }
+            else {
+                return response.status(200).json({ success: true });
+            }
+        });
+    }
+    catch (error) {
+        response.status(500).json({
+            success: false,
+            message: "Ошибка при обновлении позиции фильтра",
+            error: error,
+        });
+    }
+};
+exports.updateFilterPosition = updateFilterPosition;

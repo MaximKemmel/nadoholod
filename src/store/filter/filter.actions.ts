@@ -38,3 +38,16 @@ export const deleteFilter = createAsyncThunk("api/deleteFilter", async ({ filter
     })
     .then((response) => response.data);
 });
+
+export const updateFilterPosition = createAsyncThunk(
+  "api/updateFilterPosition",
+  async ({ filter, oldPosition }: { filter: IFilter; oldPosition: number }) => {
+    const response = await axios.post("/api/update_filter_position", {
+      params: {
+        filter: filter,
+        old_position: oldPosition,
+      },
+    });
+    return response.data;
+  }
+);

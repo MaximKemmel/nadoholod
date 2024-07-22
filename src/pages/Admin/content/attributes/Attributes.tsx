@@ -17,12 +17,15 @@ import { ICategoryAttribute } from "../../../../types/category/categoryAttribute
 
 import { Plus as PlusIcon } from "../../../../assets/svg/Plus";
 import { Delete as DeleteIcon } from "../../../../assets/svg/Delete";
+import { Arrow as ArrowIcon } from "../../../../assets/svg/Arrow";
 
 const Attributes = () => {
-  const { getAttributes, addAttributes, setAddAttributesStatus } = useActions();
+  const { getAttributes, addAttributes, setAddAttributesStatus, updateAttributePosition, setUpdateAttributePositionStatus } =
+    useActions();
   const attributes = useTypedSelector((state) => state.attributeReducer.attributes);
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
   const addAttributesStatus = useTypedSelector((state) => state.attributeReducer.addAttributesStatus);
+  const updatePositionStatus = useTypedSelector((state) => state.attributeReducer.updateAttributePositionStatus);
   const [selectedAttribute, setSelectedAttribute] = useState({} as IAttribute);
   const [isCheckFields, setIsCheckFields] = useState(false);
   const [tmpAttributes, setTmpAttributes] = useState(attributes);
@@ -53,6 +56,21 @@ const Attributes = () => {
     }
   }, [addAttributesStatus]);
 
+  useEffect(() => {
+    switch (updatePositionStatus.status) {
+      case ServerStatusType.Success:
+        getAttributes();
+        setUpdateAttributePositionStatus(initServerStatus());
+        break;
+      case ServerStatusType.Error:
+        setTitleMessage("Ошибка");
+        setInfoMessage("При обновлении позиции возникла ошибка<br>Попробуйте снова");
+        setIsMessageShow(true);
+        setUpdateAttributePositionStatus(initServerStatus());
+        break;
+    }
+  }, [updatePositionStatus]);
+
   const handleAddOnClick = () => {
     setTmpAttributes([
       ...tmpAttributes,
@@ -65,6 +83,8 @@ const Attributes = () => {
             : attributes[attributes.length - 1].id + 1,
         attribute: "",
         is_main: false,
+        position:
+          attributes.length === 0 ? 0 : Math.max(...attributes.map((tmpAttribute: IAttribute) => tmpAttribute.position)) + 1,
       } as IAttribute,
     ]);
   };
@@ -107,6 +127,36 @@ const Attributes = () => {
     setIsConfirmShow(false);
   };
 
+  const handleUpdatePositionUp = (attribute: IAttribute) => {
+    var oldPosition = attribute.position;
+    var newPosition = attributes
+      .filter((tmpAttribute: IAttribute) => tmpAttribute.position > oldPosition)
+      .sort((attributeOne: IAttribute, attributeTwo: IAttribute) => {
+        if (attributeOne.position < attributeTwo.position) return -1;
+        if (attributeOne.position > attributeTwo.position) return 1;
+        return 0;
+      })[0].position;
+    updateAttributePosition({
+      attribute: { ...attribute, position: newPosition },
+      oldPosition: oldPosition,
+    });
+  };
+
+  const handleUpdatePositionDown = (attribute: IAttribute) => {
+    var oldPosition = attribute.position;
+    var newPosition = attributes
+      .filter((tmpAttribute: IAttribute) => tmpAttribute.position < oldPosition)
+      .sort((attributeOne: IAttribute, attributeTwo: IAttribute) => {
+        if (attributeOne.position > attributeTwo.position) return -1;
+        if (attributeOne.position < attributeTwo.position) return 1;
+        return 0;
+      })[0].position;
+    updateAttributePosition({
+      attribute: { ...attribute, position: newPosition },
+      oldPosition: oldPosition,
+    });
+  };
+
   return (
     <div className={pageStyles.container}>
       <div className={pageStyles.head}>
@@ -121,11 +171,10 @@ const Attributes = () => {
             <>
               <div className={pageStyles.row}>
                 <div className={pageStyles.fields}>
-                  {tmpAttributes
-                    .filter((attribute: IAttribute) => !attribute.is_main)
-                    .map((attribute: IAttribute) => (
-                      <div className={pageStyles.input_field}>
-                        <div className={pageStyles.label}>Аттрибут</div>
+                  {tmpAttributes.map((attribute: IAttribute) => (
+                    <div className={pageStyles.input_field}>
+                      <div className={pageStyles.label}>Аттрибут</div>
+                      {!attribute.is_main ? (
                         <input
                           className={attribute.attribute.trim().length === 0 && isCheckFields ? pageStyles.wrong : ""}
                           type="text"
@@ -144,11 +193,44 @@ const Attributes = () => {
                             )
                           }
                         />
+                      ) : (
+                        <div className={pageStyles.disabled_name}>{attribute.attribute}</div>
+                      )}
+                      {attribute.position !==
+                      Math.max(...attributes.map((tmpAttribute: IAttribute) => tmpAttribute.position)) ? (
+                        <button
+                          type="button"
+                          className={pageStyles.button_up}
+                          title="Поднять вверх"
+                          onClick={() => handleUpdatePositionUp(attribute)}
+                        >
+                          <ArrowIcon />
+                        </button>
+                      ) : (
+                        <div className={pageStyles.empty_button} />
+                      )}
+                      {attribute.position !==
+                      Math.min(...attributes.map((tmpAttribute: IAttribute) => tmpAttribute.position)) ? (
+                        <button
+                          type="button"
+                          className={pageStyles.button_down}
+                          title="Опустить вниз"
+                          onClick={() => handleUpdatePositionDown(attribute)}
+                        >
+                          <ArrowIcon />
+                        </button>
+                      ) : (
+                        <div className={pageStyles.empty_button} />
+                      )}
+                      {!attribute.is_main ? (
                         <button type="button" className={appStyles.wrong} onClick={() => handleDeleteOnClick(attribute)}>
                           <DeleteIcon />
                         </button>
-                      </div>
-                    ))}
+                      ) : (
+                        <div className={pageStyles.empty_delete_button} />
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
             </>

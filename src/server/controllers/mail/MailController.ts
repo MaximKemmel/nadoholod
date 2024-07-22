@@ -3,8 +3,8 @@ import * as nodemailer from "nodemailer";
 const sendMail = async (request, response) => {
   try {
     const mailOptions = {
-      from: "kemmel7007@mail.ru",
-      to: "maximkemmel@yandex.ru",
+      from: "nadoholod@mail.ru",
+      to: "holodpro22@gmail.com",
       subject: request.body.params.description,
       html: `<b>${request.body.params.description}</b><br/><br/><b>Имя</b>: ${request.body.params.name}<br/><b>Номер телефона</b>: ${request.body.params.phone}<br/><b>Сообщение</b>: ${request.body.params.message}`,
     };

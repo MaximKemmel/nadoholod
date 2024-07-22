@@ -124,6 +124,26 @@ $focus_border_color: #11323D
                     justify-content: end
                     text-align: center
 
+                    button
+                        flex-shrink: 0
+
+                        &.button_up
+                            margin-right: 0px
+
+                            svg
+                                transform: rotate(-90deg)
+
+                        &.button_down
+                            margin-right: 0px
+
+                            svg
+                                transform: rotate(90deg)
+
+                    .empty_button
+                        width: 40px
+                        height: 40px
+                        flex-shrink: 0
+
                 img
                     height: 68px
                     width: auto
@@ -278,6 +298,34 @@ $focus_border_color: #11323D
                                     margin-top: 0
                                     height: 35px
                                     width: 35px
+
+                            .disabled_name
+                                height: 50px
+                                display: flex
+                                align-items: center
+                                flex-grow: 1
+
+                            button
+                                &.button_up
+                                    margin-right: 0px
+
+                                    svg
+                                        transform: rotate(-90deg)
+
+                                &.button_down
+                                    margin-right: 0px
+
+                                    svg
+                                        transform: rotate(90deg)
+
+                            .empty_button
+                                width: 40px
+                                height: 40px
+
+                            .empty_delete_button
+                                width: 40px
+                                height: 40px
+                                margin-right: 15px
 
                 .images_fields
                     width: 40%

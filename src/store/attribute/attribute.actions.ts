@@ -18,3 +18,16 @@ export const addAttributes = createAsyncThunk("api/addAttributes", async ({ attr
     })
     .then((response) => response.data);
 });
+
+export const updateAttributePosition = createAsyncThunk(
+  "api/updateAttributePosition",
+  async ({ attribute, oldPosition }: { attribute: IAttribute; oldPosition: number }) => {
+    const response = await axios.post("/api/update_attribute_position", {
+      params: {
+        attribute: attribute,
+        old_position: oldPosition,
+      },
+    });
+    return response.data;
+  }
+);

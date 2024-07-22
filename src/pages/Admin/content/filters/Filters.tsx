@@ -32,12 +32,15 @@ const Filters = () => {
     deleteFilter,
     setDeleteFilterStatus,
     getFilters,
+    updateFilterPosition,
+    setUpdateFilterPositionStatus,
   } = useActions();
   const filters = useTypedSelector((state) => state.filterReducer.filters);
   const categories = useTypedSelector((state) => state.categoryReducer.categories);
   const addFilterStatus = useTypedSelector((state) => state.filterReducer.addFilterStatus);
   const updateFilterStatus = useTypedSelector((state) => state.filterReducer.updateFilterStatus);
   const deleteFilterStatus = useTypedSelector((state) => state.filterReducer.deleteFilterStatus);
+  const updatePositionStatus = useTypedSelector((state) => state.filterReducer.updateFilterPositionStatus);
   const [selectedFilter, setSelectedFilter] = useState(initFilter());
   const [selectedFilterItem, setSelectedFilteritem] = useState({} as IFilterItem);
   const [viewType, setViewType] = useState(0);
@@ -106,8 +109,26 @@ const Filters = () => {
     }
   }, [deleteFilterStatus]);
 
+  useEffect(() => {
+    switch (updatePositionStatus.status) {
+      case ServerStatusType.Success:
+        getFilters();
+        setUpdateFilterPositionStatus(initServerStatus());
+        break;
+      case ServerStatusType.Error:
+        setTitleMessage("Ошибка");
+        setInfoMessage("При обновлении позиции возникла ошибка<br>Попробуйте снова");
+        setIsMessageShow(true);
+        setUpdateFilterPositionStatus(initServerStatus());
+        break;
+    }
+  }, [updatePositionStatus]);
+
   const handleAddOnClick = () => {
-    setSelectedFilter(initFilter());
+    setSelectedFilter({
+      ...initFilter(),
+      position: filters.length === 0 ? 0 : Math.max(...filters.map((tmpFilter: IFilter) => tmpFilter.position)) + 1,
+    });
     setIsCheckFields(false);
     setViewType(viewType === 0 ? 1 : 0);
   };
@@ -196,6 +217,36 @@ const Filters = () => {
     setIsConfirmShow(false);
   };
 
+  const handleUpdatePositionUp = (filter: IFilter) => {
+    var oldPosition = filter.position;
+    var newPosition = filters
+      .filter((tmpfilter: IFilter) => tmpfilter.position > oldPosition)
+      .sort((filterOne: IFilter, filterTwo: IFilter) => {
+        if (filterOne.position < filterTwo.position) return -1;
+        if (filterOne.position > filterTwo.position) return 1;
+        return 0;
+      })[0].position;
+    updateFilterPosition({
+      filter: { ...filter, position: newPosition },
+      oldPosition: oldPosition,
+    });
+  };
+
+  const handleUpdatePositionDown = (filter: IFilter) => {
+    var oldPosition = filter.position;
+    var newPosition = filters
+      .filter((tmpfilter: IFilter) => tmpfilter.position < oldPosition)
+      .sort((filterOne: IFilter, filterTwo: IFilter) => {
+        if (filterOne.position > filterTwo.position) return -1;
+        if (filterOne.position < filterTwo.position) return 1;
+        return 0;
+      })[0].position;
+    updateFilterPosition({
+      filter: { ...filter, position: newPosition },
+      oldPosition: oldPosition,
+    });
+  };
+
   return (
     <div className={pageStyles.container}>
       <div className={pageStyles.head}>
@@ -211,21 +262,47 @@ const Filters = () => {
             <div className={`${pageStyles.part} ${pageStyles.actions}`}>Действия</div>
           </div>
           <div className={pageStyles.table_list}>
-            {filters
-              .filter((filter: IFilter) => !filter.is_main)
-              .map((filter: IFilter) => (
-                <div className={pageStyles.table_item}>
-                  <div className={`${pageStyles.part} ${pageStyles.main}`}>{filter.filter}</div>
-                  <div className={`${pageStyles.part} ${pageStyles.actions}`}>
-                    <button type="button" onClick={() => handleEditOnClick(filter)}>
-                      <EditIcon />
+            {filters.map((filter: IFilter) => (
+              <div className={pageStyles.table_item}>
+                <div className={`${pageStyles.part} ${pageStyles.main}`}>{filter.filter}</div>
+                <div className={`${pageStyles.part} ${pageStyles.actions}`}>
+                  {!filter.is_main ? (
+                    <>
+                      <button type="button" onClick={() => handleEditOnClick(filter)}>
+                        <EditIcon />
+                      </button>
+                      <button type="button" className={appStyles.wrong} onClick={() => handleDeleteOnClick(filter)}>
+                        <DeleteIcon />
+                      </button>
+                    </>
+                  ) : null}
+                  {filter.position !== Math.max(...filters.map((tmpFilter: IFilter) => tmpFilter.position)) ? (
+                    <button
+                      type="button"
+                      className={pageStyles.button_up}
+                      title="Поднять вверх"
+                      onClick={() => handleUpdatePositionUp(filter)}
+                    >
+                      <ArrowIcon />
                     </button>
-                    <button type="button" className={appStyles.wrong} onClick={() => handleDeleteOnClick(filter)}>
-                      <DeleteIcon />
+                  ) : (
+                    <div className={pageStyles.empty_button} />
+                  )}
+                  {filter.position !== Math.min(...filters.map((tmpFilter: IFilter) => tmpFilter.position)) ? (
+                    <button
+                      type="button"
+                      className={pageStyles.button_down}
+                      title="Опустить вниз"
+                      onClick={() => handleUpdatePositionDown(filter)}
+                    >
+                      <ArrowIcon />
                     </button>
-                  </div>
+                  ) : (
+                    <div className={pageStyles.empty_button} />
+                  )}
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
         </div>
       ) : null}

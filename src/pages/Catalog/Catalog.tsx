@@ -179,7 +179,7 @@ const Catalog = () => {
     ) {
       tmpCategoryProducts = tmpCategoryProducts.filter((product: IProduct) => product.price <= catalogFilter.max_price);
     } else {
-      tmpCategoryProducts = tmpCategoryProducts.filter((product: IProduct) => product.price <= 500000);
+      tmpCategoryProducts = tmpCategoryProducts.filter((product: IProduct) => product.price <= 500000000);
     }
     setCurrentPage(1);
     setCategoryProducts(tmpCategoryProducts);
@@ -329,7 +329,7 @@ const Catalog = () => {
                       ))}
                   </>
                 ) : null}
-                <div className={styles.main_filter}>
+                <div className={`${styles.main_filter} ${styles.slider}`}>
                   {category.filters.filter((filter: ICategoryFilter) => filter.filter_id === 1).length > 0 ? (
                     <div className={styles.filter}>
                       <InputSlider
@@ -423,34 +423,6 @@ const Catalog = () => {
                   ))}
                 </div>
               ) : null}
-              {/*categoryProducts.length > 12 ? (
-                <div className={styles.pagination}>
-                  {Math.ceil(categoryProducts.length / 12) > 0 ? (
-                    <>
-                      {currentPage !== 1 ? (
-                        <div className={styles.prev_button} onClick={() => setCurrentPage(currentPage - 1)}>
-                          <ArrowIcon />
-                        </div>
-                      ) : null}
-                      {Array(Math.ceil(categoryProducts.length / 12))
-                        .fill(1)
-                        .map((_value, index: number) => (
-                          <div
-                            className={`${styles.page} ${currentPage === index + 1 ? styles.active : ""}`}
-                            onClick={() => setCurrentPage(index + 1)}
-                          >
-                            {index + 1}
-                          </div>
-                        ))}
-                      {currentPage !== Math.ceil(categoryProducts.length / 12) ? (
-                        <div className={styles.next_button} onClick={() => setCurrentPage(currentPage + 1)}>
-                          <ArrowIcon />
-                        </div>
-                      ) : null}
-                    </>
-                  ) : null}
-                </div>
-                      ) : null*/}
               {categoryProducts.length > 12 ? (
                 <>
                   {currentPage !== 1 ? (

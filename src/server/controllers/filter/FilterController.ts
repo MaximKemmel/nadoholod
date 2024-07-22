@@ -7,7 +7,7 @@ const mysql = require("mysql");
 
 const getFilters = (_request, response) => {
   try {
-    connectionPool.query("SELECT * FROM filters; SELECT * FROM filter_items;", (error, data) => {
+    connectionPool.query("SELECT * FROM filters ORDER BY position DESC; SELECT * FROM filter_items;", (error, data) => {
       if (error) {
         return response.status(404).json({
           message: "Фильтры не найдены",
@@ -36,12 +36,14 @@ const getFilters = (_request, response) => {
 
 const addFilter = (request, response) => {
   try {
-    const sql = "INSERT INTO filters (??, ??) VALUES (?, ?);";
+    const sql = "INSERT INTO filters (??, ??, ??) VALUES (?, ?, ?);";
     const query = mysql.format(sql, [
       "filter",
       "is_main",
+      "position",
       request.body.params.filter.filter,
       request.body.params.filter.is_main,
+      request.body.params.filter.position,
     ]);
     connectionPool.query(query, (error, data) => {
       if (error) {
@@ -149,4 +151,37 @@ const deleteFilter = (request, response) => {
   }
 };
 
-export { getFilters, addFilter, updateFilter, deleteFilter };
+const updateFilterPosition = (request, response) => {
+  try {
+    const sql = "UPDATE filters SET ?? = ? WHERE ?? = ?; UPDATE filters SET ?? = ? WHERE ?? = ?;";
+    const query = mysql.format(sql, [
+      "position",
+      request.body.params.old_position,
+      "position",
+      request.body.params.filter.position,
+      "position",
+      request.body.params.filter.position,
+      "id",
+      request.body.params.filter.id,
+    ]);
+    connectionPool.query(query, (error) => {
+      if (error) {
+        return response.status(404).json({
+          success: false,
+          message: "Не удалось обновить позицию фильтра",
+          error: error,
+        });
+      } else {
+        return response.status(200).json({ success: true });
+      }
+    });
+  } catch (error) {
+    response.status(500).json({
+      success: false,
+      message: "Ошибка при обновлении позиции фильтра",
+      error: error,
+    });
+  }
+};
+
+export { getFilters, addFilter, updateFilter, deleteFilter, updateFilterPosition };

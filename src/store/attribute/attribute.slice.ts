@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { addAttributes, getAttributes } from "./attribute.actions";
+import { addAttributes, getAttributes, updateAttributePosition } from "./attribute.actions";
 
 import { IAttribute } from "../../types/attribute/attribute";
 import { IServerStatus, initServerStatus } from "../../types/main/serverStatus";
@@ -9,11 +9,13 @@ import { ServerStatusType } from "../../enums/serverStatusType";
 interface IAttributeState {
   attributes: IAttribute[];
   addAttributesStatus: IServerStatus;
+  updateAttributePositionStatus: IServerStatus;
 }
 
 const initialState: IAttributeState = {
   attributes: [] as IAttribute[],
   addAttributesStatus: initServerStatus(),
+  updateAttributePositionStatus: initServerStatus(),
 };
 
 export const attributeSlice = createSlice({
@@ -22,6 +24,9 @@ export const attributeSlice = createSlice({
   reducers: {
     setAddAttributesStatus(state, action: PayloadAction<IServerStatus>) {
       state.addAttributesStatus = action.payload;
+    },
+    setUpdateAttributePositionStatus(state, action: PayloadAction<IServerStatus>) {
+      state.updateAttributePositionStatus = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -47,6 +52,25 @@ export const attributeSlice = createSlice({
     });
     builder.addCase(addAttributes.rejected, (state) => {
       state.addAttributesStatus = {
+        status: ServerStatusType.Error,
+        error: "",
+      } as IServerStatus;
+    });
+
+    builder.addCase(updateAttributePosition.pending, (state) => {
+      state.updateAttributePositionStatus = {
+        status: ServerStatusType.InProgress,
+        error: "",
+      } as IServerStatus;
+    });
+    builder.addCase(updateAttributePosition.fulfilled, (state, action) => {
+      state.updateAttributePositionStatus = {
+        status: action.payload.success ? ServerStatusType.Success : ServerStatusType.Error,
+        error: action.payload.success ? "" : action.payload.message,
+      };
+    });
+    builder.addCase(updateAttributePosition.rejected, (state) => {
+      state.updateAttributePositionStatus = {
         status: ServerStatusType.Error,
         error: "",
       } as IServerStatus;

@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { addFilter, deleteFilter, updateFilter, getFilters } from "./filter.actions";
+import { addFilter, deleteFilter, updateFilter, getFilters, updateFilterPosition } from "./filter.actions";
 
 import { IFilter } from "../../types/filter/filter";
 import { IServerStatus, initServerStatus } from "../../types/main/serverStatus";
@@ -11,6 +11,7 @@ interface IFilterState {
   addFilterStatus: IServerStatus;
   updateFilterStatus: IServerStatus;
   deleteFilterStatus: IServerStatus;
+  updateFilterPositionStatus: IServerStatus;
 }
 
 const initialState: IFilterState = {
@@ -18,6 +19,7 @@ const initialState: IFilterState = {
   addFilterStatus: initServerStatus(),
   updateFilterStatus: initServerStatus(),
   deleteFilterStatus: initServerStatus(),
+  updateFilterPositionStatus: initServerStatus(),
 };
 
 export const filterSlice = createSlice({
@@ -32,6 +34,9 @@ export const filterSlice = createSlice({
     },
     setDeleteFilterStatus(state, action: PayloadAction<IServerStatus>) {
       state.deleteFilterStatus = action.payload;
+    },
+    setUpdateFilterPositionStatus(state, action: PayloadAction<IServerStatus>) {
+      state.updateFilterPositionStatus = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -95,6 +100,25 @@ export const filterSlice = createSlice({
     });
     builder.addCase(deleteFilter.rejected, (state) => {
       state.deleteFilterStatus = {
+        status: ServerStatusType.Error,
+        error: "",
+      } as IServerStatus;
+    });
+
+    builder.addCase(updateFilterPosition.pending, (state) => {
+      state.updateFilterPositionStatus = {
+        status: ServerStatusType.InProgress,
+        error: "",
+      } as IServerStatus;
+    });
+    builder.addCase(updateFilterPosition.fulfilled, (state, action) => {
+      state.updateFilterPositionStatus = {
+        status: action.payload.success ? ServerStatusType.Success : ServerStatusType.Error,
+        error: action.payload.success ? "" : action.payload.message,
+      };
+    });
+    builder.addCase(updateFilterPosition.rejected, (state) => {
+      state.updateFilterPositionStatus = {
         status: ServerStatusType.Error,
         error: "",
       } as IServerStatus;

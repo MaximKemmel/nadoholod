@@ -45,10 +45,12 @@ app.post("/api/update_product", checkAuth_1.default, index_1.ProductController.u
 app.post("/api/delete_product", checkAuth_1.default, index_1.ProductController.deleteProduct);
 app.get("/api/attributes", index_1.AttributeController.getAttributes);
 app.post("/api/add_attributes", checkAuth_1.default, index_1.AttributeController.addAttributes);
+app.post("/api/update_attribute_position", checkAuth_1.default, index_1.AttributeController.updateAttributePosition);
 app.get("/api/filters", index_1.FilterController.getFilters);
 app.post("/api/add_filter", checkAuth_1.default, index_1.FilterController.addFilter);
 app.post("/api/update_filter", checkAuth_1.default, index_1.FilterController.updateFilter);
 app.post("/api/delete_filter", checkAuth_1.default, index_1.FilterController.deleteFilter);
+app.post("/api/update_filter_position", checkAuth_1.default, index_1.FilterController.updateFilterPosition);
 app.get("/api/manufacturers", index_1.ManufacturerController.getManufacturers);
 app.post("/api/add_manufacturer", checkAuth_1.default, index_1.ManufacturerController.addManufacturer);
 app.post("/api/update_manufacturer", checkAuth_1.default, index_1.ManufacturerController.updateManufacturer);

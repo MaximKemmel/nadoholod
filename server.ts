@@ -64,11 +64,13 @@ app.post("/api/delete_product", checkAuth, ProductController.deleteProduct);
 
 app.get("/api/attributes", AttributeController.getAttributes);
 app.post("/api/add_attributes", checkAuth, AttributeController.addAttributes);
+app.post("/api/update_attribute_position", checkAuth, AttributeController.updateAttributePosition);
 
 app.get("/api/filters", FilterController.getFilters);
 app.post("/api/add_filter", checkAuth, FilterController.addFilter);
 app.post("/api/update_filter", checkAuth, FilterController.updateFilter);
 app.post("/api/delete_filter", checkAuth, FilterController.deleteFilter);
+app.post("/api/update_filter_position", checkAuth, FilterController.updateFilterPosition);
 
 app.get("/api/manufacturers", ManufacturerController.getManufacturers);
 app.post("/api/add_manufacturer", checkAuth, ManufacturerController.addManufacturer);

@@ -94,6 +94,11 @@ $filter_gray_color: #748491
                         gap: 20px
                         flex-grow: 1
 
+                        &.slider
+                            .filter
+                                width: max-content
+                                min-width: width: calc((100% - 60px) / 4)
+
                         .filter
                             display: flex
                             flex-direction: column
@@ -126,6 +131,7 @@ $filter_gray_color: #748491
                     display: flex
                     align-self: center
                     align-items: end
+                    margin-top: 15px
 
                     .page
                         font-size: 16px
@@ -357,6 +363,11 @@ $filter_gray_color: #748491
                             width: calc((100% - 40px) / 3)
 
                         .main_filter
+                            &.slider
+                                .filter
+                                    width: max-content
+                                    min-width: calc((100% - 40px) / 3)
+
                             .filter
                                 &.price
                                     width: calc(((100% - 40px) / 3) * 2)
@@ -384,6 +395,11 @@ $filter_gray_color: #748491
                             width: calc((100% - 20px) / 2)
 
                         .main_filter
+                            &.slider
+                                .filter
+                                    width: max-content
+                                    width: calc((100% - 20px) / 2)
+
                             .filter
                                 &.price
                                     width: 100%
