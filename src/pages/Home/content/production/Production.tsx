@@ -18,7 +18,7 @@ const Production = () => {
     autoplay: true,
     autoplaySpeed: 5000,
     arrows: false,
-    beforeChange: (index) => {
+    afterChange: (index) => {
       setCurrentIndex(index);
     },
   };

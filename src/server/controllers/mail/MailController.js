@@ -43,8 +43,8 @@ var sendMail = function (request, response) { return __awaiter(void 0, void 0, v
     return __generator(this, function (_a) {
         try {
             mailOptions = {
-                from: "kemmel7007@mail.ru",
-                to: "maximkemmel@yandex.ru",
+                from: "nadoholod@mail.ru",
+                to: "holodpro22@gmail.com",
                 subject: request.body.params.description,
                 html: "<b>".concat(request.body.params.description, "</b><br/><br/><b>\u0418\u043C\u044F</b>: ").concat(request.body.params.name, "<br/><b>\u041D\u043E\u043C\u0435\u0440 \u0442\u0435\u043B\u0435\u0444\u043E\u043D\u0430</b>: ").concat(request.body.params.phone, "<br/><b>\u0421\u043E\u043E\u0431\u0449\u0435\u043D\u0438\u0435</b>: ").concat(request.body.params.message),
             };
