@@ -162,7 +162,7 @@ const Catalog = () => {
     if (catalogFilter.max_volume > 2) {
       tmpCategoryProducts = tmpCategoryProducts.filter((product: IProduct) => product.volume >= catalogFilter.max_volume);
     } else {
-      tmpCategoryProducts = tmpCategoryProducts.filter((product: IProduct) => product.volume > 0);
+      tmpCategoryProducts = tmpCategoryProducts.filter((product: IProduct) => product.volume >= 0);
     }
     if (
       catalogFilter.min_price >= 50000 &&

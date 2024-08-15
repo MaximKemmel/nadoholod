@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import Slider from "react-slick";
+//import { useRef, useState } from "react";
+//import Slider from "react-slick";
 
 import pageStyles from "../../Home.module.sass";
 import styles from "./Production.module.sass";
@@ -7,7 +7,7 @@ import styles from "./Production.module.sass";
 import SliderPhoto from "../../../../assets/images/production.png";
 
 const Production = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  /*const [currentIndex, setCurrentIndex] = useState(0);
   const slider = useRef(null as Slider);
 
   const settings = {
@@ -21,7 +21,7 @@ const Production = () => {
     afterChange: (index) => {
       setCurrentIndex(index);
     },
-  };
+  };*/
 
   return (
     <div className={pageStyles.container} id="production_container">
@@ -47,6 +47,8 @@ const Production = () => {
           </div>
         </div>
         <div className={styles.slider}>
+          <img src={SliderPhoto} alt="" />
+          {/*
           <Slider ref={slider} {...settings}>
             {Array(4)
               .fill(1)
@@ -64,6 +66,7 @@ const Production = () => {
                 />
               ))}
           </div>
+          */}
         </div>
       </div>
     </div>
