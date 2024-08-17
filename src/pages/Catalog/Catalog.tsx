@@ -160,7 +160,7 @@ const Catalog = () => {
       tmpCategoryProducts = tmpCategoryProducts.filter((product: IProduct) => product.manufacturer_id > -2);
     }
     if (catalogFilter.max_volume > 2) {
-      tmpCategoryProducts = tmpCategoryProducts.filter((product: IProduct) => product.volume >= catalogFilter.max_volume);
+      tmpCategoryProducts = tmpCategoryProducts.filter((product: IProduct) => product.volume <= catalogFilter.max_volume);
     } else {
       tmpCategoryProducts = tmpCategoryProducts.filter((product: IProduct) => product.volume >= 0);
     }
